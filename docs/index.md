@@ -1,31 +1,30 @@
 --- 
-title: "Diplomová práce"
+title: "Functional classification with vertical differences using SVM"
 author: "Tomáš Pompa"
-date: "30. 10. 2024"
+date: "2024-10-30"
 site: bookdown::bookdown_site
 ---
 
-# SVM pro funkcionální data {-}
+# SVM for Functional Data {-}
 
-Cílem bude aplikovat poznatky o metodě podpůrných vektorů (SVM) pro mnohorozměrná data na data funkcionálního typu, tedy nekonečně-rozměrné objekty.
-K tomu využijeme jednak převod (redukci) objektů z nekonečné dimenze na objekty konečné dimenze a následným využitím známých postupů a také modifikaci SVM přímo pro funkcionální data, k čemuž využijeme poznatky o Hilbertových prostorech a skalárním součinu.
+The goal will be to apply knowledge of the Support Vector Machine (SVM) method for multivariate data to functional-type data, that is, infinite-dimensional objects. To do this, we will use both a transformation (reduction) of objects from infinite to finite dimension, followed by the use of established procedures, as well as a modification of SVM specifically for functional data, leveraging knowledge of Hilbert spaces and inner products.
 
-Dalším cílem bude porovnání jednotlivých metod pro klasifikaci funkcionálních dat na reálných a simulovaných datech. Bylo by dobré vymyslet nějakou zajímavou simulační studii, která bude demonstrovat různá chování uvažovaných metod.
+Another objective will be to compare different methods for classifying functional data on real and simulated datasets. It would be beneficial to design an interesting simulation study that demonstrates the various behaviors of the considered methods.
 
-Mezi uvažované klasifikační metody patří:
+The classification methods considered include:
 
-- $K$ nejbližších sousedů (KNN),
+- $K$ nearest neighbors (KNN),
 
-- logistická regrese (jak obyčejná (LR) tak její funkcionální modifikace (LR_fda)),
+- logistic regression (both standard (LR) and its functional modification (LR_fda)),
 
-- lineární (LDA) a kvadratická (QDA) diskriminační analýza,
+- linear (LDA) and quadratic (QDA) discriminant analysis,
 
-- rozhodovací stromy (DT),
+- decision trees (DT),
 
-- náhodné lesy (RF) a 
+- random forests (RF), and
 
 - Support Vector Machines.
 
-Postupně jednotlivé metody projdeme, nejprve na simulovaných datech, a následně budeme konstruovat metodu podpůrných vektorů pro funkcionální data (SVM_fda).
+We will go through each method, starting with simulated data, and then move on to constructing a support vector machine method for functional data (SVM_fda).
 
-Základním balíčkem v `R` pro práci s funkcionálními objekty je `fda`. Dalšími užitečnými balíčky budou `MASS`, `e1071`, `fda.usc`, `refund` a další.
+The primary package in `R` for working with functional objects is `fda`. Other useful packages include `MASS`, `e1071`, `fda.usc`, `refund`, and more.

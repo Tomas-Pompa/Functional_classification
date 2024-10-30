@@ -1,41 +1,35 @@
-## Klasifikace funkcionálních dat
+## Classification of Functional Data with vertical differences using SVM
 
-Tento dokument slouží jako podpůrný materiál pro diplomovou práci:
+This document serves as a supporting material for the article:
 
-**Metoda podpůrných vektorů pro funkcionální data**,
+**Classification of Functional Data with vertical differences using SVM**,
 
-jejíž oficiální zadání zní následovně.
+which is the extension of authors master thesis with the official project assignment as follows.
 
-*Zadání*: V mnoha aplikacích naměřená data reprezentují hodnoty nějaké funkce. Proto je
-výhodné, pokud to situace dovolí, pracovat s nimi ve funkcionální podobě, tj. jako s prvky
-nekonečně rozměrného prostoru. Práce bude volně navazovat na předchozí studentovu bakalářskou
-práci. Cílem práce je zobecnit úvahy metod strojového učení na situaci funkcionálních
-dat, dále popsat vlastnosti takových přístupů. Získané výsledky budou demonstrovány na
-simulovaných nebo reálných datech.
+*Assignment*: In many applications, measured data represent values of a function. Therefore, if the situation allows, it is advantageous to work with them in a functional form, i.e., as elements of an infinite-dimensional space. The thesis will build upon the student’s previous bachelor’s work. The aim is to generalize machine learning methods for functional data and to describe the properties of such approaches. The obtained results will be demonstrated on simulated or real data.
 
-### Support vector machines pro funkcionální data
+### Support Vector Machines for Functional Data
 
-Cílem dokumentu bude aplikovat poznatky o metodě podpůrných vektorů (SVM) pro mnohorozměrná data na data funkcionálního typu, tedy nekonečně-rozměrné objekty.
-K tomu využijeme zejména převod (redukci) objektů z nekonečné dimenze na objekty konečné dimenze a následným využitím známých postupů z konečných rozměrů. Ukážeme několik možných přístupů.
+The purpose of this document is to apply knowledge of the Support Vector Machine (SVM) method for multivariate data to functional-type data, i.e., infinite-dimensional objects. To achieve this, we will primarily use the transformation (reduction) of objects from infinite to finite dimension, followed by the application of known procedures from finite dimensions. Several possible approaches will be demonstrated.
 
-Dalším cílem bude porovnání jednotlivých metod pro klasifikaci funkcionálních dat na reálných a simulovaných datech. Zaměříme se primárně na simulovaná data a kromě porovnání metod mezi sebou na základě simulační studie se také podíváme na závislost úspěšnosti klasifikace uvažovaných metod na parametrech, které využíváme při generování (bude nás zajímat rozptyl kolem generujících křivek a také rozptyl vertikálního posunutí). Dále nás také bude zajímat závislost chabovosti klasifikačních metod na diskretizaci intervalu, což je jedna z možností, jak aplikovat konečně-rozměrné metody na funkcionální data.
+Another objective will be to compare various methods for the classification of functional data on real and simulated datasets. We will focus primarily on simulated data and, in addition to comparing the methods against each other through a simulation study, we will also examine the dependency of classification success on the parameters used in data generation (we will be interested in the variance around the generating curves and the variance of vertical shifts). We will also look into the impact of interval discretization on the effectiveness of classification methods, which is one approach to applying finite-dimensional methods to functional data.
 
-Mezi uvažované klasifikační metody patří:
+The classification methods considered include:
 
-  - $K$ nejbližších sousedů (KNN),
+  - $K$ nearest neighbors (KNN),
 
-  - logistická regrese (jak obyčejná (LR) tak její funkcionální modifikace (LR_fda)),
+  - logistic regression (both standard (LR) and its functional modification (LR_fda)),
 
-  - lineární (LDA) a kvadratická (QDA) diskriminační analýza,
+  - linear (LDA) and quadratic (QDA) discriminant analysis,
 
-  - rozhodovací stromy (DT),
+  - decision trees (DT),
 
-  - náhodné lesy (RF) a 
+  - random forests (RF), and
 
-  - Support Vector Machines: zde budeme uvažovat mnoho variant, všechny z nich jsou přitom postaveny na principu filtrace (redukce dimenze).
+  - Support Vector Machines: here we will consider many variants, all of which are based on the principle of filtering (dimension reduction) or direct aplying the SVM on functional data.
 
-Postupně jednotlivé metody projdeme, nejprve na simulovaných datech, a následně budeme konstruovat metodu podpůrných vektorů pro funkcionální data.
+We will go through each method, starting with simulated data, and then proceed to construct the Support Vector Machine method for functional data.
 
-Základním balíčkem v `R` pro práci s funkcionálními objekty je `fda`. Dalšími užitečnými balíčky budou `MASS`, `e1071`, `fda.usc`, `refund` a další.
+The primary package in `R` for working with functional objects is `fda`. Other useful packages include `MASS`, `e1071`, `fda.usc`, `refund`, and more.
 
-V aplikační části dokumentu se podíváme na tři datové soubory -- `growth`, `phoneme` a `tecator`. Poslední kapitola pak obsahuje zdrojový kód k obrázkům které jsou součástí diplomové práce. Výsledky jsou prezentovány jak graficky, tak číselně, podrobné komentáře lze najít právě v diplomové práci.
+In the application section of this document, we will examine dataset `tecator`. 

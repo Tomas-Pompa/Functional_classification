@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Simulation | Functional classification with vertical differences using SVM</title>
+  <meta name="description" content="Chapter 1 Simulation | Functional classification with vertical differences using SVM" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Simulation | Functional classification with vertical differences using SVM" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Simulation | Functional classification with vertical differences using SVM" />
+  
+  
+  
+
+<meta name="author" content="Tomáš Pompa" />
+
+
+<meta name="date" content="2024-10-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="toc-logo"><a href="./"><img src="sci-lg-eng-rgb.png"></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>SVM for Functional Data</a></li>
+<li class="chapter" data-level="1" data-path="simulace3.html"><a href="simulace3.html"><i class="fa fa-check"></i><b>1</b> Simulation</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="simulace3.html"><a href="simulace3.html#simulation-of-functional-data"><i class="fa fa-check"></i><b>1.1</b> Simulation of Functional Data</a></li>
+<li class="chapter" data-level="1.2" data-path="simulace3.html"><a href="simulace3.html#smoothing-observed-curves"><i class="fa fa-check"></i><b>1.2</b> Smoothing Observed Curves</a></li>
+<li class="chapter" data-level="1.3" data-path="simulace3.html"><a href="simulace3.html#classification-of-curves"><i class="fa fa-check"></i><b>1.3</b> Classification of Curves</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="simulace3.html"><a href="simulace3.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>1.3.1</b> <span class="math inline">\(K\)</span>-Nearest Neighbors</a></li>
+<li class="chapter" data-level="1.3.2" data-path="simulace3.html"><a href="simulace3.html#linear-discriminant-analysis"><i class="fa fa-check"></i><b>1.3.2</b> Linear Discriminant Analysis</a></li>
+<li class="chapter" data-level="1.3.3" data-path="simulace3.html"><a href="simulace3.html#quadratic-discriminant-analysis"><i class="fa fa-check"></i><b>1.3.3</b> Quadratic Discriminant Analysis</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Functional classification with vertical differences using SVM</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="simulace3" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Simulation<a href="simulace3.html#simulace3" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="simulation-of-functional-data" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Simulation of Functional Data<a href="simulace3.html#simulation-of-functional-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First, we simulate functions that we will subsequently classify.
+For simplicity, we will consider two classification classes.
+For the simulation, we will first:</p>
+<ul>
+<li><p>choose appropriate functions,</p></li>
+<li><p>generate points from a selected interval, which contain, for example, Gaussian noise,</p></li>
+<li><p>smooth these obtained discrete points into a functional object form using a suitable basis system.</p></li>
+</ul>
+<p>Through this process, we obtain functional objects along with the value of a categorical variable <span class="math inline">\(Y\)</span>, which distinguishes membership in the classification class.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="simulace3.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fda)</span>
+<span id="cb1-2"><a href="simulace3.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="simulace3.html#cb1-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="simulace3.html#cb1-4" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-5"><a href="simulace3.html#cb1-5" tabindex="-1"></a><span class="fu">library</span>(ddalpha)</span>
+<span id="cb1-6"><a href="simulace3.html#cb1-6" tabindex="-1"></a><span class="fu">library</span>(polynom)</span>
+<span id="cb1-7"><a href="simulace3.html#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="simulace3.html#cb1-8" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span></code></pre></div>
+</details>
+<p>Let us consider two classification classes, <span class="math inline">\(Y \in \{0, 1\}\)</span>, with the same number <code>n</code> of generated functions for each class.
+First, let’s define two functions, each corresponding to one class.
+We will consider the functions on the interval <span class="math inline">\(I = [0, 6]\)</span>.</p>
+<p>Now, we will create the functions using interpolation polynomials. First, we define the points through which our curve should pass, and then we fit an interpolation polynomial through them, which we use to generate curves for classification.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="simulace3.html#cb2-1" tabindex="-1"></a><span class="co"># defining points for class 0</span></span>
+<span id="cb2-2"><a href="simulace3.html#cb2-2" tabindex="-1"></a>x<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.00</span>, <span class="fl">0.65</span>, <span class="fl">0.94</span>, <span class="fl">1.42</span>, <span class="fl">2.26</span>, <span class="fl">2.84</span>, <span class="fl">3.73</span>, <span class="fl">4.50</span>, <span class="fl">5.43</span>, <span class="fl">6.00</span>)</span>
+<span id="cb2-3"><a href="simulace3.html#cb2-3" tabindex="-1"></a>y<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.86</span>, <span class="fl">1.49</span>, <span class="fl">1.1</span>, <span class="fl">0.15</span>, <span class="sc">-</span><span class="fl">0.11</span>, <span class="sc">-</span><span class="fl">0.36</span>, <span class="fl">0.23</span>, <span class="dv">0</span>)</span>
+<span id="cb2-4"><a href="simulace3.html#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="simulace3.html#cb2-5" tabindex="-1"></a><span class="co"># defining points for class 1</span></span>
+<span id="cb2-6"><a href="simulace3.html#cb2-6" tabindex="-1"></a>x<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.00</span>, <span class="fl">0.51</span>, <span class="fl">0.91</span>, <span class="fl">1.25</span>, <span class="fl">1.51</span>, <span class="fl">2.14</span>, <span class="fl">2.43</span>, <span class="fl">2.96</span>, <span class="fl">3.70</span>, <span class="fl">4.60</span>,</span>
+<span id="cb2-7"><a href="simulace3.html#cb2-7" tabindex="-1"></a>         <span class="fl">5.25</span>, <span class="fl">5.67</span>, <span class="fl">6.00</span>)</span>
+<span id="cb2-8"><a href="simulace3.html#cb2-8" tabindex="-1"></a>y<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.4</span>, <span class="fl">0.71</span>, <span class="fl">1.08</span>, <span class="fl">1.47</span>, <span class="fl">1.39</span>, <span class="fl">0.81</span>, <span class="fl">0.05</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="sc">-</span><span class="fl">0.4</span>,</span>
+<span id="cb2-9"><a href="simulace3.html#cb2-9" tabindex="-1"></a>         <span class="fl">0.3</span>, <span class="fl">0.37</span>, <span class="dv">0</span>)</span></code></pre></div>
+</details>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="simulace3.html#cb3-1" tabindex="-1"></a>dat_points <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(x<span class="fl">.0</span>, x<span class="fl">.1</span>),</span>
+<span id="cb3-2"><a href="simulace3.html#cb3-2" tabindex="-1"></a>                         <span class="at">y =</span> <span class="fu">c</span>(y<span class="fl">.0</span>, y<span class="fl">.1</span>),</span>
+<span id="cb3-3"><a href="simulace3.html#cb3-3" tabindex="-1"></a>                         <span class="at">Class =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>), </span>
+<span id="cb3-4"><a href="simulace3.html#cb3-4" tabindex="-1"></a>                                     <span class="fu">c</span>(<span class="fu">length</span>(x<span class="fl">.0</span>), <span class="fu">length</span>(x<span class="fl">.1</span>))))</span>
+<span id="cb3-5"><a href="simulace3.html#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="simulace3.html#cb3-6" tabindex="-1"></a><span class="fu">ggplot</span>(dat_points, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">colour =</span> Class)) <span class="sc">+</span> </span>
+<span id="cb3-7"><a href="simulace3.html#cb3-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb3-8"><a href="simulace3.html#cb3-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb3-9"><a href="simulace3.html#cb3-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]),</span>
+<span id="cb3-10"><a href="simulace3.html#cb3-10" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]),</span>
+<span id="cb3-11"><a href="simulace3.html#cb3-11" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>)</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-3-1.png" alt="Points defining interpolation polynomials for both classification classes." width="672" />
+<p class="caption">
+Figure 1.1: Points defining interpolation polynomials for both classification classes.
+</p>
+</div>
+<p>To compute the interpolation polynomials, we will use the <code>poly.calc()</code> function from the <code>polynom</code> library. Next, we define the functions <code>poly.0()</code> and <code>poly.1()</code>, which will calculate the polynomial values at a given point in the interval. We use the <code>predict()</code> function to create them, where we input the respective polynomial and the point at which we want to evaluate the polynomial.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="simulace3.html#cb4-1" tabindex="-1"></a>polynom<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="fu">poly.calc</span>(x<span class="fl">.0</span>, y<span class="fl">.0</span>)</span>
+<span id="cb4-2"><a href="simulace3.html#cb4-2" tabindex="-1"></a>polynom<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">poly.calc</span>(x<span class="fl">.1</span>, y<span class="fl">.1</span>)</span></code></pre></div>
+</details>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="simulace3.html#cb5-1" tabindex="-1"></a>poly<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>(<span class="fu">predict</span>(polynom<span class="fl">.0</span>, x))</span>
+<span id="cb5-2"><a href="simulace3.html#cb5-2" tabindex="-1"></a>poly<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">return</span>(<span class="fu">predict</span>(polynom<span class="fl">.1</span>, x))</span></code></pre></div>
+</details>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="simulace3.html#cb6-1" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(x<span class="fl">.0</span>), <span class="fu">max</span>(x<span class="fl">.0</span>), <span class="at">length =</span> <span class="dv">501</span>)</span>
+<span id="cb6-2"><a href="simulace3.html#cb6-2" tabindex="-1"></a>yy<span class="fl">.0</span> <span class="ot">&lt;-</span> <span class="fu">poly.0</span>(xx)</span>
+<span id="cb6-3"><a href="simulace3.html#cb6-3" tabindex="-1"></a>yy<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">poly.1</span>(xx)</span>
+<span id="cb6-4"><a href="simulace3.html#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="simulace3.html#cb6-5" tabindex="-1"></a>dat_poly_plot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(xx, xx),</span>
+<span id="cb6-6"><a href="simulace3.html#cb6-6" tabindex="-1"></a>                            <span class="at">y =</span> <span class="fu">c</span>(yy<span class="fl">.0</span>, yy<span class="fl">.1</span>),</span>
+<span id="cb6-7"><a href="simulace3.html#cb6-7" tabindex="-1"></a>                            <span class="at">Class =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>), </span>
+<span id="cb6-8"><a href="simulace3.html#cb6-8" tabindex="-1"></a>                                        <span class="fu">c</span>(<span class="fu">length</span>(xx), <span class="fu">length</span>(xx))))</span>
+<span id="cb6-9"><a href="simulace3.html#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="simulace3.html#cb6-10" tabindex="-1"></a><span class="fu">ggplot</span>(dat_points, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">colour =</span> Class)) <span class="sc">+</span> </span>
+<span id="cb6-11"><a href="simulace3.html#cb6-11" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb6-12"><a href="simulace3.html#cb6-12" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb6-13"><a href="simulace3.html#cb6-13" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dat_poly_plot,</span>
+<span id="cb6-14"><a href="simulace3.html#cb6-14" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">colour =</span> Class),</span>
+<span id="cb6-15"><a href="simulace3.html#cb6-15" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span> </span>
+<span id="cb6-16"><a href="simulace3.html#cb6-16" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]),</span>
+<span id="cb6-17"><a href="simulace3.html#cb6-17" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]),</span>
+<span id="cb6-18"><a href="simulace3.html#cb6-18" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>)</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-6-1.png" alt="Visualization of two functions on the interval $I = [0, 6]$, from which we generate observations for classes 0 and 1." width="672" />
+<p class="caption">
+Figure 1.2: Visualization of two functions on the interval <span class="math inline">\(I = [0, 6]\)</span>, from which we generate observations for classes 0 and 1.
+</p>
+</div>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="simulace3.html#cb7-1" tabindex="-1"></a>funkce_0 <span class="ot">&lt;-</span> poly<span class="fl">.0</span></span>
+<span id="cb7-2"><a href="simulace3.html#cb7-2" tabindex="-1"></a>funkce_1 <span class="ot">&lt;-</span> poly<span class="fl">.1</span></span></code></pre></div>
+</details>
+<p>Now we will create a function to generate random functions with added noise (i.e., points on a predefined grid) from a chosen generating function.
+The argument <code>t</code> represents the vector of values at which we want to evaluate the given functions, <code>fun</code> denotes the generating function, <code>n</code> is the number of functions, and <code>sigma</code> is the standard deviation <span class="math inline">\(\sigma\)</span> of the normal distribution <span class="math inline">\(\text{N}(\mu, \sigma^2)\)</span>, from which we randomly generate Gaussian white noise with <span class="math inline">\(\mu = 0\)</span>.
+To demonstrate the advantage of using methods that work with functional data, we will add a random term to each simulated observation during generation, representing a vertical shift of the entire function (parameter <code>sigma_shift</code>).
+This shift will be generated from a normal distribution with the parameter <span class="math inline">\(\sigma^2 = 4\)</span>.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="simulace3.html#cb8-1" tabindex="-1"></a>generate_values <span class="ot">&lt;-</span> <span class="cf">function</span>(t, fun, n, sigma, <span class="at">sigma_shift =</span> <span class="dv">0</span>) {</span>
+<span id="cb8-2"><a href="simulace3.html#cb8-2" tabindex="-1"></a>  <span class="co"># Arguments:</span></span>
+<span id="cb8-3"><a href="simulace3.html#cb8-3" tabindex="-1"></a>  <span class="co"># t ... vector of values, where the function will be evaluated</span></span>
+<span id="cb8-4"><a href="simulace3.html#cb8-4" tabindex="-1"></a>  <span class="co"># fun ... generating function of t </span></span>
+<span id="cb8-5"><a href="simulace3.html#cb8-5" tabindex="-1"></a>  <span class="co"># n ... the number of generated functions / objects</span></span>
+<span id="cb8-6"><a href="simulace3.html#cb8-6" tabindex="-1"></a>  <span class="co"># sigma ... standard deviation of normal distribution to add noise to data</span></span>
+<span id="cb8-7"><a href="simulace3.html#cb8-7" tabindex="-1"></a>  <span class="co"># sigma_shift ... parameter of normal distribution for generating shift</span></span>
+<span id="cb8-8"><a href="simulace3.html#cb8-8" tabindex="-1"></a>  </span>
+<span id="cb8-9"><a href="simulace3.html#cb8-9" tabindex="-1"></a>  <span class="co"># Value:</span></span>
+<span id="cb8-10"><a href="simulace3.html#cb8-10" tabindex="-1"></a>  <span class="co"># X ... matrix of dimension length(t) times n with generated values of one </span></span>
+<span id="cb8-11"><a href="simulace3.html#cb8-11" tabindex="-1"></a>  <span class="co"># function in a column </span></span>
+<span id="cb8-12"><a href="simulace3.html#cb8-12" tabindex="-1"></a>  </span>
+<span id="cb8-13"><a href="simulace3.html#cb8-13" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(t, <span class="at">times =</span> n), <span class="at">ncol =</span> n, <span class="at">nrow =</span> <span class="fu">length</span>(t), <span class="at">byrow =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-14"><a href="simulace3.html#cb8-14" tabindex="-1"></a>  noise <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> <span class="fu">length</span>(t), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma),</span>
+<span id="cb8-15"><a href="simulace3.html#cb8-15" tabindex="-1"></a>                  <span class="at">ncol =</span> n, <span class="at">nrow =</span> <span class="fu">length</span>(t), <span class="at">byrow =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-16"><a href="simulace3.html#cb8-16" tabindex="-1"></a>  shift <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="fu">rnorm</span>(n, <span class="dv">0</span>, sigma_shift), <span class="at">each =</span> <span class="fu">length</span>(t)),</span>
+<span id="cb8-17"><a href="simulace3.html#cb8-17" tabindex="-1"></a>                  <span class="at">ncol =</span> n, <span class="at">nrow =</span> <span class="fu">length</span>(t))</span>
+<span id="cb8-18"><a href="simulace3.html#cb8-18" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">fun</span>(X) <span class="sc">+</span> noise <span class="sc">+</span> shift)</span>
+<span id="cb8-19"><a href="simulace3.html#cb8-19" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+<p>Now we can generate the functions. In each of the two classes, we will consider 100 observations, so <code>n = 100</code>.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="simulace3.html#cb9-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb9-2"><a href="simulace3.html#cb9-2" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">6</span>, <span class="at">length =</span> <span class="dv">51</span>)</span>
+<span id="cb9-3"><a href="simulace3.html#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="simulace3.html#cb9-4" tabindex="-1"></a><span class="co"># Y = 0</span></span>
+<span id="cb9-5"><a href="simulace3.html#cb9-5" tabindex="-1"></a>X0 <span class="ot">&lt;-</span> <span class="fu">generate_values</span>(t, funkce_0, n, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb9-6"><a href="simulace3.html#cb9-6" tabindex="-1"></a><span class="co"># Y = 1</span></span>
+<span id="cb9-7"><a href="simulace3.html#cb9-7" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">generate_values</span>(t, funkce_1, n, <span class="dv">1</span>, <span class="dv">2</span>)</span></code></pre></div>
+</details>
+<p>We will plot the generated (not yet smoothed) functions in color according to their class (only the first 10 observations from each class for clarity).</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="simulace3.html#cb10-1" tabindex="-1"></a>n_curves_plot <span class="ot">&lt;-</span> <span class="dv">10</span> </span>
+<span id="cb10-2"><a href="simulace3.html#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="simulace3.html#cb10-3" tabindex="-1"></a>DF0 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(t, X0[, <span class="dv">1</span><span class="sc">:</span>n_curves_plot]) <span class="sc">|&gt;</span> </span>
+<span id="cb10-4"><a href="simulace3.html#cb10-4" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-5"><a href="simulace3.html#cb10-5" tabindex="-1"></a>  <span class="fu">reshape</span>(<span class="at">varying =</span> <span class="dv">2</span><span class="sc">:</span>(n_curves_plot <span class="sc">+</span> <span class="dv">1</span>), <span class="at">direction =</span> <span class="st">&#39;long&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-6"><a href="simulace3.html#cb10-6" tabindex="-1"></a>  <span class="fu">subset</span>(<span class="at">select =</span> <span class="sc">-</span>id) <span class="sc">|&gt;</span> </span>
+<span id="cb10-7"><a href="simulace3.html#cb10-7" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-8"><a href="simulace3.html#cb10-8" tabindex="-1"></a>  <span class="at">time =</span> time <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb10-9"><a href="simulace3.html#cb10-9" tabindex="-1"></a>  <span class="at">group =</span> <span class="dv">0</span></span>
+<span id="cb10-10"><a href="simulace3.html#cb10-10" tabindex="-1"></a>  )</span>
+<span id="cb10-11"><a href="simulace3.html#cb10-11" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="simulace3.html#cb10-12" tabindex="-1"></a>DF1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(t, X1[, <span class="dv">1</span><span class="sc">:</span>n_curves_plot]) <span class="sc">|&gt;</span> </span>
+<span id="cb10-13"><a href="simulace3.html#cb10-13" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-14"><a href="simulace3.html#cb10-14" tabindex="-1"></a>  <span class="fu">reshape</span>(<span class="at">varying =</span> <span class="dv">2</span><span class="sc">:</span>(n_curves_plot <span class="sc">+</span> <span class="dv">1</span>), <span class="at">direction =</span> <span class="st">&#39;long&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-15"><a href="simulace3.html#cb10-15" tabindex="-1"></a>  <span class="fu">subset</span>(<span class="at">select =</span> <span class="sc">-</span>id) <span class="sc">|&gt;</span> </span>
+<span id="cb10-16"><a href="simulace3.html#cb10-16" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-17"><a href="simulace3.html#cb10-17" tabindex="-1"></a>  <span class="at">time =</span> time <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb10-18"><a href="simulace3.html#cb10-18" tabindex="-1"></a>  <span class="at">group =</span> <span class="dv">1</span></span>
+<span id="cb10-19"><a href="simulace3.html#cb10-19" tabindex="-1"></a>  )</span>
+<span id="cb10-20"><a href="simulace3.html#cb10-20" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="simulace3.html#cb10-21" tabindex="-1"></a>DF <span class="ot">&lt;-</span> <span class="fu">rbind</span>(DF0, DF1) <span class="sc">|&gt;</span></span>
+<span id="cb10-22"><a href="simulace3.html#cb10-22" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">factor</span>(group))</span>
+<span id="cb10-23"><a href="simulace3.html#cb10-23" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="simulace3.html#cb10-24" tabindex="-1"></a>DF <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> V, <span class="at">group =</span> <span class="fu">interaction</span>(time, group), </span>
+<span id="cb10-25"><a href="simulace3.html#cb10-25" tabindex="-1"></a>                 <span class="at">colour =</span> group)) <span class="sc">+</span> </span>
+<span id="cb10-26"><a href="simulace3.html#cb10-26" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb10-27"><a href="simulace3.html#cb10-27" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb10-28"><a href="simulace3.html#cb10-28" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]),</span>
+<span id="cb10-29"><a href="simulace3.html#cb10-29" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]),</span>
+<span id="cb10-30"><a href="simulace3.html#cb10-30" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>) <span class="sc">+</span></span>
+<span id="cb10-31"><a href="simulace3.html#cb10-31" tabindex="-1"></a>  <span class="fu">scale_colour_discrete</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>))</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-10-1.png" alt="The first 10 generated observations from each of the two classification classes. The observed data are not smoothed." width="672" />
+<p class="caption">
+Figure 1.3: The first 10 generated observations from each of the two classification classes. The observed data are not smoothed.
+</p>
+</div>
+</div>
+<div id="smoothing-observed-curves" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Smoothing Observed Curves<a href="simulace3.html#smoothing-observed-curves" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now we will convert the observed discrete values (vectors of values) into functional objects that we will work with subsequently.
+We will again use a B-spline basis for smoothing.</p>
+<p>We take the entire vector <code>t</code> as the knots, and since we are considering cubic splines, we choose (the implicit choice in <code>R</code>) <code>norder = 4</code>.
+We will penalize the second derivative of the functions.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="simulace3.html#cb11-1" tabindex="-1"></a>rangeval <span class="ot">&lt;-</span> <span class="fu">range</span>(t)</span>
+<span id="cb11-2"><a href="simulace3.html#cb11-2" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> t</span>
+<span id="cb11-3"><a href="simulace3.html#cb11-3" tabindex="-1"></a>norder <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb11-4"><a href="simulace3.html#cb11-4" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="simulace3.html#cb11-5" tabindex="-1"></a>bbasis <span class="ot">&lt;-</span> <span class="fu">create.bspline.basis</span>(<span class="at">rangeval =</span> rangeval, </span>
+<span id="cb11-6"><a href="simulace3.html#cb11-6" tabindex="-1"></a>                               <span class="at">norder =</span> norder, </span>
+<span id="cb11-7"><a href="simulace3.html#cb11-7" tabindex="-1"></a>                               <span class="at">breaks =</span> breaks)</span>
+<span id="cb11-8"><a href="simulace3.html#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="simulace3.html#cb11-9" tabindex="-1"></a>curv.Lfd <span class="ot">&lt;-</span> <span class="fu">int2Lfd</span>(<span class="dv">2</span>) </span></code></pre></div>
+</details>
+<p>We will find a suitable value for the smoothing parameter <span class="math inline">\(\lambda &gt; 0\)</span> using <span class="math inline">\(GCV(\lambda)\)</span>, which stands for generalized cross-validation. We will consider the same value of <span class="math inline">\(\lambda\)</span> for both classification groups, as we would not know in advance which value of <span class="math inline">\(\lambda\)</span> to choose for test observations in the case of different selections for each class.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="simulace3.html#cb12-1" tabindex="-1"></a>XX <span class="ot">&lt;-</span> <span class="fu">cbind</span>(X0, X1)</span>
+<span id="cb12-2"><a href="simulace3.html#cb12-2" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="simulace3.html#cb12-3" tabindex="-1"></a>lambda.vect <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="at">from =</span> <span class="sc">-</span><span class="dv">4</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">50</span>) </span>
+<span id="cb12-4"><a href="simulace3.html#cb12-4" tabindex="-1"></a>gcv <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="at">length =</span> <span class="fu">length</span>(lambda.vect)) </span>
+<span id="cb12-5"><a href="simulace3.html#cb12-5" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="simulace3.html#cb12-6" tabindex="-1"></a><span class="cf">for</span>(index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(lambda.vect)) {</span>
+<span id="cb12-7"><a href="simulace3.html#cb12-7" tabindex="-1"></a>  curv.Fdpar <span class="ot">&lt;-</span> <span class="fu">fdPar</span>(bbasis, curv.Lfd, lambda.vect[index])</span>
+<span id="cb12-8"><a href="simulace3.html#cb12-8" tabindex="-1"></a>  BSmooth <span class="ot">&lt;-</span> <span class="fu">smooth.basis</span>(t, XX, curv.Fdpar) </span>
+<span id="cb12-9"><a href="simulace3.html#cb12-9" tabindex="-1"></a>  gcv[index] <span class="ot">&lt;-</span> <span class="fu">mean</span>(BSmooth<span class="sc">$</span>gcv) </span>
+<span id="cb12-10"><a href="simulace3.html#cb12-10" tabindex="-1"></a>}</span>
+<span id="cb12-11"><a href="simulace3.html#cb12-11" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="simulace3.html#cb12-12" tabindex="-1"></a>GCV <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-13"><a href="simulace3.html#cb12-13" tabindex="-1"></a>  <span class="at">lambda =</span> <span class="fu">round</span>(<span class="fu">log10</span>(lambda.vect), <span class="dv">3</span>),</span>
+<span id="cb12-14"><a href="simulace3.html#cb12-14" tabindex="-1"></a>  <span class="at">GCV =</span> gcv</span>
+<span id="cb12-15"><a href="simulace3.html#cb12-15" tabindex="-1"></a>)</span>
+<span id="cb12-16"><a href="simulace3.html#cb12-16" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="simulace3.html#cb12-17" tabindex="-1"></a>lambda.opt <span class="ot">&lt;-</span> lambda.vect[<span class="fu">which.min</span>(gcv)]</span></code></pre></div>
+</details>
+<p>To better illustrate, we will plot the course of <span class="math inline">\(GCV(\lambda)\)</span>.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="simulace3.html#cb13-1" tabindex="-1"></a>GCV <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> lambda, <span class="at">y =</span> GCV)) <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="simulace3.html#cb13-2" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linetype =</span> <span class="st">&#39;solid&#39;</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb13-3"><a href="simulace3.html#cb13-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb13-4"><a href="simulace3.html#cb13-4" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb13-5"><a href="simulace3.html#cb13-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">bquote</span>(<span class="fu">paste</span>(log[<span class="dv">10</span>](lambda), <span class="st">&#39; ;   &#39;</span>, </span>
+<span id="cb13-6"><a href="simulace3.html#cb13-6" tabindex="-1"></a>                        lambda[optimal] <span class="sc">==</span> .(<span class="fu">round</span>(lambda.opt, <span class="dv">4</span>)))),</span>
+<span id="cb13-7"><a href="simulace3.html#cb13-7" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">GCV</span>(lambda))) <span class="sc">+</span> </span>
+<span id="cb13-8"><a href="simulace3.html#cb13-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log10</span>(lambda.opt), <span class="at">y =</span> <span class="fu">min</span>(gcv)), <span class="at">colour =</span> <span class="st">&#39;red&#39;</span>, <span class="at">size =</span> <span class="fl">2.5</span>)</span></code></pre></div>
+</details>
+<pre><code>## Warning in geom_point(aes(x = log10(lambda.opt), y = min(gcv)), colour = &quot;red&quot;, : All aesthetics have length 1, but the data has 50 rows.
+## ℹ Please consider using `annotate()` or provide this layer with data containing
+##   a single row.</code></pre>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-13"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-13-1.png" alt="The course of $GCV(\lambda)$ for the chosen vector $\boldsymbol\lambda$. The values on the $x$-axis are plotted on a logarithmic scale. The optimal value of the smoothing parameter $\lambda_{optimal}$ is indicated in red." width="672" />
+<p class="caption">
+Figure 1.4: The course of <span class="math inline">\(GCV(\lambda)\)</span> for the chosen vector <span class="math inline">\(\boldsymbol\lambda\)</span>. The values on the <span class="math inline">\(x\)</span>-axis are plotted on a logarithmic scale. The optimal value of the smoothing parameter <span class="math inline">\(\lambda_{optimal}\)</span> is indicated in red.
+</p>
+</div>
+<p>With this optimal choice of the smoothing parameter <span class="math inline">\(\lambda\)</span>, we will now smooth all functions and again graphically represent the first 10 observed curves from each classification class.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="simulace3.html#cb15-1" tabindex="-1"></a>curv.fdPar <span class="ot">&lt;-</span> <span class="fu">fdPar</span>(bbasis, curv.Lfd, lambda.opt)</span>
+<span id="cb15-2"><a href="simulace3.html#cb15-2" tabindex="-1"></a>BSmooth <span class="ot">&lt;-</span> <span class="fu">smooth.basis</span>(t, XX, curv.fdPar)</span>
+<span id="cb15-3"><a href="simulace3.html#cb15-3" tabindex="-1"></a>XXfd <span class="ot">&lt;-</span> BSmooth<span class="sc">$</span>fd</span>
+<span id="cb15-4"><a href="simulace3.html#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="simulace3.html#cb15-5" tabindex="-1"></a>fdobjSmootheval <span class="ot">&lt;-</span> <span class="fu">eval.fd</span>(<span class="at">fdobj =</span> XXfd, <span class="at">evalarg =</span> t)</span>
+<span id="cb15-6"><a href="simulace3.html#cb15-6" tabindex="-1"></a>DF<span class="sc">$</span>Vsmooth <span class="ot">&lt;-</span> <span class="fu">c</span>(fdobjSmootheval[, <span class="fu">c</span>(<span class="dv">1</span> <span class="sc">:</span> n_curves_plot, </span>
+<span id="cb15-7"><a href="simulace3.html#cb15-7" tabindex="-1"></a>                                    (n <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">:</span> (n <span class="sc">+</span> n_curves_plot))])</span>
+<span id="cb15-8"><a href="simulace3.html#cb15-8" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="simulace3.html#cb15-9" tabindex="-1"></a>DF <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> Vsmooth, <span class="at">group =</span> <span class="fu">interaction</span>(time, group), </span>
+<span id="cb15-10"><a href="simulace3.html#cb15-10" tabindex="-1"></a>                 <span class="at">colour =</span> group)) <span class="sc">+</span> </span>
+<span id="cb15-11"><a href="simulace3.html#cb15-11" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="simulace3.html#cb15-12" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb15-13"><a href="simulace3.html#cb15-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]),</span>
+<span id="cb15-14"><a href="simulace3.html#cb15-14" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]),</span>
+<span id="cb15-15"><a href="simulace3.html#cb15-15" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>) <span class="sc">+</span></span>
+<span id="cb15-16"><a href="simulace3.html#cb15-16" tabindex="-1"></a>  <span class="fu">scale_colour_discrete</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>))</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-14-1.png" alt="The first 10 smoothed curves from each classification class." width="672" />
+<p class="caption">
+Figure 1.5: The first 10 smoothed curves from each classification class.
+</p>
+</div>
+<p>Let’s also illustrate all curves, including the average, separately for each class.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="simulace3.html#cb16-1" tabindex="-1"></a>abs.labs <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;Classification class:&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;$Y = 0$&quot;</span>, <span class="st">&quot;$Y = 1$&quot;</span>))</span>
+<span id="cb16-2"><a href="simulace3.html#cb16-2" tabindex="-1"></a><span class="fu">names</span>(abs.labs) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;0&#39;</span>, <span class="st">&#39;1&#39;</span>)</span>
+<span id="cb16-3"><a href="simulace3.html#cb16-3" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="simulace3.html#cb16-4" tabindex="-1"></a>fdobjSmootheval <span class="ot">&lt;-</span> <span class="fu">eval.fd</span>(<span class="at">fdobj =</span> XXfd, <span class="at">evalarg =</span> t)</span>
+<span id="cb16-5"><a href="simulace3.html#cb16-5" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="simulace3.html#cb16-6" tabindex="-1"></a>DFsmooth <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-7"><a href="simulace3.html#cb16-7" tabindex="-1"></a>  <span class="at">t =</span> <span class="fu">rep</span>(t, <span class="dv">2</span> <span class="sc">*</span> n),</span>
+<span id="cb16-8"><a href="simulace3.html#cb16-8" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">rep</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="at">each =</span> <span class="fu">length</span>(t)), <span class="dv">2</span>),</span>
+<span id="cb16-9"><a href="simulace3.html#cb16-9" tabindex="-1"></a>  <span class="at">Smooth =</span> <span class="fu">c</span>(fdobjSmootheval),</span>
+<span id="cb16-10"><a href="simulace3.html#cb16-10" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n <span class="sc">*</span> <span class="fu">length</span>(t)))</span>
+<span id="cb16-11"><a href="simulace3.html#cb16-11" tabindex="-1"></a>)</span>
+<span id="cb16-12"><a href="simulace3.html#cb16-12" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="simulace3.html#cb16-13" tabindex="-1"></a>DFmean <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb16-14"><a href="simulace3.html#cb16-14" tabindex="-1"></a>  <span class="at">t =</span> <span class="fu">rep</span>(t, <span class="dv">2</span>),</span>
+<span id="cb16-15"><a href="simulace3.html#cb16-15" tabindex="-1"></a>  <span class="at">Mean =</span> <span class="fu">c</span>(<span class="fu">eval.fd</span>(<span class="at">fdobj =</span> <span class="fu">mean.fd</span>(XXfd[<span class="dv">1</span><span class="sc">:</span>n]), <span class="at">evalarg =</span> t),</span>
+<span id="cb16-16"><a href="simulace3.html#cb16-16" tabindex="-1"></a>           <span class="fu">eval.fd</span>(<span class="at">fdobj =</span> <span class="fu">mean.fd</span>(XXfd[(n <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">2</span> <span class="sc">*</span> n)]), <span class="at">evalarg =</span> t)),</span>
+<span id="cb16-17"><a href="simulace3.html#cb16-17" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> <span class="fu">length</span>(t)))</span>
+<span id="cb16-18"><a href="simulace3.html#cb16-18" tabindex="-1"></a>)</span>
+<span id="cb16-19"><a href="simulace3.html#cb16-19" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="simulace3.html#cb16-20" tabindex="-1"></a>DFsmooth <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> Smooth, <span class="co">#group = interaction(time, group), </span></span>
+<span id="cb16-21"><a href="simulace3.html#cb16-21" tabindex="-1"></a>                 <span class="at">colour =</span> group)) <span class="sc">+</span> </span>
+<span id="cb16-22"><a href="simulace3.html#cb16-22" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> time), <span class="at">linewidth =</span> <span class="fl">0.05</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb16-23"><a href="simulace3.html#cb16-23" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb16-24"><a href="simulace3.html#cb16-24" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;$t$&quot;</span>,</span>
+<span id="cb16-25"><a href="simulace3.html#cb16-25" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;$x_i(t)$&quot;</span>,</span>
+<span id="cb16-26"><a href="simulace3.html#cb16-26" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>) <span class="sc">+</span></span>
+<span id="cb16-27"><a href="simulace3.html#cb16-27" tabindex="-1"></a>  <span class="co"># geom_line(data = DFsmooth |&gt; </span></span>
+<span id="cb16-28"><a href="simulace3.html#cb16-28" tabindex="-1"></a>  <span class="co">#             mutate(group = factor(ifelse(group == &#39;0&#39;, &#39;1&#39;, &#39;0&#39;))) |&gt; </span></span>
+<span id="cb16-29"><a href="simulace3.html#cb16-29" tabindex="-1"></a>  <span class="co">#             filter(group == &#39;1&#39;),</span></span>
+<span id="cb16-30"><a href="simulace3.html#cb16-30" tabindex="-1"></a>  <span class="co">#           aes(x = t, y = Mean, colour = group), </span></span>
+<span id="cb16-31"><a href="simulace3.html#cb16-31" tabindex="-1"></a>  <span class="co">#           colour = &#39;tomato&#39;, linewidth = 0.8, linetype = &#39;solid&#39;) + </span></span>
+<span id="cb16-32"><a href="simulace3.html#cb16-32" tabindex="-1"></a>  <span class="co"># geom_line(data = DFsmooth |&gt; </span></span>
+<span id="cb16-33"><a href="simulace3.html#cb16-33" tabindex="-1"></a>  <span class="co">#             mutate(group = factor(ifelse(group == &#39;0&#39;, &#39;1&#39;, &#39;0&#39;))) |&gt; </span></span>
+<span id="cb16-34"><a href="simulace3.html#cb16-34" tabindex="-1"></a>  <span class="co">#             filter(group == &#39;0&#39;),</span></span>
+<span id="cb16-35"><a href="simulace3.html#cb16-35" tabindex="-1"></a>  <span class="co">#           aes(x = t, y = Mean, colour = group), </span></span>
+<span id="cb16-36"><a href="simulace3.html#cb16-36" tabindex="-1"></a>  <span class="co">#           colour = &#39;deepskyblue2&#39;, linewidth = 0.8, linetype = &#39;solid&#39;) + </span></span>
+<span id="cb16-37"><a href="simulace3.html#cb16-37" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> DFmean <span class="sc">|&gt;</span> </span>
+<span id="cb16-38"><a href="simulace3.html#cb16-38" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(group <span class="sc">==</span> <span class="st">&#39;0&#39;</span>, <span class="st">&#39;1&#39;</span>, <span class="st">&#39;0&#39;</span>))),</span>
+<span id="cb16-39"><a href="simulace3.html#cb16-39" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> Mean, <span class="at">colour =</span> group), </span>
+<span id="cb16-40"><a href="simulace3.html#cb16-40" tabindex="-1"></a>            <span class="at">colour =</span> <span class="st">&#39;grey2&#39;</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">linetype =</span> <span class="st">&#39;dashed&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb16-41"><a href="simulace3.html#cb16-41" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> DFmean, <span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> Mean, <span class="at">colour =</span> group), </span>
+<span id="cb16-42"><a href="simulace3.html#cb16-42" tabindex="-1"></a>            <span class="at">colour =</span> <span class="st">&#39;grey2&#39;</span>, <span class="at">linewidth =</span> <span class="fl">1.25</span>, <span class="at">linetype =</span> <span class="st">&#39;solid&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb16-43"><a href="simulace3.html#cb16-43" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.01</span>)) <span class="sc">+</span></span>
+<span id="cb16-44"><a href="simulace3.html#cb16-44" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>group, <span class="at">labeller =</span> <span class="fu">labeller</span>(<span class="at">group =</span> abs.labs)) <span class="sc">+</span></span>
+<span id="cb16-45"><a href="simulace3.html#cb16-45" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.02</span>, <span class="fl">0.02</span>)) <span class="sc">+</span></span>
+<span id="cb16-46"><a href="simulace3.html#cb16-46" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>) <span class="sc">+</span></span>
+<span id="cb16-47"><a href="simulace3.html#cb16-47" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&#39;tomato&#39;</span>, <span class="st">&#39;deepskyblue2&#39;</span>))</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-15-1.png" alt="Plot of all smoothed observed curves, distinguished by color according to their classification class. The average for each class is indicated by a black line, and for the second class, it is indicated by a dashed line." width="672" />
+<p class="caption">
+Figure 1.6: Plot of all smoothed observed curves, distinguished by color according to their classification class. The average for each class is indicated by a black line, and for the second class, it is indicated by a dashed line.
+</p>
+</div>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="simulace3.html#cb17-1" tabindex="-1"></a><span class="co"># ggsave(&quot;figures/kap6_sim_03_curves.tex&quot;, device = tikz, width = 8, height = 4)</span></span></code></pre></div>
+</details>
+<p>Now let’s take a look at the comparison of average courses from a detailed perspective.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="simulace3.html#cb18-1" tabindex="-1"></a>DFsmooth <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-2"><a href="simulace3.html#cb18-2" tabindex="-1"></a>  <span class="at">t =</span> <span class="fu">rep</span>(t, <span class="dv">2</span> <span class="sc">*</span> n),</span>
+<span id="cb18-3"><a href="simulace3.html#cb18-3" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">rep</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="at">each =</span> <span class="fu">length</span>(t)), <span class="dv">2</span>),</span>
+<span id="cb18-4"><a href="simulace3.html#cb18-4" tabindex="-1"></a>  <span class="at">Smooth =</span> <span class="fu">c</span>(fdobjSmootheval),</span>
+<span id="cb18-5"><a href="simulace3.html#cb18-5" tabindex="-1"></a>  <span class="at">Mean =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="fu">apply</span>(fdobjSmootheval[ , <span class="dv">1</span> <span class="sc">:</span> n], <span class="dv">1</span>, mean), n),</span>
+<span id="cb18-6"><a href="simulace3.html#cb18-6" tabindex="-1"></a>            <span class="fu">rep</span>(<span class="fu">apply</span>(fdobjSmootheval[ , (n <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">:</span> (<span class="dv">2</span> <span class="sc">*</span> n)], <span class="dv">1</span>, mean), n)),</span>
+<span id="cb18-7"><a href="simulace3.html#cb18-7" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n <span class="sc">*</span> <span class="fu">length</span>(t)))</span>
+<span id="cb18-8"><a href="simulace3.html#cb18-8" tabindex="-1"></a>)</span>
+<span id="cb18-9"><a href="simulace3.html#cb18-9" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="simulace3.html#cb18-10" tabindex="-1"></a>DFmean <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-11"><a href="simulace3.html#cb18-11" tabindex="-1"></a>  <span class="at">t =</span> <span class="fu">rep</span>(t, <span class="dv">2</span>),</span>
+<span id="cb18-12"><a href="simulace3.html#cb18-12" tabindex="-1"></a>  <span class="at">Mean =</span> <span class="fu">c</span>(<span class="fu">apply</span>(fdobjSmootheval[ , <span class="dv">1</span> <span class="sc">:</span> n], <span class="dv">1</span>, mean), </span>
+<span id="cb18-13"><a href="simulace3.html#cb18-13" tabindex="-1"></a>            <span class="fu">apply</span>(fdobjSmootheval[ , (n <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">:</span> (<span class="dv">2</span> <span class="sc">*</span> n)], <span class="dv">1</span>, mean)),</span>
+<span id="cb18-14"><a href="simulace3.html#cb18-14" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> <span class="fu">length</span>(t)))</span>
+<span id="cb18-15"><a href="simulace3.html#cb18-15" tabindex="-1"></a>)</span>
+<span id="cb18-16"><a href="simulace3.html#cb18-16" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="simulace3.html#cb18-17" tabindex="-1"></a>DFsmooth <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> Smooth, <span class="at">group =</span> <span class="fu">interaction</span>(time, group), </span>
+<span id="cb18-18"><a href="simulace3.html#cb18-18" tabindex="-1"></a>                 <span class="at">colour =</span> group)) <span class="sc">+</span> </span>
+<span id="cb18-19"><a href="simulace3.html#cb18-19" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.25</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb18-20"><a href="simulace3.html#cb18-20" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb18-21"><a href="simulace3.html#cb18-21" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]),</span>
+<span id="cb18-22"><a href="simulace3.html#cb18-22" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]),</span>
+<span id="cb18-23"><a href="simulace3.html#cb18-23" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>) <span class="sc">+</span></span>
+<span id="cb18-24"><a href="simulace3.html#cb18-24" tabindex="-1"></a>  <span class="fu">scale_colour_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>)) <span class="sc">+</span> </span>
+<span id="cb18-25"><a href="simulace3.html#cb18-25" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> Mean, <span class="at">colour =</span> group), </span>
+<span id="cb18-26"><a href="simulace3.html#cb18-26" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">linetype =</span> <span class="st">&#39;solid&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb18-27"><a href="simulace3.html#cb18-27" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.01</span>)) <span class="sc">+</span> </span>
+<span id="cb18-28"><a href="simulace3.html#cb18-28" tabindex="-1"></a>  <span class="co">#ylim(c(-1, 2)) + </span></span>
+<span id="cb18-29"><a href="simulace3.html#cb18-29" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.01</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-16"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-16-1.png" alt="Plot of all smoothed observed curves, distinguished by color according to their classification class. The average for each class is indicated by a black line. A closer view." width="672" />
+<p class="caption">
+Figure 1.7: Plot of all smoothed observed curves, distinguished by color according to their classification class. The average for each class is indicated by a black line. A closer view.
+</p>
+</div>
+</div>
+<div id="classification-of-curves" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Classification of Curves<a href="simulace3.html#classification-of-curves" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First, we will load the necessary libraries for classification.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="simulace3.html#cb19-1" tabindex="-1"></a><span class="fu">library</span>(caTools) </span>
+<span id="cb19-2"><a href="simulace3.html#cb19-2" tabindex="-1"></a><span class="fu">library</span>(caret) </span>
+<span id="cb19-3"><a href="simulace3.html#cb19-3" tabindex="-1"></a><span class="fu">library</span>(fda.usc) </span>
+<span id="cb19-4"><a href="simulace3.html#cb19-4" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb19-5"><a href="simulace3.html#cb19-5" tabindex="-1"></a><span class="fu">library</span>(fdapace)</span>
+<span id="cb19-6"><a href="simulace3.html#cb19-6" tabindex="-1"></a><span class="fu">library</span>(pracma)</span>
+<span id="cb19-7"><a href="simulace3.html#cb19-7" tabindex="-1"></a><span class="fu">library</span>(refund)</span>
+<span id="cb19-8"><a href="simulace3.html#cb19-8" tabindex="-1"></a><span class="fu">library</span>(nnet) </span>
+<span id="cb19-9"><a href="simulace3.html#cb19-9" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb19-10"><a href="simulace3.html#cb19-10" tabindex="-1"></a><span class="fu">library</span>(rpart) </span>
+<span id="cb19-11"><a href="simulace3.html#cb19-11" tabindex="-1"></a><span class="fu">library</span>(rattle) </span>
+<span id="cb19-12"><a href="simulace3.html#cb19-12" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb19-13"><a href="simulace3.html#cb19-13" tabindex="-1"></a><span class="fu">library</span>(randomForest) </span></code></pre></div>
+</details>
+<p>To compare the individual classifiers, we will split the set of generated observations into two parts in a ratio of 70:30, designating them as the training and test (validation) sets. The training set will be used for constructing the classifier, while the test set will be used to calculate the classification error and potentially other characteristics of our model. We can then compare the resulting classifiers based on these calculated characteristics in terms of their classification success.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="simulace3.html#cb20-1" tabindex="-1"></a><span class="co"># Splitting into test and training sets</span></span>
+<span id="cb20-2"><a href="simulace3.html#cb20-2" tabindex="-1"></a>split <span class="ot">&lt;-</span> <span class="fu">sample.split</span>(XXfd<span class="sc">$</span>fdnames<span class="sc">$</span>reps, <span class="at">SplitRatio =</span> <span class="fl">0.7</span>)</span>
+<span id="cb20-3"><a href="simulace3.html#cb20-3" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="simulace3.html#cb20-4" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n)</span>
+<span id="cb20-5"><a href="simulace3.html#cb20-5" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="simulace3.html#cb20-6" tabindex="-1"></a>X.train <span class="ot">&lt;-</span> <span class="fu">subset</span>(XXfd, split <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-7"><a href="simulace3.html#cb20-7" tabindex="-1"></a>X.test <span class="ot">&lt;-</span> <span class="fu">subset</span>(XXfd, split <span class="sc">==</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-8"><a href="simulace3.html#cb20-8" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="simulace3.html#cb20-9" tabindex="-1"></a>Y.train <span class="ot">&lt;-</span> <span class="fu">subset</span>(Y, split <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-10"><a href="simulace3.html#cb20-10" tabindex="-1"></a>Y.test <span class="ot">&lt;-</span> <span class="fu">subset</span>(Y, split <span class="sc">==</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+</details>
+<p>Next, let’s look at the representation of individual groups in the test and training portions of the data.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="simulace3.html#cb21-1" tabindex="-1"></a><span class="co"># Absolute representation</span></span>
+<span id="cb21-2"><a href="simulace3.html#cb21-2" tabindex="-1"></a><span class="fu">table</span>(Y.train)</span></code></pre></div>
+</details>
+<pre><code>## Y.train
+##  0  1 
+## 71 69</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="simulace3.html#cb23-1" tabindex="-1"></a><span class="fu">table</span>(Y.test)</span></code></pre></div>
+</details>
+<pre><code>## Y.test
+##  0  1 
+## 29 31</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="simulace3.html#cb25-1" tabindex="-1"></a><span class="co"># Relative representation</span></span>
+<span id="cb25-2"><a href="simulace3.html#cb25-2" tabindex="-1"></a><span class="fu">table</span>(Y.train) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">table</span>(Y.train))</span></code></pre></div>
+</details>
+<pre><code>## Y.train
+##         0         1 
+## 0.5071429 0.4928571</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="simulace3.html#cb27-1" tabindex="-1"></a><span class="fu">table</span>(Y.test) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">table</span>(Y.test))</span></code></pre></div>
+</details>
+<pre><code>## Y.test
+##         0         1 
+## 0.4833333 0.5166667</code></pre>
+<div id="k-nearest-neighbors" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> <span class="math inline">\(K\)</span>-Nearest Neighbors<a href="simulace3.html#k-nearest-neighbors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s start with the non-parametric classification method, specifically the <span class="math inline">\(K\)</span>-nearest neighbors method. First, we will create the necessary objects so that we can work with them using the <code>classif.knn()</code> function from the <code>fda.usc</code> library.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="simulace3.html#cb29-1" tabindex="-1"></a>x.train <span class="ot">&lt;-</span> <span class="fu">fdata</span>(X.train)</span>
+<span id="cb29-2"><a href="simulace3.html#cb29-2" tabindex="-1"></a>y.train <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(Y.train))</span></code></pre></div>
+</details>
+<p>Now we can define the model and examine its classification success. However, the last question remains: how do we choose the optimal number of neighbors <span class="math inline">\(K\)</span>? We could select <span class="math inline">\(K\)</span> as the value that results in the minimum error on the training data. However, this could lead to overfitting, so we will use cross-validation. Given the computational intensity and the size of the dataset, we will choose <span class="math inline">\(k\)</span>-fold cross-validation; for example, we will set <span class="math inline">\(k = 10\)</span>.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="simulace3.html#cb30-1" tabindex="-1"></a><span class="co"># Model for all training data for K = 1, 2, ..., sqrt(n_train)</span></span>
+<span id="cb30-2"><a href="simulace3.html#cb30-2" tabindex="-1"></a>neighb.model <span class="ot">&lt;-</span> <span class="fu">classif.knn</span>(<span class="at">group =</span> y.train, </span>
+<span id="cb30-3"><a href="simulace3.html#cb30-3" tabindex="-1"></a>                            <span class="at">fdataobj =</span> x.train, </span>
+<span id="cb30-4"><a href="simulace3.html#cb30-4" tabindex="-1"></a>                            <span class="at">knn =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">round</span>(<span class="fu">sqrt</span>(<span class="fu">length</span>(y.train))))) </span>
+<span id="cb30-5"><a href="simulace3.html#cb30-5" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="simulace3.html#cb30-6" tabindex="-1"></a><span class="co"># neighb.model$max.prob # Maximum accuracy</span></span>
+<span id="cb30-7"><a href="simulace3.html#cb30-7" tabindex="-1"></a><span class="co"># (K.opt &lt;- neighb.model$h.opt) # Optimal value of K</span></span></code></pre></div>
+</details>
+<p>Let’s perform the previous procedure for the training data, which we will split into <span class="math inline">\(k\)</span> parts and repeat this part of the code <span class="math inline">\(k\)</span> times.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="simulace3.html#cb31-1" tabindex="-1"></a>k_cv <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># k-fold CV</span></span>
+<span id="cb31-2"><a href="simulace3.html#cb31-2" tabindex="-1"></a>neighbours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">ceiling</span>(<span class="fu">sqrt</span>(<span class="fu">length</span>(y.train))))) <span class="co"># Number of neighbors</span></span>
+<span id="cb31-3"><a href="simulace3.html#cb31-3" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="simulace3.html#cb31-4" tabindex="-1"></a><span class="co"># Splitting training data into k parts</span></span>
+<span id="cb31-5"><a href="simulace3.html#cb31-5" tabindex="-1"></a>folds <span class="ot">&lt;-</span> <span class="fu">createMultiFolds</span>(X.train<span class="sc">$</span>fdnames<span class="sc">$</span>reps, <span class="at">k =</span> k_cv, <span class="at">time =</span> <span class="dv">1</span>)</span>
+<span id="cb31-6"><a href="simulace3.html#cb31-6" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="simulace3.html#cb31-7" tabindex="-1"></a><span class="co"># Empty matrix to store individual results</span></span>
+<span id="cb31-8"><a href="simulace3.html#cb31-8" tabindex="-1"></a><span class="co"># Columns will have accuracy values for the given part of the training set</span></span>
+<span id="cb31-9"><a href="simulace3.html#cb31-9" tabindex="-1"></a><span class="co"># Rows will have values for the given neighbor count K</span></span>
+<span id="cb31-10"><a href="simulace3.html#cb31-10" tabindex="-1"></a>CV.results <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="fu">length</span>(neighbours), <span class="at">ncol =</span> k_cv)</span>
+<span id="cb31-11"><a href="simulace3.html#cb31-11" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="simulace3.html#cb31-12" tabindex="-1"></a><span class="cf">for</span> (index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k_cv) {</span>
+<span id="cb31-13"><a href="simulace3.html#cb31-13" tabindex="-1"></a>  <span class="co"># Define the current index set</span></span>
+<span id="cb31-14"><a href="simulace3.html#cb31-14" tabindex="-1"></a>  fold <span class="ot">&lt;-</span> folds[[index]]</span>
+<span id="cb31-15"><a href="simulace3.html#cb31-15" tabindex="-1"></a>    </span>
+<span id="cb31-16"><a href="simulace3.html#cb31-16" tabindex="-1"></a>  x.train.cv <span class="ot">&lt;-</span> <span class="fu">subset</span>(X.train, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(X.train<span class="sc">$</span>fdnames<span class="sc">$</span>reps)) <span class="sc">%in%</span> fold) <span class="sc">|&gt;</span></span>
+<span id="cb31-17"><a href="simulace3.html#cb31-17" tabindex="-1"></a>    <span class="fu">fdata</span>()</span>
+<span id="cb31-18"><a href="simulace3.html#cb31-18" tabindex="-1"></a>  y.train.cv <span class="ot">&lt;-</span> <span class="fu">subset</span>(Y.train, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(X.train<span class="sc">$</span>fdnames<span class="sc">$</span>reps)) <span class="sc">%in%</span> fold) <span class="sc">|&gt;</span></span>
+<span id="cb31-19"><a href="simulace3.html#cb31-19" tabindex="-1"></a>    <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb31-20"><a href="simulace3.html#cb31-20" tabindex="-1"></a>  </span>
+<span id="cb31-21"><a href="simulace3.html#cb31-21" tabindex="-1"></a>  x.test.cv <span class="ot">&lt;-</span> <span class="fu">subset</span>(X.train, <span class="sc">!</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(X.train<span class="sc">$</span>fdnames<span class="sc">$</span>reps)) <span class="sc">%in%</span> fold) <span class="sc">|&gt;</span></span>
+<span id="cb31-22"><a href="simulace3.html#cb31-22" tabindex="-1"></a>    <span class="fu">fdata</span>()</span>
+<span id="cb31-23"><a href="simulace3.html#cb31-23" tabindex="-1"></a>  y.test.cv <span class="ot">&lt;-</span> <span class="fu">subset</span>(Y.train, <span class="sc">!</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(X.train<span class="sc">$</span>fdnames<span class="sc">$</span>reps)) <span class="sc">%in%</span> fold) <span class="sc">|&gt;</span></span>
+<span id="cb31-24"><a href="simulace3.html#cb31-24" tabindex="-1"></a>    <span class="fu">factor</span>() <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb31-25"><a href="simulace3.html#cb31-25" tabindex="-1"></a>  </span>
+<span id="cb31-26"><a href="simulace3.html#cb31-26" tabindex="-1"></a>  <span class="co"># Iterate through each part... repeat k times</span></span>
+<span id="cb31-27"><a href="simulace3.html#cb31-27" tabindex="-1"></a>  <span class="cf">for</span>(neighbour <span class="cf">in</span> neighbours) {</span>
+<span id="cb31-28"><a href="simulace3.html#cb31-28" tabindex="-1"></a>    <span class="co"># Model for the specific choice of K</span></span>
+<span id="cb31-29"><a href="simulace3.html#cb31-29" tabindex="-1"></a>    neighb.model <span class="ot">&lt;-</span> <span class="fu">classif.knn</span>(<span class="at">group =</span> y.train.cv, </span>
+<span id="cb31-30"><a href="simulace3.html#cb31-30" tabindex="-1"></a>                              <span class="at">fdataobj =</span> x.train.cv, </span>
+<span id="cb31-31"><a href="simulace3.html#cb31-31" tabindex="-1"></a>                              <span class="at">knn =</span> neighbour) </span>
+<span id="cb31-32"><a href="simulace3.html#cb31-32" tabindex="-1"></a>    <span class="co"># Prediction on the validation part</span></span>
+<span id="cb31-33"><a href="simulace3.html#cb31-33" tabindex="-1"></a>    model.neighb.predict <span class="ot">&lt;-</span> <span class="fu">predict</span>(neighb.model, </span>
+<span id="cb31-34"><a href="simulace3.html#cb31-34" tabindex="-1"></a>                                    <span class="at">new.fdataobj =</span> x.test.cv)</span>
+<span id="cb31-35"><a href="simulace3.html#cb31-35" tabindex="-1"></a>    <span class="co"># Accuracy on the validation part</span></span>
+<span id="cb31-36"><a href="simulace3.html#cb31-36" tabindex="-1"></a>    accuracy <span class="ot">&lt;-</span> <span class="fu">table</span>(y.test.cv, model.neighb.predict) <span class="sc">|&gt;</span> </span>
+<span id="cb31-37"><a href="simulace3.html#cb31-37" tabindex="-1"></a>      <span class="fu">prop.table</span>() <span class="sc">|&gt;</span> <span class="fu">diag</span>() <span class="sc">|&gt;</span> <span class="fu">sum</span>()</span>
+<span id="cb31-38"><a href="simulace3.html#cb31-38" tabindex="-1"></a>    </span>
+<span id="cb31-39"><a href="simulace3.html#cb31-39" tabindex="-1"></a>    <span class="co"># Store the accuracy in the position for the given K and fold</span></span>
+<span id="cb31-40"><a href="simulace3.html#cb31-40" tabindex="-1"></a>    CV.results[neighbour, index] <span class="ot">&lt;-</span> accuracy</span>
+<span id="cb31-41"><a href="simulace3.html#cb31-41" tabindex="-1"></a>  }</span>
+<span id="cb31-42"><a href="simulace3.html#cb31-42" tabindex="-1"></a>}</span>
+<span id="cb31-43"><a href="simulace3.html#cb31-43" tabindex="-1"></a></span>
+<span id="cb31-44"><a href="simulace3.html#cb31-44" tabindex="-1"></a><span class="co"># Calculate average accuracies for each K across folds</span></span>
+<span id="cb31-45"><a href="simulace3.html#cb31-45" tabindex="-1"></a>CV.results <span class="ot">&lt;-</span> <span class="fu">apply</span>(CV.results, <span class="dv">1</span>, mean)</span>
+<span id="cb31-46"><a href="simulace3.html#cb31-46" tabindex="-1"></a>K.opt <span class="ot">&lt;-</span> <span class="fu">which.max</span>(CV.results)</span>
+<span id="cb31-47"><a href="simulace3.html#cb31-47" tabindex="-1"></a>accuracy.opt.cv <span class="ot">&lt;-</span> <span class="fu">max</span>(CV.results)</span>
+<span id="cb31-48"><a href="simulace3.html#cb31-48" tabindex="-1"></a><span class="co"># CV.results</span></span></code></pre></div>
+</details>
+<p>We can see that the optimal value of the parameter <span class="math inline">\(K\)</span> is 5 with an error rate calculated using 10-fold CV of 0.3429. For clarity, let’s plot the validation error as a function of the number of neighbors <span class="math inline">\(K\)</span>.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="simulace3.html#cb32-1" tabindex="-1"></a>CV.results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">K =</span> neighbours, <span class="at">CV =</span> CV.results)</span>
+<span id="cb32-2"><a href="simulace3.html#cb32-2" tabindex="-1"></a>CV.results <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> K, <span class="at">y =</span> <span class="dv">1</span> <span class="sc">-</span> CV)) <span class="sc">+</span> </span>
+<span id="cb32-3"><a href="simulace3.html#cb32-3" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linetype =</span> <span class="st">&#39;dashed&#39;</span>, <span class="at">colour =</span> <span class="st">&#39;grey&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb32-4"><a href="simulace3.html#cb32-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb32-5"><a href="simulace3.html#cb32-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> K.opt, <span class="at">y =</span> <span class="dv">1</span> <span class="sc">-</span> accuracy.opt.cv), <span class="at">colour =</span> <span class="st">&#39;red&#39;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb32-6"><a href="simulace3.html#cb32-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb32-7"><a href="simulace3.html#cb32-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">bquote</span>(<span class="fu">paste</span>(K, <span class="st">&#39; ;   &#39;</span>, </span>
+<span id="cb32-8"><a href="simulace3.html#cb32-8" tabindex="-1"></a>                        K[optimal] <span class="sc">==</span> .(K.opt))),</span>
+<span id="cb32-9"><a href="simulace3.html#cb32-9" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Validation error&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb32-10"><a href="simulace3.html#cb32-10" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> neighbours)</span></code></pre></div>
+</details>
+<pre><code>## Warning in geom_point(aes(x = K.opt, y = 1 - accuracy.opt.cv), colour = &quot;red&quot;, : All aesthetics have length 1, but the data has 24 rows.
+## ℹ Please consider using `annotate()` or provide this layer with data containing
+##   a single row.</code></pre>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-23-1.png" alt="Dependence of validation error on the value of $K$, i.e., on the number of neighbors." width="672" />
+<p class="caption">
+Figure 1.8: Dependence of validation error on the value of <span class="math inline">\(K\)</span>, i.e., on the number of neighbors.
+</p>
+</div>
+<p>Now that we know the optimal value of the parameter <span class="math inline">\(K\)</span>, we can construct the final model.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="simulace3.html#cb34-1" tabindex="-1"></a>neighb.model <span class="ot">&lt;-</span> <span class="fu">classif.knn</span>(<span class="at">group =</span> y.train, <span class="at">fdataobj =</span> x.train, <span class="at">knn =</span> K.opt)</span>
+<span id="cb34-2"><a href="simulace3.html#cb34-2" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="simulace3.html#cb34-3" tabindex="-1"></a><span class="co"># Prediction</span></span>
+<span id="cb34-4"><a href="simulace3.html#cb34-4" tabindex="-1"></a>model.neighb.predict <span class="ot">&lt;-</span> <span class="fu">predict</span>(neighb.model, </span>
+<span id="cb34-5"><a href="simulace3.html#cb34-5" tabindex="-1"></a>                                <span class="at">new.fdataobj =</span> <span class="fu">fdata</span>(X.test))</span>
+<span id="cb34-6"><a href="simulace3.html#cb34-6" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="simulace3.html#cb34-7" tabindex="-1"></a><span class="co"># Accuracy on the test data</span></span>
+<span id="cb34-8"><a href="simulace3.html#cb34-8" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="fu">as.numeric</span>(<span class="fu">factor</span>(Y.test)), model.neighb.predict) <span class="sc">|&gt;</span></span>
+<span id="cb34-9"><a href="simulace3.html#cb34-9" tabindex="-1"></a>  <span class="fu">prop.table</span>() <span class="sc">|&gt;</span></span>
+<span id="cb34-10"><a href="simulace3.html#cb34-10" tabindex="-1"></a>  <span class="fu">diag</span>() <span class="sc">|&gt;</span></span>
+<span id="cb34-11"><a href="simulace3.html#cb34-11" tabindex="-1"></a>  <span class="fu">sum</span>()</span></code></pre></div>
+</details>
+<p>Thus, we can see that the error rate of the model constructed using the <span class="math inline">\(K\)</span>-nearest neighbors method with the optimal choice <span class="math inline">\(K_{optimal}\)</span> equal to 5, which we determined via cross-validation, is 0.3571 on the training data and 0.3833 on the test data.</p>
+<p>To compare the different models, we can use both types of errors. For clarity, we will store them in a table.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="simulace3.html#cb35-1" tabindex="-1"></a>RESULTS <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">model =</span> <span class="st">&#39;KNN&#39;</span>, </span>
+<span id="cb35-2"><a href="simulace3.html#cb35-2" tabindex="-1"></a>                      <span class="at">Err.train =</span> <span class="dv">1</span> <span class="sc">-</span> neighb.model<span class="sc">$</span>max.prob,</span>
+<span id="cb35-3"><a href="simulace3.html#cb35-3" tabindex="-1"></a>                      <span class="at">Err.test =</span> <span class="dv">1</span> <span class="sc">-</span> accuracy)</span></code></pre></div>
+</details>
+</div>
+<div id="linear-discriminant-analysis" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Linear Discriminant Analysis<a href="simulace3.html#linear-discriminant-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As the second method for constructing a classifier, we will consider Linear Discriminant Analysis (LDA). Since this method cannot be applied to functional data, we must first discretize it, which we will do using Functional Principal Component Analysis. We will then perform the classification algorithm on the scores of the first <span class="math inline">\(p\)</span> principal components. We will choose the number of components <span class="math inline">\(p\)</span> such that the first <span class="math inline">\(p\)</span> principal components explain at least 90% of the variability in the data.</p>
+<p>Let’s first perform Functional Principal Component Analysis and determine the number <span class="math inline">\(p\)</span>.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="simulace3.html#cb36-1" tabindex="-1"></a><span class="co"># Principal component analysis</span></span>
+<span id="cb36-2"><a href="simulace3.html#cb36-2" tabindex="-1"></a>data.PCA <span class="ot">&lt;-</span> <span class="fu">pca.fd</span>(X.train, <span class="at">nharm =</span> <span class="dv">10</span>) <span class="co"># nharm - maximum number of principal components</span></span>
+<span id="cb36-3"><a href="simulace3.html#cb36-3" tabindex="-1"></a>nharm <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">cumsum</span>(data.PCA<span class="sc">$</span>varprop) <span class="sc">&gt;=</span> <span class="fl">0.9</span>)[<span class="dv">1</span>] <span class="co"># determine p</span></span>
+<span id="cb36-4"><a href="simulace3.html#cb36-4" tabindex="-1"></a><span class="cf">if</span>(nharm <span class="sc">==</span> <span class="dv">1</span>) nharm <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="co"># to plot graphs, we need at least 2 principal components</span></span>
+<span id="cb36-5"><a href="simulace3.html#cb36-5" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="simulace3.html#cb36-6" tabindex="-1"></a>data.PCA <span class="ot">&lt;-</span> <span class="fu">pca.fd</span>(X.train, <span class="at">nharm =</span> nharm) </span>
+<span id="cb36-7"><a href="simulace3.html#cb36-7" tabindex="-1"></a>data.PCA.train <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data.PCA<span class="sc">$</span>scores) <span class="co"># scores of the first p principal components</span></span>
+<span id="cb36-8"><a href="simulace3.html#cb36-8" tabindex="-1"></a>data.PCA.train<span class="sc">$</span>Y <span class="ot">&lt;-</span> <span class="fu">factor</span>(Y.train) <span class="co"># class membership</span></span></code></pre></div>
+</details>
+<p>In this specific case, we took the number of principal components $p = $ 2, which together explain 98.72 % of the variability in the data. The first principal component explains 98.2 % and the second 0.52 % of the variability. We can graphically display the scores of the first two principal components, color-coded according to class membership.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="simulace3.html#cb37-1" tabindex="-1"></a>data.PCA.train <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">colour =</span> Y)) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="simulace3.html#cb37-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb37-3"><a href="simulace3.html#cb37-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste</span>(<span class="st">&#39;1st principal component (explained variability&#39;</span>, </span>
+<span id="cb37-4"><a href="simulace3.html#cb37-4" tabindex="-1"></a>                 <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> data.PCA<span class="sc">$</span>varprop[<span class="dv">1</span>], <span class="dv">2</span>), <span class="st">&#39;%)&#39;</span>),</span>
+<span id="cb37-5"><a href="simulace3.html#cb37-5" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">paste</span>(<span class="st">&#39;2nd principal component (&#39;</span>, </span>
+<span id="cb37-6"><a href="simulace3.html#cb37-6" tabindex="-1"></a>                 <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> data.PCA<span class="sc">$</span>varprop[<span class="dv">2</span>], <span class="dv">2</span>), <span class="st">&#39;%)&#39;</span>),</span>
+<span id="cb37-7"><a href="simulace3.html#cb37-7" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>) <span class="sc">+</span></span>
+<span id="cb37-8"><a href="simulace3.html#cb37-8" tabindex="-1"></a>  <span class="fu">scale_colour_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="simulace3.html#cb37-9" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-27"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-27-1.png" alt="Scores of the first two principal components for training data. Points are color-coded according to class membership." width="672" />
+<p class="caption">
+Figure 1.9: Scores of the first two principal components for training data. Points are color-coded according to class membership.
+</p>
+</div>
+<p>To determine the classification accuracy on the test data, we need to compute the scores for the first 2 principal components for the test data. These scores are calculated using the formula:</p>
+<p><span class="math display">\[
+\xi_{i, j} = \int \left( X_i(t) - \mu(t)\right) \cdot \rho_j(t)\text dt,
+\]</span>
+where <span class="math inline">\(\mu(t)\)</span> is the mean function and <span class="math inline">\(\rho_j(t)\)</span> is the eigenfunction (functional principal component).</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="simulace3.html#cb38-1" tabindex="-1"></a><span class="co"># Calculate scores for test functions</span></span>
+<span id="cb38-2"><a href="simulace3.html#cb38-2" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> nharm, <span class="at">nrow =</span> <span class="fu">length</span>(Y.test)) <span class="co"># empty matrix</span></span>
+<span id="cb38-3"><a href="simulace3.html#cb38-3" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="simulace3.html#cb38-4" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(scores)[<span class="dv">1</span>]) {</span>
+<span id="cb38-5"><a href="simulace3.html#cb38-5" tabindex="-1"></a>  xfd <span class="ot">=</span> X.test[k] <span class="sc">-</span> data.PCA<span class="sc">$</span>meanfd[<span class="dv">1</span>] <span class="co"># k-th observation - mean function</span></span>
+<span id="cb38-6"><a href="simulace3.html#cb38-6" tabindex="-1"></a>  scores[k, ] <span class="ot">=</span> <span class="fu">inprod</span>(xfd, data.PCA<span class="sc">$</span>harmonics) </span>
+<span id="cb38-7"><a href="simulace3.html#cb38-7" tabindex="-1"></a>  <span class="co"># scalar product of the residual and eigenfunctions rho (functional principal components)</span></span>
+<span id="cb38-8"><a href="simulace3.html#cb38-8" tabindex="-1"></a>}</span>
+<span id="cb38-9"><a href="simulace3.html#cb38-9" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="simulace3.html#cb38-10" tabindex="-1"></a>data.PCA.test <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(scores)</span>
+<span id="cb38-11"><a href="simulace3.html#cb38-11" tabindex="-1"></a>data.PCA.test<span class="sc">$</span>Y <span class="ot">&lt;-</span> <span class="fu">factor</span>(Y.test)</span>
+<span id="cb38-12"><a href="simulace3.html#cb38-12" tabindex="-1"></a><span class="fu">colnames</span>(data.PCA.test) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(data.PCA.train) </span></code></pre></div>
+</details>
+<p>Now we can construct the classifier on the training data.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="simulace3.html#cb39-1" tabindex="-1"></a><span class="co"># Model</span></span>
+<span id="cb39-2"><a href="simulace3.html#cb39-2" tabindex="-1"></a>clf.LDA <span class="ot">&lt;-</span> <span class="fu">lda</span>(Y <span class="sc">~</span> ., <span class="at">data =</span> data.PCA.train)</span>
+<span id="cb39-3"><a href="simulace3.html#cb39-3" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="simulace3.html#cb39-4" tabindex="-1"></a><span class="co"># Accuracy on training data</span></span>
+<span id="cb39-5"><a href="simulace3.html#cb39-5" tabindex="-1"></a>predictions.train <span class="ot">&lt;-</span> <span class="fu">predict</span>(clf.LDA, <span class="at">newdata =</span> data.PCA.train)</span>
+<span id="cb39-6"><a href="simulace3.html#cb39-6" tabindex="-1"></a>presnost.train <span class="ot">&lt;-</span> <span class="fu">table</span>(data.PCA.train<span class="sc">$</span>Y, predictions.train<span class="sc">$</span>class) <span class="sc">|&gt;</span></span>
+<span id="cb39-7"><a href="simulace3.html#cb39-7" tabindex="-1"></a>  <span class="fu">prop.table</span>() <span class="sc">|&gt;</span> <span class="fu">diag</span>() <span class="sc">|&gt;</span> <span class="fu">sum</span>()</span>
+<span id="cb39-8"><a href="simulace3.html#cb39-8" tabindex="-1"></a>  </span>
+<span id="cb39-9"><a href="simulace3.html#cb39-9" tabindex="-1"></a><span class="co"># Accuracy on test data</span></span>
+<span id="cb39-10"><a href="simulace3.html#cb39-10" tabindex="-1"></a>predictions.test <span class="ot">&lt;-</span> <span class="fu">predict</span>(clf.LDA, <span class="at">newdata =</span> data.PCA.test)</span>
+<span id="cb39-11"><a href="simulace3.html#cb39-11" tabindex="-1"></a>presnost.test <span class="ot">&lt;-</span> <span class="fu">table</span>(data.PCA.test<span class="sc">$</span>Y, predictions.test<span class="sc">$</span>class) <span class="sc">|&gt;</span></span>
+<span id="cb39-12"><a href="simulace3.html#cb39-12" tabindex="-1"></a>  <span class="fu">prop.table</span>() <span class="sc">|&gt;</span> <span class="fu">diag</span>() <span class="sc">|&gt;</span> <span class="fu">sum</span>()</span></code></pre></div>
+</details>
+<p>We have calculated the error rate of the classifier on the training data (41.43 %) and on the test data (40 %).</p>
+<p>For graphical representation of the method, we can indicate the decision boundary in the scores of the first two principal components. We will calculate this boundary on a dense grid of points and display it using the <code>geom_contour()</code> function.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="simulace3.html#cb40-1" tabindex="-1"></a><span class="co"># Add decision boundary</span></span>
+<span id="cb40-2"><a href="simulace3.html#cb40-2" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="dv">1001</span> <span class="co"># number of grid points</span></span>
+<span id="cb40-3"><a href="simulace3.html#cb40-3" tabindex="-1"></a><span class="co"># x-axis ... 1st PC</span></span>
+<span id="cb40-4"><a href="simulace3.html#cb40-4" tabindex="-1"></a>nd.x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(data.PCA.train<span class="sc">$</span>V1), </span>
+<span id="cb40-5"><a href="simulace3.html#cb40-5" tabindex="-1"></a>            <span class="at">to =</span> <span class="fu">max</span>(data.PCA.train<span class="sc">$</span>V1), <span class="at">length.out =</span> np)</span>
+<span id="cb40-6"><a href="simulace3.html#cb40-6" tabindex="-1"></a><span class="co"># y-axis ... 2nd PC</span></span>
+<span id="cb40-7"><a href="simulace3.html#cb40-7" tabindex="-1"></a>nd.y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(data.PCA.train<span class="sc">$</span>V2), </span>
+<span id="cb40-8"><a href="simulace3.html#cb40-8" tabindex="-1"></a>            <span class="at">to =</span> <span class="fu">max</span>(data.PCA.train<span class="sc">$</span>V2), <span class="at">length.out =</span> np)</span>
+<span id="cb40-9"><a href="simulace3.html#cb40-9" tabindex="-1"></a><span class="co"># case for 2 PCs ... p = 2</span></span>
+<span id="cb40-10"><a href="simulace3.html#cb40-10" tabindex="-1"></a>nd <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">V1 =</span> nd.x, <span class="at">V2 =</span> nd.y)</span>
+<span id="cb40-11"><a href="simulace3.html#cb40-11" tabindex="-1"></a><span class="co"># if p = 3</span></span>
+<span id="cb40-12"><a href="simulace3.html#cb40-12" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">dim</span>(data.PCA.train)[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">4</span>) {</span>
+<span id="cb40-13"><a href="simulace3.html#cb40-13" tabindex="-1"></a>  nd <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">V1 =</span> nd.x, <span class="at">V2 =</span> nd.y, <span class="at">V3 =</span> data.PCA.train<span class="sc">$</span>V3[<span class="dv">1</span>])}</span>
+<span id="cb40-14"><a href="simulace3.html#cb40-14" tabindex="-1"></a><span class="co"># if p = 4</span></span>
+<span id="cb40-15"><a href="simulace3.html#cb40-15" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">dim</span>(data.PCA.train)[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">5</span>) {</span>
+<span id="cb40-16"><a href="simulace3.html#cb40-16" tabindex="-1"></a>  nd <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">V1 =</span> nd.x, <span class="at">V2 =</span> nd.y, <span class="at">V3 =</span> data.PCA.train<span class="sc">$</span>V3[<span class="dv">1</span>],</span>
+<span id="cb40-17"><a href="simulace3.html#cb40-17" tabindex="-1"></a>                    <span class="at">V4 =</span> data.PCA.train<span class="sc">$</span>V4[<span class="dv">1</span>])}</span>
+<span id="cb40-18"><a href="simulace3.html#cb40-18" tabindex="-1"></a><span class="co"># if p = 5</span></span>
+<span id="cb40-19"><a href="simulace3.html#cb40-19" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">dim</span>(data.PCA.train)[<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">6</span>) {</span>
+<span id="cb40-20"><a href="simulace3.html#cb40-20" tabindex="-1"></a>  nd <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">V1 =</span> nd.x, <span class="at">V2 =</span> nd.y, <span class="at">V3 =</span> data.PCA.train<span class="sc">$</span>V3[<span class="dv">1</span>],</span>
+<span id="cb40-21"><a href="simulace3.html#cb40-21" tabindex="-1"></a>                    <span class="at">V4 =</span> data.PCA.train<span class="sc">$</span>V4[<span class="dv">1</span>], <span class="at">V5 =</span> data.PCA.train<span class="sc">$</span>V5[<span class="dv">1</span>])}</span>
+<span id="cb40-22"><a href="simulace3.html#cb40-22" tabindex="-1"></a></span>
+<span id="cb40-23"><a href="simulace3.html#cb40-23" tabindex="-1"></a><span class="co"># Add Y = 0, 1</span></span>
+<span id="cb40-24"><a href="simulace3.html#cb40-24" tabindex="-1"></a>nd <span class="ot">&lt;-</span> nd <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">prd =</span> <span class="fu">as.numeric</span>(<span class="fu">predict</span>(clf.LDA, <span class="at">newdata =</span> nd)<span class="sc">$</span>class))</span>
+<span id="cb40-25"><a href="simulace3.html#cb40-25" tabindex="-1"></a></span>
+<span id="cb40-26"><a href="simulace3.html#cb40-26" tabindex="-1"></a>data.PCA.train <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">colour =</span> Y)) <span class="sc">+</span></span>
+<span id="cb40-27"><a href="simulace3.html#cb40-27" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb40-28"><a href="simulace3.html#cb40-28" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste</span>(<span class="st">&#39;1st principal component (explained variability&#39;</span>, </span>
+<span id="cb40-29"><a href="simulace3.html#cb40-29" tabindex="-1"></a>                 <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> data.PCA<span class="sc">$</span>varprop[<span class="dv">1</span>], <span class="dv">2</span>), <span class="st">&#39;%)&#39;</span>),</span>
+<span id="cb40-30"><a href="simulace3.html#cb40-30" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">paste</span>(<span class="st">&#39;2nd principal component (&#39;</span>, </span>
+<span id="cb40-31"><a href="simulace3.html#cb40-31" tabindex="-1"></a>                 <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> data.PCA<span class="sc">$</span>varprop[<span class="dv">2</span>], <span class="dv">2</span>), <span class="st">&#39;%)&#39;</span>),</span>
+<span id="cb40-32"><a href="simulace3.html#cb40-32" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>) <span class="sc">+</span></span>
+<span id="cb40-33"><a href="simulace3.html#cb40-33" tabindex="-1"></a>  <span class="fu">scale_colour_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb40-34"><a href="simulace3.html#cb40-34" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb40-35"><a href="simulace3.html#cb40-35" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="at">data =</span> nd, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">z =</span> prd), <span class="at">colour =</span> <span class="st">&#39;black&#39;</span>)</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-30"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-30-1.png" alt="Scores of the first two principal components, color-coded according to class membership. The decision boundary (line in the plane of the first two principal components) between the classes constructed using LDA is marked in black." width="672" />
+<p class="caption">
+Figure 1.10: Scores of the first two principal components, color-coded according to class membership. The decision boundary (line in the plane of the first two principal components) between the classes constructed using LDA is marked in black.
+</p>
+</div>
+<p>We see that the decision boundary is a line, a linear function in 2D space, which we expected from LDA. Finally, we will add the error rates to the summary table.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="simulace3.html#cb41-1" tabindex="-1"></a>Res <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">model =</span> <span class="st">&#39;LDA&#39;</span>, </span>
+<span id="cb41-2"><a href="simulace3.html#cb41-2" tabindex="-1"></a>                  <span class="at">Err.train =</span> <span class="dv">1</span> <span class="sc">-</span> presnost.train,</span>
+<span id="cb41-3"><a href="simulace3.html#cb41-3" tabindex="-1"></a>                  <span class="at">Err.test =</span> <span class="dv">1</span> <span class="sc">-</span> presnost.test)</span>
+<span id="cb41-4"><a href="simulace3.html#cb41-4" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="simulace3.html#cb41-5" tabindex="-1"></a>RESULTS <span class="ot">&lt;-</span> <span class="fu">rbind</span>(RESULTS, Res)</span></code></pre></div>
+</details>
+</div>
+<div id="quadratic-discriminant-analysis" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Quadratic Discriminant Analysis<a href="simulace3.html#quadratic-discriminant-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Next, let’s construct a classifier using Quadratic Discriminant Analysis (QDA). This is an analogous case to LDA, with the difference that we now allow a different covariance matrix for the normal distribution from which the respective scores originate for each of the classes. This relaxed assumption of equal covariance matrices leads to a quadratic boundary between the classes.</p>
+<p>In <code>R</code>, we perform QDA analogously to LDA in the previous section, meaning we would again calculate scores for the training and test functions using functional principal component analysis, construct the classifier based on the scores of the first <span class="math inline">\(p\)</span> principal components, and use it to predict the class membership of the test curves <span class="math inline">\(Y^* \in \{0, 1\}\)</span>.</p>
+<p>We do not need to perform functional PCA; we will use the results from the LDA section.</p>
+<p>We can now proceed directly to constructing the classifier, which we will do using the <code>qda()</code> function. We will then calculate the accuracy of the classifier on the test and training data.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="simulace3.html#cb42-1" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb42-2"><a href="simulace3.html#cb42-2" tabindex="-1"></a>clf.QDA <span class="ot">&lt;-</span> <span class="fu">qda</span>(Y <span class="sc">~</span> ., <span class="at">data =</span> data.PCA.train)</span>
+<span id="cb42-3"><a href="simulace3.html#cb42-3" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="simulace3.html#cb42-4" tabindex="-1"></a><span class="co"># accuracy on training data</span></span>
+<span id="cb42-5"><a href="simulace3.html#cb42-5" tabindex="-1"></a>predictions.train <span class="ot">&lt;-</span> <span class="fu">predict</span>(clf.QDA, <span class="at">newdata =</span> data.PCA.train)</span>
+<span id="cb42-6"><a href="simulace3.html#cb42-6" tabindex="-1"></a>presnost.train <span class="ot">&lt;-</span> <span class="fu">table</span>(data.PCA.train<span class="sc">$</span>Y, predictions.train<span class="sc">$</span>class) <span class="sc">|&gt;</span></span>
+<span id="cb42-7"><a href="simulace3.html#cb42-7" tabindex="-1"></a>  <span class="fu">prop.table</span>() <span class="sc">|&gt;</span> <span class="fu">diag</span>() <span class="sc">|&gt;</span> <span class="fu">sum</span>()</span>
+<span id="cb42-8"><a href="simulace3.html#cb42-8" tabindex="-1"></a>  </span>
+<span id="cb42-9"><a href="simulace3.html#cb42-9" tabindex="-1"></a><span class="co"># accuracy on test data</span></span>
+<span id="cb42-10"><a href="simulace3.html#cb42-10" tabindex="-1"></a>predictions.test <span class="ot">&lt;-</span> <span class="fu">predict</span>(clf.QDA, <span class="at">newdata =</span> data.PCA.test)</span>
+<span id="cb42-11"><a href="simulace3.html#cb42-11" tabindex="-1"></a>presnost.test <span class="ot">&lt;-</span> <span class="fu">table</span>(data.PCA.test<span class="sc">$</span>Y, predictions.test<span class="sc">$</span>class) <span class="sc">|&gt;</span></span>
+<span id="cb42-12"><a href="simulace3.html#cb42-12" tabindex="-1"></a>  <span class="fu">prop.table</span>() <span class="sc">|&gt;</span> <span class="fu">diag</span>() <span class="sc">|&gt;</span> <span class="fu">sum</span>()</span></code></pre></div>
+</details>
+<p>Thus, we have calculated the error rate of the classifier on the training (35.71 %) and test data (40 %).</p>
+<p>For a graphical representation of the method, we can mark the decision boundary in the graph of the scores of the first two principal components. We will calculate this boundary on a dense grid of points and display it using the <code>geom_contour()</code> function, just as we did in the case of LDA.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="simulace3.html#cb43-1" tabindex="-1"></a>nd <span class="ot">&lt;-</span> nd <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">prd =</span> <span class="fu">as.numeric</span>(<span class="fu">predict</span>(clf.QDA, <span class="at">newdata =</span> nd)<span class="sc">$</span>class))</span>
+<span id="cb43-2"><a href="simulace3.html#cb43-2" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="simulace3.html#cb43-3" tabindex="-1"></a>data.PCA.train <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">colour =</span> Y)) <span class="sc">+</span></span>
+<span id="cb43-4"><a href="simulace3.html#cb43-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb43-5"><a href="simulace3.html#cb43-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">paste</span>(<span class="st">&#39;1st principal component (explained variability&#39;</span>, </span>
+<span id="cb43-6"><a href="simulace3.html#cb43-6" tabindex="-1"></a>                 <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> data.PCA<span class="sc">$</span>varprop[<span class="dv">1</span>], <span class="dv">2</span>), <span class="st">&#39;%)&#39;</span>),</span>
+<span id="cb43-7"><a href="simulace3.html#cb43-7" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">paste</span>(<span class="st">&#39;2nd principal component (&#39;</span>, </span>
+<span id="cb43-8"><a href="simulace3.html#cb43-8" tabindex="-1"></a>                 <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> data.PCA<span class="sc">$</span>varprop[<span class="dv">2</span>], <span class="dv">2</span>), <span class="st">&#39;%)&#39;</span>),</span>
+<span id="cb43-9"><a href="simulace3.html#cb43-9" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&#39;Class&#39;</span>) <span class="sc">+</span></span>
+<span id="cb43-10"><a href="simulace3.html#cb43-10" tabindex="-1"></a>  <span class="fu">scale_colour_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;Y = 0&#39;</span>, <span class="st">&#39;Y = 1&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb43-11"><a href="simulace3.html#cb43-11" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb43-12"><a href="simulace3.html#cb43-12" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="at">data =</span> nd, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">z =</span> prd), <span class="at">colour =</span> <span class="st">&#39;black&#39;</span>)</span></code></pre></div>
+</details>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-36"></span>
+<img src="01-Simulation_files/figure-html/unnamed-chunk-36-1.png" alt="Scores of the first two principal components, colored according to class membership. The decision boundary (a parabola in the plane of the first two principal components) between the classes constructed using QDA is indicated in black." width="672" />
+<p class="caption">
+Figure 1.11: Scores of the first two principal components, colored according to class membership. The decision boundary (a parabola in the plane of the first two principal components) between the classes constructed using QDA is indicated in black.
+</p>
+</div>
+<p>Note that the decision boundary between the classification classes is now a parabola.</p>
+<p>Finally, we will add the error rates to the summary table.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="simulace3.html#cb44-1" tabindex="-1"></a>Res <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">model =</span> <span class="st">&#39;QDA&#39;</span>, </span>
+<span id="cb44-2"><a href="simulace3.html#cb44-2" tabindex="-1"></a>                  <span class="at">Err.train =</span> <span class="dv">1</span> <span class="sc">-</span> presnost.train,</span>
+<span id="cb44-3"><a href="simulace3.html#cb44-3" tabindex="-1"></a>                  <span class="at">Err.test =</span> <span class="dv">1</span> <span class="sc">-</span> presnost.test)</span>
+<span id="cb44-4"><a href="simulace3.html#cb44-4" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="simulace3.html#cb44-5" tabindex="-1"></a>RESULTS <span class="ot">&lt;-</span> <span class="fu">rbind</span>(RESULTS, Res)</span></code></pre></div>
+</details>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": null,
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/Tomas-Pompa/Functional_classification/blob/main/01-Simulation.Rmd",
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

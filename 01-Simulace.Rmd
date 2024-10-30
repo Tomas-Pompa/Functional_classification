@@ -1,22 +1,20 @@
-# Simulace 3 {#simulace3}
+# Simulation {#simulace3}
 
-## Simulace funkcionálních dat
+## Simulation of Functional Data
 
-Nejprve si simulujeme funkce, které budeme následně chtít klasifikovat.
-Budeme uvažovat pro jednoduchost dvě klasifikační třídy.
-Pro simulaci nejprve:
+First, we simulate functions that we will subsequently classify.
+For simplicity, we will consider two classification classes.
+For the simulation, we will first:
 
--   zvolíme vhodné funkce,
+-   choose appropriate functions,
 
--   generujeme body ze zvoleného intervalu, které obsahují, například gaussovský, šum,
+-   generate points from a selected interval, which contain, for example, Gaussian noise,
 
--   takto získané diskrétní body vyhladíme do podoby funkcionálního objektu pomocí nějakého vhodného bázového systému.
+-   smooth these obtained discrete points into a functional object form using a suitable basis system.
 
-Tímto postupem získáme funkcionální objekty společně s hodnotou kategoriální proměnné $Y$, která rozlišuje příslušnost do klasifikační třídy.
+Through this process, we obtain functional objects along with the value of a categorical variable $Y$, which distinguishes membership in the classification class.
 
 ```{r warning=FALSE, message=FALSE}
-# nacteme potrebne balicky 
-
 library(fda)
 library(ggplot2)
 library(dplyr)
@@ -27,33 +25,19 @@ library(polynom)
 set.seed(42)
 ```
 
-Uvažujme tedy dvě klasifikační třídy, $Y \in \{0, 1\}$, pro každou ze tříd stejný počet `n` generovaných funkcí.
-Definujme si nejprve dvě funkce, každá bude pro jednu třídu.
-Funkce budeme uvažovat na intervalu $I = [0, 6]$.
+Let us consider two classification classes, $Y \in \{0, 1\}$, with the same number `n` of generated functions for each class.
+First, let’s define two functions, each corresponding to one class.
+We will consider the functions on the interval $I = [0, 6]$.
 
-Nyní vytvoříme funkce pomocí interpolačních polynomů. Nejprve si definujeme body, kterými má procházet naše křivka, a následně jimi proložíme interpolační polynom, který použijeme pro generování křivek pro klasifikaci.
+Now, we will create the functions using interpolation polynomials. First, we define the points through which our curve should pass, and then we fit an interpolation polynomial through them, which we use to generate curves for classification.
 
-```{r include=FALSE, eval=FALSE, echo=FALSE}
-# definujici body pro tridu 0
-x.0 <- c(-2, -1.35, -1.06, -0.58, 0.26, 0.84, 1.73, 2.5, 3.2, 3.43, 4) + 2
-y.0 <- c(0, 0.25, 0.86, 1.49, 1.1, 0.15, -0.11, -0.36, -0.1, 0.23, 0)
-
-# definujici body pro tridu 1
-x.1 <- c(-2, -1.8, -1.3, -1.09, -0.75, -0.49, 0.14, 0.43, 0.96, 1.7, 2.1, 2.6, 3, 3.43, 3.7, 4) + 2
-y.1 <- c(0.1, -0.45, 0.4, 0.71, 1.08, 1.47, 1.39, 0.81, 0.05, -0.1,-0.12, -0.4, -0.35, 0.25, 0.4, 0)
-# {{0,0},{0.65,0.25},{0.94,0.76},{1.42,1.2},{2.26,0.94},{2.84,0.1},{3.73,-0.01},{4.5,-0.1},{5.2, -0.1},{5.43,0.23},{6,0}}
-x.1 <- c(0, 0.65, 0.94, 1.42, 2.26, 2.84, 3.73, 4.5, 5.2, 5.43, 6)
-y.1 <- c(0, 0.25, 0.76, 1.2, 0.94, 0.1, -0.01, -0.1, -0.1, 0.23, 0)
-# h(x)=-9.1 x+37.2709 x^(2)-61.2594 x^(3)+58.0332 x^(4)-34.0338 x^(5)+12.5556 x^(6)-2.90164 x^(7)+0.406575 x^(8)-0.0315332 x^(9)+0.00103781 x^(10)
-# f(x)=-10.3075 x+43.5046 x^(2)+x^(3) (-72.7162)+67.8866 x^(4)+x^(5) (-38.5902)+13.7339 x^(6)+x^(7) (-3.06169)+0.41432 x^(8)+x^(9) (-0.0310725)+0.000989789 x^(10)
-```
 
 ```{r}
-# definujici body pro tridu 0
+# defining points for class 0
 x.0 <- c(0.00, 0.65, 0.94, 1.42, 2.26, 2.84, 3.73, 4.50, 5.43, 6.00)
 y.0 <- c(0, 0.25, 0.86, 1.49, 1.1, 0.15, -0.11, -0.36, 0.23, 0)
 
-# definujici body pro tridu 1
+# defining points for class 1
 x.1 <- c(0.00, 0.51, 0.91, 1.25, 1.51, 2.14, 2.43, 2.96, 3.70, 4.60,
          5.25, 5.67, 6.00)
 y.1 <- c(0.1, 0.4, 0.71, 1.08, 1.47, 1.39, 0.81, 0.05, -0.1, -0.4,
@@ -62,8 +46,7 @@ y.1 <- c(0.1, 0.4, 0.71, 1.08, 1.47, 1.39, 0.81, 0.05, -0.1, -0.4,
 
 
 
-```{r fig.cap="Body definující interpolační polynomy pro obě klasifikační třídy."}
-# graf bodu
+```{r fig.cap="Points defining interpolation polynomials for both classification classes."}
 dat_points <- data.frame(x = c(x.0, x.1),
                          y = c(y.0, y.1),
                          Class = rep(c('Y = 0', 'Y = 1'), 
@@ -74,13 +57,12 @@ ggplot(dat_points, aes(x = x, y = y, colour = Class)) +
   theme_bw() + 
   labs(x = expression(x[1]),
        y = expression(x[2]),
-       colour = 'Klasifikační\n      třída')
+       colour = 'Class')
 ```
 
-Pro výpočet interpolačních polynomů využijeme funkci `poly.calc()` z knihovny `polynom`. Dále definujeme funkce `poly.0()` a `poly.1()`, které budou počítat hodnoty polynomů v daném bodě intervalu. K jejich vytvoření použijeme funkci `predict()`, na jejíž vstup zadáme příslušný polynom a bod, ve kterám chceme polynom vyhodnotit.
+To compute the interpolation polynomials, we will use the `poly.calc()` function from the `polynom` library. Next, we define the functions `poly.0()` and `poly.1()`, which will calculate the polynomial values at a given point in the interval. We use the `predict()` function to create them, where we input the respective polynomial and the point at which we want to evaluate the polynomial.
 
 ```{r}
-# vypocet polynomu
 polynom.0 <- poly.calc(x.0, y.0)
 polynom.1 <- poly.calc(x.1, y.1)
 ```
@@ -90,28 +72,7 @@ poly.0 <- function(x) return(predict(polynom.0, x))
 poly.1 <- function(x) return(predict(polynom.1, x))
 ```
 
-
-```{r include=FALSE}
-# definovani generujicich funkci
-# poly.0 <- function(x) return(-9.1 * x+37.2709 *x^(2)-61.2594* x^(3)+58.0332* x^4-34.0338 * x^5+12.5556 * x^(6)-2.90164 *x^(7)+0.406575 *x^(8)-0.0315332* x^9+0.00103781* x^10)
-
-# poly.1 <- function(x) return(-10.3075* x+43.5046* x^(2)+x^(3) *(-72.7162)+67.8866 *x^(4)+x^(5)* (-38.5902)+13.7339 *x^(6)+x^(7) *(-3.06169)+0.41432* x^(8)+x^(9) *(-0.0310725)+0.000989789 *x^(10))
-
-
-# definovani generujicich funkci
-# poly.0 <- function(x) return(
-#   -5.917962*x + 21.65116*x^2 - 29.76776*x^3 + 23.91566*x^4 - 
-#     12.01474*x^5 + 3.714882*x^6 - 0.678195*x^7 + 0.06667599*x^8 -
-#     0.00271318*x^9)
-# poly.1 <- function(x) return(
-#   0.1 - 5.575865*x + 31.15035*x^2 - 58.3787*x^3 + 48.44881*x^4 - 
-#     10.48996*x^5 - 12.02612*x^6 + 11.05272*x^7 - 4.362127*x^8 +
-#     0.9801225*x^9 - 0.1296233*x^10 + 0.009421169*x^11 - 
-#     0.0002910194*x^12)
-```
-
-```{r fig.cap='Znázornění dvou funkcí na intervalu $I = [0, 6]$, ze kterých generujeme pozorování ze tříd 0 a 1.'}
-# vykresleni polynomu
+```{r fig.cap='Visualization of two functions on the interval $I = [0, 6]$, from which we generate observations for classes 0 and 1.'}
 xx <- seq(min(x.0), max(x.0), length = 501)
 yy.0 <- poly.0(xx)
 yy.1 <- poly.1(xx)
@@ -129,36 +90,19 @@ ggplot(dat_points, aes(x = x, y = y, colour = Class)) +
             linewidth = 0.8) + 
   labs(x = expression(x[1]),
        y = expression(x[2]),
-       colour = 'Klasifikační\n      třída')
+       colour = 'Class')
 ```
 
 
 ```{r}
-# generujici funkce pro Y = 0 a Y = 1
 funkce_0 <- poly.0
 funkce_1 <- poly.1
 ```
 
-```{r fig.cap='Znázornění dvou funkcí na intervalu $[0, 6]$, ze kterých generujeme pozorování ze tříd 0 a 1.', include=F}
-x <- seq(0, 6, length = 501)
-y0 <- funkce_0(x)
-y1 <- funkce_1(x)
-df <- data.frame(x = rep(x, 2),
-                 y = c(y0, y1),
-                 Y = rep(c('Y = 0', 'Y = 1'), each = length(x)))
-
-df |> ggplot(aes(x = x, y = y, colour = Y)) + 
-  geom_line(linewidth = 1) + 
-  theme_bw()  + 
-  labs(x = expression(x[1]),
-       y = expression(x[2]),
-       colour = 'Klasifikační\n      třída')
-```
-
-Nyní si vytvoříme funkci pro generování náhodných funkcí s přidaným šumem (resp. bodů na předem dané síti) ze zvolené generující funkce.
-Argument `t` označuje vektor hodnot, ve kterých chceme dané funkce vyhodnotit, `fun` značí generující funkci, `n` počet funkcí a `sigma` směrodatnou odchylku $\sigma$ normálního rozdělení $\text{N}(\mu, \sigma^2)$, ze kterého náhodně generujeme gaussovský bílý šum s $\mu = 0$.
-Abychom ukázali výhodu použití metod, které pracují s funkcionálními daty, přidáme při generování ke každému simulovanému pozorování navíc i náhodný člen, který bude mít význam vertikálního posunu celé funkce (parametr `sigma_shift`).
-Tento posun budeme generovat s normálního rozdělení s parametrem $\sigma^2 = 4$.
+Now we will create a function to generate random functions with added noise (i.e., points on a predefined grid) from a chosen generating function.
+The argument `t` represents the vector of values at which we want to evaluate the given functions, `fun` denotes the generating function, `n` is the number of functions, and `sigma` is the standard deviation $\sigma$ of the normal distribution $\text{N}(\mu, \sigma^2)$, from which we randomly generate Gaussian white noise with $\mu = 0$.
+To demonstrate the advantage of using methods that work with functional data, we will add a random term to each simulated observation during generation, representing a vertical shift of the entire function (parameter `sigma_shift`).
+This shift will be generated from a normal distribution with the parameter $\sigma^2 = 4$.
 
 ```{r}
 generate_values <- function(t, fun, n, sigma, sigma_shift = 0) {
@@ -182,25 +126,22 @@ generate_values <- function(t, fun, n, sigma, sigma_shift = 0) {
 }
 ```
 
-Nyní můžeme generovat funkce.
-V každé ze dvou tříd budeme uvažovat 100 pozorování, tedy `n = 100`.
+Now we can generate the functions. In each of the two classes, we will consider 100 observations, so `n = 100`.
 
 ```{r}
-# pocet vygenerovanych pozorovani pro kazdou tridu
 n <- 100
-# vektor casu ekvidistantni na intervalu [0, 6]
 t <- seq(0, 6, length = 51)
 
-# pro Y = 0
+# Y = 0
 X0 <- generate_values(t, funkce_0, n, 1, 2)
-# pro Y = 1
+# Y = 1
 X1 <- generate_values(t, funkce_1, n, 1, 2)
 ```
 
-Vykreslíme vygenerované (ještě nevyhlazené) funkce barevně v závislosti na třídě (pouze prvních 10 pozorování z každé třídy pro přehlednost).
+We will plot the generated (not yet smoothed) functions in color according to their class (only the first 10 observations from each class for clarity).
 
-```{r fig.cap='Prvních 10 vygenerovaných pozorování z každé ze dvou klasifikačních tříd. Pozorovaná data nejsou vyhlazená.'}
-n_curves_plot <- 10 # pocet krivek, ktere chceme vykreslit z kazde skupiny
+```{r fig.cap='The first 10 generated observations from each of the two classification classes. The observed data are not smoothed.'}
+n_curves_plot <- 10 
 
 DF0 <- cbind(t, X0[, 1:n_curves_plot]) |> 
   as.data.frame() |> 
@@ -229,102 +170,18 @@ DF |> ggplot(aes(x = t, y = V, group = interaction(time, group),
   theme_bw() +
   labs(x = expression(x[1]),
        y = expression(x[2]),
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   scale_colour_discrete(labels=c('Y = 0', 'Y = 1'))
 ```
 
-```{r include=FALSE, eval=FALSE, echo=FALSE}
-library(fdapace)
-## New section for PACE
 
-N <- 100
-M <- 100
-set.seed(42)
+## Smoothing Observed Curves
 
-t <- seq(0, 6, length = M)
+Now we will convert the observed discrete values (vectors of values) into functional objects that we will work with subsequently. 
+We will again use a B-spline basis for smoothing.
 
-yTrue <- t(generate_values(t, funkce_0, N, 0.2, 2))
-yTrue <- rbind(yTrue, t(generate_values(t, funkce_1, N, 0.2, 2)))
-
-# FPCA on dense set
-N <- 2*N
-L3 <- MakeFPCAInputs(IDs = rep(1:N, each = M), 
-                     tVec = rep(t, N),
-                     t(yTrue))
-FPCAdense <- FPCA(L3$Ly, L3$Lt)
-plot(FPCAdense)
-```
-
-```{r include=FALSE, eval=FALSE, echo=FALSE}
-set.seed(42)
-ySparse <- Sparsify(yTrue, t, sparsity = c(5:8))
-ySparse$yNoisy <- lapply(ySparse$Ly, function(x) x + 0.1*rnorm(length(x)))
-
-# pdf(file = "C:/Users/Tom/OneDrive - MUNI/Diplomka/grafy_tikz/pointsplot.pdf",
-#     width = 9, # The width of the plot in inches
-#     height = 6) # The height of the plot in inches
-
-FPCAsparse <- FPCA(ySparse$yNoisy, ySparse$Lt, list(plot = TRUE))
-
-# dev.off()
-```
-
-```{r include=FALSE, eval=FALSE, echo=FALSE}
-# pdf(file = "C:/Users/Tom/OneDrive - MUNI/Diplomka/grafy_tikz/pointsplot.pdf",
-#     width = 9, # The width of the plot in inches
-#     height = 6) # The height of the plot in inches
-
-cols <- c(rep(c('tomato', 'deepskyblue'), each = 3))
-par(mfrow = c(2, 3), pty = 's', mar = c(2.5, 2.5, 0.5, 0))
-i <- 1
-for(ind in c(10:12+3, 101:103 + 5)) {
-  CreatePathPlot(FPCAsparse, subset = ind, main = "", pch = 16, col = cols[i], cex = 0, las = 1, ylim = c(-3, 4.3), lwd = 2)
-  points(FPCAsparse$inputData$Lt[[ind]], FPCAsparse$inputData$Ly[[ind]],
-         col = cols[i], pch = 19, las = 1, ylim = c(-3, 4.3), xlim = c(0, 6),
-       xlab = '', ylab = '')
-  # lines(FPCAsparse$inputData$Lt[[ind]], FPCAsparse$inputData$Ly[[ind]],
-        # col = cols[i], lwd = 1.2)
-  i <- i + 1
-}
-
-# dev.off()
-```
-
-```{r include=FALSE, eval=FALSE, echo=FALSE}
-# pdf(file = "C:/Users/Tom/OneDrive - MUNI/Diplomka/grafy_tikz/designplot.pdf",
-#     width = 10, # The width of the plot in inches
-#     height = 5) # The height of the plot in inches
-
-par(mfrow = c(1, 2), pty = 's', mar = c(5, 3, 3, 2))
-CreateDesignPlot(L3$Lt, sort(unique(unlist(L3$Lt))), main = 'Original data')
-CreateDesignPlot(ySparse$Lt, sort(unique(unlist(ySparse$Lt))), main = 'Sparse data')
-
-# dev.off()
-```
-
-```{r include=FALSE, eval=FALSE, echo=FALSE}
-# pdf(file = "C:/Users/Tom/OneDrive - MUNI/Diplomka/grafy_tikz/covplot.pdf",
-#     width = 12, # The width of the plot in inches
-#     height = 6) # The height of the plot in inches
-par(xpd = TRUE, mfrow = c(1, 2))
-
-CreateCovPlot(FPCAsparse, colSpectrum = c('deepskyblue2', 'tomato'), corr = T, phi = 20, theta = -20, main = '', cex = 0.7, zlab = '', legend = F, contour = T)
-text3D(-1.5, 5, 0.9, expression(rho(s, t)), add = TRUE)
-
-CreateCovPlot(FPCAsparse, colSpectrum = c('deepskyblue2', 'tomato'), corr = T, phi = 90, theta = 0, cex = 0.7, main = expression(rho(s, t)), contour = F, zlab = '')
-# text3D(-2, 0.5, 0.9, expression(gamma(s, t)), add = TRUE)
-
-# dev.off()
-```
-
-
-## Vyhlazení pozorovaných křivek
-
-Nyní převedeme pozorované diskrétní hodnoty (vektory hodnot) na funkcionální objekty, se kterými budeme následně pracovat.
-Opět využijeme k vyhlazení B-sline bázi.
-
-Za uzly bereme celý vektor `t`, standardně uvažujeme kubické spliny, proto volíme (implicitní volba v `R`) `norder = 4`.
-Budeme penalizovat druhou derivaci funkcí.
+We take the entire vector `t` as the knots, and since we are considering cubic splines, we choose (the implicit choice in `R`) `norder = 4`. 
+We will penalize the second derivative of the functions.
 
 ```{r}
 rangeval <- range(t)
@@ -335,23 +192,21 @@ bbasis <- create.bspline.basis(rangeval = rangeval,
                                norder = norder, 
                                breaks = breaks)
 
-curv.Lfd <- int2Lfd(2) # penalizujeme 2. derivaci
+curv.Lfd <- int2Lfd(2) 
 ```
 
-Najdeme vhodnou hodnotu vyhlazovacího parametru $\lambda > 0$ pomocí $GCV(\lambda)$, tedy pomocí zobecněné cross--validace.
-Hodnotu $\lambda$ budeme uvažovat pro obě klasifikační skupiny stejnou, neboť pro testovací pozorování bychom dopředu nevěděli, kterou hodnotu $\lambda$, v případě rozdílné volby pro každou třídu, máme volit.
+We will find a suitable value for the smoothing parameter $\lambda > 0$ using $GCV(\lambda)$, which stands for generalized cross-validation. We will consider the same value of $\lambda$ for both classification groups, as we would not know in advance which value of $\lambda$ to choose for test observations in the case of different selections for each class.
 
 ```{r}
-# spojeni pozorovani do jedne matice
 XX <- cbind(X0, X1)
 
-lambda.vect <- 10^seq(from = -4, to = 1, length.out = 50) # vektor lambd
-gcv <- rep(NA, length = length(lambda.vect)) # prazdny vektor pro ulozebi GCV
+lambda.vect <- 10^seq(from = -4, to = 1, length.out = 50) 
+gcv <- rep(NA, length = length(lambda.vect)) 
 
 for(index in 1:length(lambda.vect)) {
   curv.Fdpar <- fdPar(bbasis, curv.Lfd, lambda.vect[index])
-  BSmooth <- smooth.basis(t, XX, curv.Fdpar) # vyhlazeni
-  gcv[index] <- mean(BSmooth$gcv) # prumer pres vsechny pozorovane krivky
+  BSmooth <- smooth.basis(t, XX, curv.Fdpar) 
+  gcv[index] <- mean(BSmooth$gcv) 
 }
 
 GCV <- data.frame(
@@ -359,13 +214,12 @@ GCV <- data.frame(
   GCV = gcv
 )
 
-# najdeme hodnotu minima
 lambda.opt <- lambda.vect[which.min(gcv)]
 ```
 
-Pro lepší znázornění si vykreslíme průběh $GCV(\lambda)$.
+To better illustrate, we will plot the course of $GCV(\lambda)$.
 
-```{r fig.cap="Průběh $GCV(\\lambda)$ pro zvolený vektor $\\boldsymbol\\lambda$. Na ose $x$ jsou hodnoty vyneseny v logaritmické škále. Červeně je znázorněna optimální hodnota vyhlazovacího parametru $\\lambda_{optimal}$."}
+```{r fig.cap="The course of $GCV(\\lambda)$ for the chosen vector $\\boldsymbol\\lambda$. The values on the $x$-axis are plotted on a logarithmic scale. The optimal value of the smoothing parameter $\\lambda_{optimal}$ is indicated in red."}
 GCV |> ggplot(aes(x = lambda, y = GCV)) + 
   geom_line(linetype = 'solid', linewidth = 0.6) + 
   geom_point(size = 1.5) + 
@@ -376,9 +230,9 @@ GCV |> ggplot(aes(x = lambda, y = GCV)) +
   geom_point(aes(x = log10(lambda.opt), y = min(gcv)), colour = 'red', size = 2.5)
 ```
 
-S touto optimální volbou vyhlazovacího parametru $\lambda$ nyní vyhladíme všechny funkce a opět znázorníme graficky prvních 10 pozorovaných křivek z každé klasifikační třídy.
+With this optimal choice of the smoothing parameter $\lambda$, we will now smooth all functions and again graphically represent the first 10 observed curves from each classification class.
 
-```{r fig.cap='Prvních 10 vyhlazených křivek z každé klasifikační třídy.'}
+```{r fig.cap='The first 10 smoothed curves from each classification class.'}
 curv.fdPar <- fdPar(bbasis, curv.Lfd, lambda.opt)
 BSmooth <- smooth.basis(t, XX, curv.fdPar)
 XXfd <- BSmooth$fd
@@ -393,14 +247,14 @@ DF |> ggplot(aes(x = t, y = Vsmooth, group = interaction(time, group),
   theme_bw() +
   labs(x = expression(x[1]),
        y = expression(x[2]),
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   scale_colour_discrete(labels=c('Y = 0', 'Y = 1'))
 ```
 
-Ještě znázorněme všechny křivky včetně průměru zvlášť pro každou třídu.
+Let’s also illustrate all curves, including the average, separately for each class.
 
-```{r fig.cap='Vykreslení všech vyhlazených pozorovaných křivek, barevně jsou odlišeny křivky podle příslušnosti do klasifikační třídy. Černou čarou je zakreslen průměr pro každou třídu, přerušovaně pak pro druhou třídu.', warning=FALSE}
-abs.labs <- paste("Klasifikační třída:", c("$Y = 0$", "$Y = 1$"))
+```{r fig.cap='Plot of all smoothed observed curves, distinguished by color according to their classification class. The average for each class is indicated by a black line, and for the second class, it is indicated by a dashed line.', warning=FALSE}
+abs.labs <- paste("Classification class:", c("$Y = 0$", "$Y = 1$"))
 names(abs.labs) <- c('0', '1')
 
 fdobjSmootheval <- eval.fd(fdobj = XXfd, evalarg = t)
@@ -425,7 +279,7 @@ DFsmooth |> ggplot(aes(x = t, y = Smooth, #group = interaction(time, group),
   theme_bw() +
   labs(x = "$t$",
        y = "$x_i(t)$",
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   # geom_line(data = DFsmooth |> 
   #             mutate(group = factor(ifelse(group == '0', '1', '0'))) |> 
   #             filter(group == '1'),
@@ -451,9 +305,9 @@ DFsmooth |> ggplot(aes(x = t, y = Smooth, #group = interaction(time, group),
 # ggsave("figures/kap6_sim_03_curves.tex", device = tikz, width = 8, height = 4)
 ```
 
-Podívejme se ještě na srovnání průměrných průběhů z detailního pohledu.
+Now let’s take a look at the comparison of average courses from a detailed perspective.
 
-```{r fig.cap='Vykreslení všech vyhlazených pozorovaných křivek, barevně jsou odlišeny křivky podle příslušnosti do klasifikační třídy. Černou čarou je zakreslen průměr pro každou třídu. Přiblížený pohled.', warning=FALSE}
+```{r fig.cap='Plot of all smoothed observed curves, distinguished by color according to their classification class. The average for each class is indicated by a black line. A closer view.', warning=FALSE}
 DFsmooth <- data.frame(
   t = rep(t, 2 * n),
   time = rep(rep(1:n, each = length(t)), 2),
@@ -476,7 +330,7 @@ DFsmooth |> ggplot(aes(x = t, y = Smooth, group = interaction(time, group),
   theme_bw() +
   labs(x = expression(x[1]),
        y = expression(x[2]),
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   scale_colour_discrete(labels = c('Y = 0', 'Y = 1')) + 
   geom_line(aes(x = t, y = Mean, colour = group), 
             linewidth = 1.2, linetype = 'solid') + 
@@ -485,32 +339,31 @@ DFsmooth |> ggplot(aes(x = t, y = Smooth, group = interaction(time, group),
   scale_y_continuous(expand = c(0.01, 0.01), limits = c(-1, 2))
 ```
 
-## Klasifikace křivek
 
-Nejprve načteme potřebné knihovny pro klasifikaci.
+## Classification of Curves
+
+First, we will load the necessary libraries for classification.
 
 ```{r warning=FALSE, message=FALSE}
-library(caTools) # pro rozdeleni na testovaci a trenovaci
-library(caret) # pro k-fold CV
-library(fda.usc) # pro KNN, fLR, fsvm
-library(MASS) # pro LDA
+library(caTools) 
+library(caret) 
+library(fda.usc) 
+library(MASS)
 library(fdapace)
 library(pracma)
-library(refund) # pro LR na skorech
-library(nnet) # pro LR na skorech
+library(refund)
+library(nnet) 
 library(caret)
-library(rpart) # stromy
-library(rattle) # grafika
+library(rpart) 
+library(rattle) 
 library(e1071)
-library(randomForest) # nahodny les
+library(randomForest) 
 ```
 
-Abychom mohli jednotlivé klasifikátory porovnat, rozdělíme množinu vygenerovaných pozorování na dvě části v poměru 70:30, a to na trénovací a testovací (validační) část.
-Trénovací část použijeme při konstrukci klasifikátoru a testovací na výpočet chyby klasifikace a případně dalších charakteristik našeho modelu.
-Výsledné klasifikátory podle těchto spočtených charakteristik můžeme následně porovnat mezi sebou z pohledu jejich úspěšnosti klasifikace.
+To compare the individual classifiers, we will split the set of generated observations into two parts in a ratio of 70:30, designating them as the training and test (validation) sets. The training set will be used for constructing the classifier, while the test set will be used to calculate the classification error and potentially other characteristics of our model. We can then compare the resulting classifiers based on these calculated characteristics in terms of their classification success.
 
 ```{r}
-# rozdeleni na testovaci a trenovaci cast
+# Splitting into test and training sets
 split <- sample.split(XXfd$fdnames$reps, SplitRatio = 0.7)
 
 Y <- rep(c(0, 1), each = n)
@@ -522,60 +375,55 @@ Y.train <- subset(Y, split == TRUE)
 Y.test <- subset(Y, split == FALSE)
 ```
 
-Ještě se podíváme na zastoupení jednotlivých skupin v testovací a trénovací části dat.
+Next, let’s look at the representation of individual groups in the test and training portions of the data.
 
 ```{r}
-# absolutni zastoupeni
+# Absolute representation
 table(Y.train)
 table(Y.test)
 
-# relativni zastoupeni
+# Relative representation
 table(Y.train) / sum(table(Y.train))
 table(Y.test) / sum(table(Y.test))
 ```
 
-### $K$ nejbližších sousedů
+### $K$-Nearest Neighbors
 
-Začněme neparametrickou klasifikační metodou, a to metodou $K$ nejbližších sousedů.
-Nejprve si vytvoříme potřebné objekty tak, abychom s nimi mohli pomocí funkce `classif.knn()` z knihovny `fda.usc` dále pracovat.
+Let’s start with the non-parametric classification method, specifically the $K$-nearest neighbors method. First, we will create the necessary objects so that we can work with them using the `classif.knn()` function from the `fda.usc` library.
 
 ```{r}
 x.train <- fdata(X.train)
 y.train <- as.numeric(factor(Y.train))
 ```
 
-Nyní můžeme definovat model a podívat se na jeho úspěšnost klasifikace.
-Poslední otázkou však zůstává, jak volit optimální počet sousedů $K$.
-Mohli bychom tento počet volit jako takové $K$, při kterém nastává minimální chybovost na trénovacích datech.
-To by ale mohlo vést k přeučení modelu, proto využijeme cross-validaci.
-Vzhledem k výpočetní náročnosti a rozsahu souboru zvolíme $k$-násobnou CV, my zvolíme například hodnotu $k = {10}$.
+Now we can define the model and examine its classification success. However, the last question remains: how do we choose the optimal number of neighbors $K$? We could select $K$ as the value that results in the minimum error on the training data. However, this could lead to overfitting, so we will use cross-validation. Given the computational intensity and the size of the dataset, we will choose $k$-fold cross-validation; for example, we will set $k = 10$.
 
 ```{r}
-# model pro vsechna trenovaci data pro K = 1, 2, ..., sqrt(n_train)
+# Model for all training data for K = 1, 2, ..., sqrt(n_train)
 neighb.model <- classif.knn(group = y.train, 
                             fdataobj = x.train, 
                             knn = c(1:round(sqrt(length(y.train))))) 
 
-# neighb.model$max.prob # maximalni presnost
-# (K.opt <- neighb.model$h.opt) # optimalni hodnota K
+# neighb.model$max.prob # Maximum accuracy
+# (K.opt <- neighb.model$h.opt) # Optimal value of K
 ```
 
-Proveďme předchozí postup pro trénovací data, která rozdělíme na $k$ částí a tedy zopakujeme tuto část kódu $k$-krát.
+Let’s perform the previous procedure for the training data, which we will split into $k$ parts and repeat this part of the code $k$ times.
 
 ```{r}
 k_cv <- 10 # k-fold CV
-neighbours <- c(1:(2 * ceiling(sqrt(length(y.train))))) # pocet sousedu 
+neighbours <- c(1:(2 * ceiling(sqrt(length(y.train))))) # Number of neighbors
 
-# rozdelime trenovaci data na k casti
+# Splitting training data into k parts
 folds <- createMultiFolds(X.train$fdnames$reps, k = k_cv, time = 1)
 
-# prazdna matice, do ktere vlozime jednotlive vysledky
-# ve sloupcich budou hodnoty presnosti pro danou cast trenovaci mnoziny
-# v radcich budou hodnoty pro danou hodnotu K sousedu
+# Empty matrix to store individual results
+# Columns will have accuracy values for the given part of the training set
+# Rows will have values for the given neighbor count K
 CV.results <- matrix(NA, nrow = length(neighbours), ncol = k_cv)
 
 for (index in 1:k_cv) {
-  # definujeme danou indexovou mnozinu
+  # Define the current index set
   fold <- folds[[index]]
     
   x.train.cv <- subset(X.train, c(1:length(X.train$fdnames$reps)) %in% fold) |>
@@ -588,126 +436,119 @@ for (index in 1:k_cv) {
   y.test.cv <- subset(Y.train, !c(1:length(X.train$fdnames$reps)) %in% fold) |>
     factor() |> as.numeric()
   
-  # projdeme kazdou cast ... k-krat zopakujeme
+  # Iterate through each part... repeat k times
   for(neighbour in neighbours) {
-    # model pro konkretni volbu K
+    # Model for the specific choice of K
     neighb.model <- classif.knn(group = y.train.cv, 
                               fdataobj = x.train.cv, 
                               knn = neighbour) 
-    # predikce na validacni casti
+    # Prediction on the validation part
     model.neighb.predict <- predict(neighb.model, 
                                     new.fdataobj = x.test.cv)
-    # presnost na validacni casti
-    presnost <- table(y.test.cv, model.neighb.predict) |> 
+    # Accuracy on the validation part
+    accuracy <- table(y.test.cv, model.neighb.predict) |> 
       prop.table() |> diag() |> sum()
     
-    # presnost vlozime na pozici pro dane K a fold
-    CV.results[neighbour, index] <- presnost
+    # Store the accuracy in the position for the given K and fold
+    CV.results[neighbour, index] <- accuracy
   }
 }
 
-# spocitame prumerne presnosti pro jednotliva K pres folds
+# Calculate average accuracies for each K across folds
 CV.results <- apply(CV.results, 1, mean)
 K.opt <- which.max(CV.results)
-presnost.opt.cv <- max(CV.results)
+accuracy.opt.cv <- max(CV.results)
 # CV.results
 ```
 
-Vidíme, že nejlépe vychází hodnota parametru $K$ jako `r K.opt` s hodnotou chybovosti spočtené pomocí 10-násobné CV `r round(1-presnost.opt.cv, 4)`.
-Pro přehlednost si ještě vykresleme průběh validační chybovosti v závislosti na počtu sousedů $K$.
+We can see that the optimal value of the parameter $K$ is `r K.opt` with an error rate calculated using 10-fold CV of `r round(1 - accuracy.opt.cv, 4)`. For clarity, let’s plot the validation error as a function of the number of neighbors $K$.
 
-```{r fig.cap='Závislost validační chybovosti na hodnotě $K$, tedy na počtu sousedů.'}
+```{r fig.cap='Dependence of validation error on the value of $K$, i.e., on the number of neighbors.'}
 CV.results <- data.frame(K = neighbours, CV = CV.results)
 CV.results |> ggplot(aes(x = K, y = 1 - CV)) + 
   geom_line(linetype = 'dashed', colour = 'grey') + 
   geom_point(size = 1.5) + 
-  geom_point(aes(x = K.opt, y = 1 - presnost.opt.cv), colour = 'red', size = 2) +
+  geom_point(aes(x = K.opt, y = 1 - accuracy.opt.cv), colour = 'red', size = 2) +
   theme_bw() + 
   labs(x = bquote(paste(K, ' ;   ', 
                         K[optimal] == .(K.opt))),
-       y = 'Validační chybovost') + 
+       y = 'Validation error') + 
   scale_x_continuous(breaks = neighbours)
 ```
 
-Nyní známe optimální hodnotu parametru $K$ a tudíž můžeme sestavit finální model.
+Now that we know the optimal value of the parameter $K$, we can construct the final model.
 
 ```{r}
 neighb.model <- classif.knn(group = y.train, fdataobj = x.train, knn = K.opt)
 
-# predikce
+# Prediction
 model.neighb.predict <- predict(neighb.model, 
                                 new.fdataobj = fdata(X.test))
 
-# presnost na testovacich datech
-presnost <- table(as.numeric(factor(Y.test)), model.neighb.predict) |>
+# Accuracy on the test data
+accuracy <- table(as.numeric(factor(Y.test)), model.neighb.predict) |>
   prop.table() |>
   diag() |>
   sum()
 ```
 
-Vidíme tedy, že chybovost modelu sestrojeného pomocí metody $K$ nejbližších sousedů s optimální volbou $K_{optimal}$ rovnou `r K.opt`, kterou jsme určili cross-validací, je na trénovacích datech rovna `r 1 - round(neighb.model$max.prob, 4)` a na testovacích datech `r round(1 - presnost, 4)`.
+Thus, we can see that the error rate of the model constructed using the $K$-nearest neighbors method with the optimal choice $K_{optimal}$ equal to `r K.opt`, which we determined via cross-validation, is `r 1 - round(neighb.model$max.prob, 4)` on the training data and `r round(1 - accuracy, 4)` on the test data.
 
-K porovnání jendotlivých modelů můžeme použít oba typy chybovostí, pro přehlednost si je budeme ukládat do tabulky.
+To compare the different models, we can use both types of errors. For clarity, we will store them in a table.
 
 ```{r}
 RESULTS <- data.frame(model = 'KNN', 
                       Err.train = 1 - neighb.model$max.prob,
-                      Err.test = 1 - presnost)
+                      Err.test = 1 - accuracy)
 ```
 
-### Lineární diskriminační analýza
 
-Jako druhou metodu pro sestrojení klasifikátoru budeme uvažovat lineární diskriminační analýzu (LDA).
-Jelikož tato metoda nelze aplikovat na funkcionální data, musíme je nejprve diskretizovat, což provedeme pomocí funkcionální analýzy hlavních komponent.
-Klasifikační algoritmus následně provedeme na skórech prvních $p$ hlavních komponent.
-Počet komponent $p$ zvolíme tak, aby prvních $p$ hlavních komponent dohromady vysvětlovalo alespoň 90 % variability v datech.
+### Linear Discriminant Analysis
 
-Proveďme tedy nejprve funkcionální analýzu hlavních komponent a určeme počet $p$.
+As the second method for constructing a classifier, we will consider Linear Discriminant Analysis (LDA). Since this method cannot be applied to functional data, we must first discretize it, which we will do using Functional Principal Component Analysis. We will then perform the classification algorithm on the scores of the first $p$ principal components. We will choose the number of components $p$ such that the first $p$ principal components explain at least 90% of the variability in the data.
+
+Let's first perform Functional Principal Component Analysis and determine the number $p$.
 
 ```{r}
-# analyza hlavnich komponent
-data.PCA <- pca.fd(X.train, nharm = 10) # nharm - maximalni pocet HK
-nharm <- which(cumsum(data.PCA$varprop) >= 0.9)[1] # urceni p
-if(nharm == 1) nharm <- 2 # aby bylo mozne vykreslovat grafy,
-# potrebujeme alespon 2 HK
+# Principal component analysis
+data.PCA <- pca.fd(X.train, nharm = 10) # nharm - maximum number of principal components
+nharm <- which(cumsum(data.PCA$varprop) >= 0.9)[1] # determine p
+if(nharm == 1) nharm <- 2 # to plot graphs, we need at least 2 principal components
 
 data.PCA <- pca.fd(X.train, nharm = nharm) 
-data.PCA.train <- as.data.frame(data.PCA$scores) # skore prvnich p HK
-data.PCA.train$Y <- factor(Y.train) # prislusnost do trid
+data.PCA.train <- as.data.frame(data.PCA$scores) # scores of the first p principal components
+data.PCA.train$Y <- factor(Y.train) # class membership
 ```
 
-V tomto konkrétním případě jsme za počet hlavních komponent vzali $p$ = `r nharm`, které dohromady vysvětlují `r 100 * round(cumsum(data.PCA$varprop)[nharm], 4)` % variability v datech.
-První hlavní komponenta potom vysvětluje `r 100 * round(data.PCA$varprop[1], 4)` % a druhá `r 100 * round(data.PCA$varprop[2], 4)` % variability.
-Graficky si můžeme zobrazit hodnoty skórů prvních dvou hlavních komponent, barevně odlišených podle příslušnosti do klasifikační třídy.
+In this specific case, we took the number of principal components $p = $ `r nharm`, which together explain `r 100 * round(cumsum(data.PCA$varprop)[nharm], 4)` % of the variability in the data. The first principal component explains `r 100 * round(data.PCA$varprop[1], 4)` % and the second `r 100 * round(data.PCA$varprop[2], 4)` % of the variability. We can graphically display the scores of the first two principal components, color-coded according to class membership.
 
-```{r fig.cap="Hodnoty skórů prvních dvou hlavních komponent pro trénovací data. Barevně jsou odlišeny body podle příslušnosti do klasifikační třídy."}
+```{r fig.cap="Scores of the first two principal components for training data. Points are color-coded according to class membership."}
 data.PCA.train |> ggplot(aes(x = V1, y = V2, colour = Y)) +
   geom_point(size = 1.5) + 
-  labs(x = paste('1. hlavní komponenta (vysvětlená variabilita', 
+  labs(x = paste('1st principal component (explained variability', 
                  round(100 * data.PCA$varprop[1], 2), '%)'),
-       y = paste('2. hlavní komponenta (', 
+       y = paste('2nd principal component (', 
                  round(100 * data.PCA$varprop[2], 2), '%)'),
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   scale_colour_discrete(labels = c('Y = 0', 'Y = 1')) +
   theme_bw()
 ```
 
-Abychom mohli určit přesnost klasifikace na testovacích datech, potřebujeme spočítat skóre pro první `r nharm` hlavní komponenty pro testovací data.
-Tato skóre určíme pomocí vzorce:
+To determine the classification accuracy on the test data, we need to compute the scores for the first `r nharm` principal components for the test data. These scores are calculated using the formula:
 
 $$
 \xi_{i, j} = \int \left( X_i(t) - \mu(t)\right) \cdot \rho_j(t)\text dt,
 $$ 
-kde $\mu(t)$ je střední hodnota (průměrná funkce) a $\rho_j(t)$ vlastní fukce (funkcionální hlavní komponenty).
+where $\mu(t)$ is the mean function and $\rho_j(t)$ is the eigenfunction (functional principal component).
 
 ```{r}
-# vypocet skoru testovacich funkci
-scores <- matrix(NA, ncol = nharm, nrow = length(Y.test)) # prazdna matice
+# Calculate scores for test functions
+scores <- matrix(NA, ncol = nharm, nrow = length(Y.test)) # empty matrix
 
 for(k in 1:dim(scores)[1]) {
-  xfd = X.test[k] - data.PCA$meanfd[1] # k-te pozorovani - prumerna funkce
+  xfd = X.test[k] - data.PCA$meanfd[1] # k-th observation - mean function
   scores[k, ] = inprod(xfd, data.PCA$harmonics) 
-  # skalarni soucin rezidua a vlastnich funkci rho (funkcionalni hlavni komponenty)
+  # scalar product of the residual and eigenfunctions rho (functional principal components)
 }
 
 data.PCA.test <- as.data.frame(scores)
@@ -715,68 +556,66 @@ data.PCA.test$Y <- factor(Y.test)
 colnames(data.PCA.test) <- colnames(data.PCA.train) 
 ```
 
-Nyní již můžeme sestrojit klasifikátor na trénovací části dat.
+Now we can construct the classifier on the training data.
 
 ```{r}
-# model
+# Model
 clf.LDA <- lda(Y ~ ., data = data.PCA.train)
 
-# presnost na trenovacich datech
+# Accuracy on training data
 predictions.train <- predict(clf.LDA, newdata = data.PCA.train)
 presnost.train <- table(data.PCA.train$Y, predictions.train$class) |>
   prop.table() |> diag() |> sum()
   
-# presnost na testovacich datech
+# Accuracy on test data
 predictions.test <- predict(clf.LDA, newdata = data.PCA.test)
 presnost.test <- table(data.PCA.test$Y, predictions.test$class) |>
   prop.table() |> diag() |> sum()
 ```
 
-Spočítali jsme jednak chybovost klasifikátoru na trénovacích (`r 100 * round(1-presnost.train, 4)` %), tak i na testovacích datech (`r 100 * round(1-presnost.test, 4)` %).
+We have calculated the error rate of the classifier on the training data (`r 100 * round(1-presnost.train, 4)` %) and on the test data (`r 100 * round(1-presnost.test, 4)` %).
 
-Pro grafické znázornění metody můžeme zaznačit dělící hranici do grafu skórů prvních dvou hlavních komponent.
-Tuto hranici spočítáme na husté síti bodů a zobrazíme ji pomocí funkce `geom_contour()`.
+For graphical representation of the method, we can indicate the decision boundary in the scores of the first two principal components. We will calculate this boundary on a dense grid of points and display it using the `geom_contour()` function.
 
-```{r fig.cap="Skóre prvních dvou hlavních komponent, barevně odlišené podle příslušnosti do klasifikační třídy. Černě je vyznačena dělící hranice (přímka v rovině prvních dvou hlavních komponent) mezi třídami sestrojená pomocí LDA."}
-# pridame diskriminacni hranici
-np <- 1001 # pocet bodu site
-# x-ova osa ... 1. HK
+```{r fig.cap="Scores of the first two principal components, color-coded according to class membership. The decision boundary (line in the plane of the first two principal components) between the classes constructed using LDA is marked in black."}
+# Add decision boundary
+np <- 1001 # number of grid points
+# x-axis ... 1st PC
 nd.x <- seq(from = min(data.PCA.train$V1), 
             to = max(data.PCA.train$V1), length.out = np)
-# y-ova osa ... 2. HK
+# y-axis ... 2nd PC
 nd.y <- seq(from = min(data.PCA.train$V2), 
             to = max(data.PCA.train$V2), length.out = np)
-# pripad pro 2 HK ... p = 2
+# case for 2 PCs ... p = 2
 nd <- expand.grid(V1 = nd.x, V2 = nd.y)
-# pokud p = 3
+# if p = 3
 if(dim(data.PCA.train)[2] == 4) {
   nd <- expand.grid(V1 = nd.x, V2 = nd.y, V3 = data.PCA.train$V3[1])}
-# pokud p = 4
+# if p = 4
 if(dim(data.PCA.train)[2] == 5) {
   nd <- expand.grid(V1 = nd.x, V2 = nd.y, V3 = data.PCA.train$V3[1],
                     V4 = data.PCA.train$V4[1])}
-# pokud p = 5
+# if p = 5
 if(dim(data.PCA.train)[2] == 6) {
   nd <- expand.grid(V1 = nd.x, V2 = nd.y, V3 = data.PCA.train$V3[1],
                     V4 = data.PCA.train$V4[1], V5 = data.PCA.train$V5[1])}
 
-# pridame Y = 0, 1
+# Add Y = 0, 1
 nd <- nd |> mutate(prd = as.numeric(predict(clf.LDA, newdata = nd)$class))
 
 data.PCA.train |> ggplot(aes(x = V1, y = V2, colour = Y)) +
   geom_point(size = 1.5) + 
-  labs(x = paste('1. hlavní komponenta (vysvětlená variabilita', 
+  labs(x = paste('1st principal component (explained variability', 
                  round(100 * data.PCA$varprop[1], 2), '%)'),
-       y = paste('2. hlavní komponenta (', 
+       y = paste('2nd principal component (', 
                  round(100 * data.PCA$varprop[2], 2), '%)'),
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   scale_colour_discrete(labels = c('Y = 0', 'Y = 1')) +
   theme_bw() +
   geom_contour(data = nd, aes(x = V1, y = V2, z = prd), colour = 'black')
 ```
 
-Vidíme, že dělící hranicí je přímka, lineární funkce v prostoru 2D, což jsme ostatně od LDA čekali.
-Nakonec přidáme chybovosti do souhrnné tabulky.
+We see that the decision boundary is a line, a linear function in 2D space, which we expected from LDA. Finally, we will add the error rates to the summary table.
 
 ```{r}
 Res <- data.frame(model = 'LDA', 
@@ -786,35 +625,33 @@ Res <- data.frame(model = 'LDA',
 RESULTS <- rbind(RESULTS, Res)
 ```
 
-### Kvadratická diskriminační analýza
+### Quadratic Discriminant Analysis
 
-Jako další sestrojme klasifikátor pomocí kvadratické diskriminační analýzy (QDA).
-Jedná se o analogický případ jako LDA s tím rozdílem, že nyní připouštíme pro každou ze tříd rozdílnou kovarianční matici normálního rozdělení, ze kterého pocházejí příslušné skóry.
-Tento vypuštěný předpoklad o rovnosti kovariančních matic vede ke kvadratické hranici mezi třídami.
+Next, let's construct a classifier using Quadratic Discriminant Analysis (QDA). This is an analogous case to LDA, with the difference that we now allow a different covariance matrix for the normal distribution from which the respective scores originate for each of the classes. This relaxed assumption of equal covariance matrices leads to a quadratic boundary between the classes.
 
-V `R` se provede QDA analogicky jako LDA v předchozí části, tedy opět bychom pomocí funkcionální analýzy hlavních komponent spočítali skóre pro trénovací i testovací funkce, sestrojili klasifikátor na skórech prvních $p$ hlavních komponent a pomocí něj predikovali příslušnost testovacích křivek do třídy $Y^* \in \{0, 1\}$.
+In `R`, we perform QDA analogously to LDA in the previous section, meaning we would again calculate scores for the training and test functions using functional principal component analysis, construct the classifier based on the scores of the first $p$ principal components, and use it to predict the class membership of the test curves $Y^* \in \{0, 1\}$.
 
-Funkcionální PCA provádět nemusíme, využijeme výsledků z části LDA.
+We do not need to perform functional PCA; we will use the results from the LDA section.
 
 ```{r include=FALSE, eval=FALSE}
-# analyza hlavnich komponent ... uplne stejne jako u LDA
-data.PCA <- pca.fd(X.train, nharm = 10) # nharm - maximalni pocet HK
-nharm <- which(cumsum(data.PCA$varprop) >= 0.9)[1] # urceni p
+# PCA analysis ... exactly the same as in LDA
+data.PCA <- pca.fd(X.train, nharm = 10) # nharm - maximum number of PCs
+nharm <- which(cumsum(data.PCA$varprop) >= 0.9)[1] # determining p
 if(nharm == 1) nharm <- 2
 
 data.PCA <- pca.fd(X.train, nharm = nharm) 
-data.PCA.train <- as.data.frame(data.PCA$scores) # skore prvnich p HK
-data.PCA.train$Y <- factor(Y.train) # prislusnost do trid
+data.PCA.train <- as.data.frame(data.PCA$scores) # scores of the first p PCs
+data.PCA.train$Y <- factor(Y.train) # class membership
 ```
 
 ```{r include=FALSE, eval=FALSE}
-# vypocet skoru testovacich funkci
-scores <- matrix(NA, ncol = nharm, nrow = length(Y.test)) # prazdna matice 
+# calculation of scores for test functions
+scores <- matrix(NA, ncol = nharm, nrow = length(Y.test)) # empty matrix 
 
 for(k in 1:dim(scores)[1]) {
-  xfd = X.test[k] - data.PCA$meanfd[1] # k-te pozorovani - prumerna funkce
+  xfd = X.test[k] - data.PCA$meanfd[1] # k-th observation - mean function
   scores[k, ] = inprod(xfd, data.PCA$harmonics) 
-  # skalarni soucin rezidua a vlastnich funkci rho (funkcionalni hlavni komponenty)
+  # scalar product of the residual and the eigenfunctions rho (functional principal components)
 }
 
 data.PCA.test <- as.data.frame(scores)
@@ -822,71 +659,69 @@ data.PCA.test$Y <- factor(Y.test)
 colnames(data.PCA.test) <- colnames(data.PCA.train) 
 ```
 
-Můžeme tedy rovnou přistoupit k sestrojení klasifikátoru, což provedeme pomocí funkce `qda()`.
-Následně spočítáme přesnost klasifikátoru na testovacích a trénovacích datech.
+We can now proceed directly to constructing the classifier, which we will do using the `qda()` function. We will then calculate the accuracy of the classifier on the test and training data.
 
 ```{r}
 # model
 clf.QDA <- qda(Y ~ ., data = data.PCA.train)
 
-# presnost na trenovacich datech
+# accuracy on training data
 predictions.train <- predict(clf.QDA, newdata = data.PCA.train)
 presnost.train <- table(data.PCA.train$Y, predictions.train$class) |>
   prop.table() |> diag() |> sum()
   
-# presnost na testovacich datech
+# accuracy on test data
 predictions.test <- predict(clf.QDA, newdata = data.PCA.test)
 presnost.test <- table(data.PCA.test$Y, predictions.test$class) |>
   prop.table() |> diag() |> sum()
 ```
 
-Spočítali jsme tedy jednak chybovost klasifikátoru na trénovacích (`r 100 * round(1-presnost.train, 4)` %), tak i na testovacích datech (`r 100 * round(1-presnost.test, 4)` %).
+Thus, we have calculated the error rate of the classifier on the training (`r 100 * round(1-presnost.train, 4)` %) and test data (`r 100 * round(1-presnost.test, 4)` %).
 
-Pro grafické znázornění metody můžeme zaznačit dělící hranici do grafu skórů prvních dvou hlavních komponent.
-Tuto hranici spočítáme na husté síti bodů a zobrazíme ji pomocí funkce `geom_contour()` stejně jako v případě LDA.
+For a graphical representation of the method, we can mark the decision boundary in the graph of the scores of the first two principal components. We will calculate this boundary on a dense grid of points and display it using the `geom_contour()` function, just as we did in the case of LDA.
 
 ```{r include=FALSE, eval=FALSE}
-# pridame diskriminacni hranici
-np <- 1001 # pocet bodu site
-# x-ova osa ... 1. HK
+# add decision boundary
+np <- 1001 # number of grid points
+# x-axis ... 1st PC
 nd.x <- seq(from = min(data.PCA.train$V1), 
             to = max(data.PCA.train$V1), length.out = np)
-# y-ova osa ... 2. HK
+# y-axis ... 2nd PC
 nd.y <- seq(from = min(data.PCA.train$V2), 
             to = max(data.PCA.train$V2), length.out = np)
-# pripad pro 2 HK ... p = 2
+# case for 2 PCs ... p = 2
 nd <- expand.grid(V1 = nd.x, V2 = nd.y)
-# pokud p = 3
+# if p = 3
 if(dim(data.PCA.train)[2] == 4) {
   nd <- expand.grid(V1 = nd.x, V2 = nd.y, V3 = data.PCA.train$V3[1])}
-# pokud p = 4
+# if p = 4
 if(dim(data.PCA.train)[2] == 5) {
   nd <- expand.grid(V1 = nd.x, V2 = nd.y, V3 = data.PCA.train$V3[1],
                     V4 = data.PCA.train$V4[1])}
-# pokud p = 5
+# if p = 5
 if(dim(data.PCA.train)[2] == 6) {
   nd <- expand.grid(V1 = nd.x, V2 = nd.y, V3 = data.PCA.train$V3[1],
                     V4 = data.PCA.train$V4[1], V5 = data.PCA.train$V5[1])}
 ```
 
-```{r fig.cap="Skóre prvních dvou hlavních komponent, barevně odlišené podle příslušnosti do klasifikační třídy. Černě je vyznačena dělící hranice (parabola v rovině prvních dvou hlavních komponent) mezi třídami sestrojená pomocí QDA."}
+```{r fig.cap="Scores of the first two principal components, colored according to class membership. The decision boundary (a parabola in the plane of the first two principal components) between the classes constructed using QDA is indicated in black."}
 nd <- nd |> mutate(prd = as.numeric(predict(clf.QDA, newdata = nd)$class))
 
 data.PCA.train |> ggplot(aes(x = V1, y = V2, colour = Y)) +
   geom_point(size = 1.5) + 
-  labs(x = paste('1. hlavní komponenta (vysvětlená variabilita', 
+  labs(x = paste('1st principal component (explained variability', 
                  round(100 * data.PCA$varprop[1], 2), '%)'),
-       y = paste('2. hlavní komponenta (', 
+       y = paste('2nd principal component (', 
                  round(100 * data.PCA$varprop[2], 2), '%)'),
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   scale_colour_discrete(labels = c('Y = 0', 'Y = 1')) +
   theme_bw() +
   geom_contour(data = nd, aes(x = V1, y = V2, z = prd), colour = 'black')
 ```
 
-Všimněme si, že dělící hranicí mezi klasifikačními třídami je nyní parabola.
+Note that the decision boundary between the classification classes is now a parabola.
 
-Nakonec ještě doplníme chybovosti do souhrnné tabulky.
+Finally, we will add the error rates to the summary table.
 
 ```{r}
 Res <- data.frame(model = 'QDA', 
@@ -1147,7 +982,7 @@ data.frame(
   theme_bw() + 
   labs(x = 'Lineární prediktor',
        y = 'Odhadnuté pravděpodobnosti Pr(Y = 1|X = x)',
-       colour = 'Klasifikační\n      třída') 
+       colour = 'Class') 
 ```
 
 Můžeme si ještě pro informaci zobrazit průběh odhadnuté parametrické funkce $\beta(t)$.
@@ -1274,7 +1109,7 @@ data.PCA.train |> ggplot(aes(x = V1, y = V2, colour = Y)) +
                  round(100 * data.PCA$varprop[1], 2), '%)'),
        y = paste('2. hlavní komponenta (', 
                  round(100 * data.PCA$varprop[2], 2), '%)'),
-       colour = 'Klasifikační\n      třída') +
+       colour = 'Class') +
   scale_colour_discrete(labels = c('Y = 0', 'Y = 1')) +
   theme_bw() +
   geom_contour(data = nd, aes(x = V1, y = V2, z = prd), colour = 'black')
