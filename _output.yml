@@ -1,8 +1,25 @@
 bookdown::gitbook:
+  highlight: tango
+  #includes:
+  #  in_header: header.html
+  clean: FALSE
   css: style.css
+  code_folding: hide
+  fig_caption: true
+  number_sections: true
+  #split_by: chapter
   config:
     toc:
+      collapse: section
+      scroll_highlight: true
       before: |
-        <li><a href="./">SHORT TITLE HERE</a></li>
+        <li class="toc-logo"><a href="./"><img src="sci-lg-eng-rgb.png"></a></li>
       after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+    toolbar:
+        position: fixed   # static
+    search: false
+    edit : null
+    download: false # null
+    fontsettings: null
+    sharing: null
+    info: true

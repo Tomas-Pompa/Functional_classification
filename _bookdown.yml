@@ -1,8 +1,24 @@
 book_filename: "bookdownproj"
 output_dir: docs
 delete_merged_file: true
-edit: https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/edit/main/%s
-view: https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/blob/main/%s
+new_session: yes
+preview: true
+view: https://github.com/Tomas-Pompa/Functional_classification/blob/main/%s
 language:
   ui:
     chapter_name: "Chapter "
+  label: 
+    fig: 'Figure '
+    tab: "Table "
+    eq: "Equation "
+    thm: "Theorem "
+    def: "Definition "
+    exm: "Example "
+rmd_files: # defines the .Rmd files to be included for each output format
+  html: ["index.Rmd"]#, 
+         # "01-Simulace.Rmd", 
+         # "02-Simulace_sigma.Rmd",
+         # "03-Simulace_shift.Rmd",
+         # "04-Simulace_discretizsation.Rmd",
+         # "05-Simulace_deriv2.Rmd",
+         #"06-Application.Rmd"] # 
