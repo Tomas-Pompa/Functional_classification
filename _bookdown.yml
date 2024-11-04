@@ -16,10 +16,10 @@ language:
     exm: "Example "
 rmd_files: # defines the .Rmd files to be included for each output format
   html: ["index.Rmd",
-         '01-Simulation.Rmd']#, 
-         # "01-Simulace.Rmd", 
-         # "02-Simulace_sigma.Rmd",
-         # "03-Simulace_shift.Rmd",
-         # "04-Simulace_discretizsation.Rmd",
-         # "05-Simulace_deriv2.Rmd",
-         #"06-Application.Rmd"] # 
+         '01-Simulace.Rmd',
+         '02-Simulace_sigma.Rmd',
+         '03-Simulace_shift.Rmd',
+         '04-Simulace_discretisation.Rmd',
+         '05-Simulace_deriv2.Rmd',
+         '06-Application.Rmd']
+

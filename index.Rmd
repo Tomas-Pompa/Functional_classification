@@ -5,6 +5,10 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
 # SVM for Functional Data {-}
 
 The goal will be to apply knowledge of the Support Vector Machine (SVM) method for multivariate data to functional-type data, that is, infinite-dimensional objects. To do this, we will use both a transformation (reduction) of objects from infinite to finite dimension, followed by the use of established procedures, as well as a modification of SVM specifically for functional data, leveraging knowledge of Hilbert spaces and inner products.

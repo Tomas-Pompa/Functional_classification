@@ -1,9 +1,11 @@
 --- 
 title: "Functional classification with vertical differences using SVM"
 author: "Tomáš Pompa"
-date: "2024-10-30"
+date: "2024-11-04"
 site: bookdown::bookdown_site
 ---
+
+
 
 # SVM for Functional Data {-}
 
