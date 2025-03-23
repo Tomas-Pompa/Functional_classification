@@ -1,10 +1,12 @@
-## Classification of Functional Data with vertical differences using SVM
+## SVM Classification of Functional Data with Random Vertical Shifts
 
 This document serves as a supporting material for the article:
 
-**Classification of Functional Data with vertical differences using SVM**,
+**Support Vector Machine Classification of Functional Data with Random Vertical Shifts**
 
 which is the extension of authors master thesis with the official project assignment as follows.
+
+---
 
 *Assignment*: In many applications, measured data represent values of a function. Therefore, if the situation allows, it is advantageous to work with them in a functional form, i.e., as elements of an infinite-dimensional space. The thesis will build upon the student’s previous bachelor’s work. The aim is to generalize machine learning methods for functional data and to describe the properties of such approaches. The obtained results will be demonstrated on simulated or real data.
 

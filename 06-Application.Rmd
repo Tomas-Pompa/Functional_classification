@@ -6860,38 +6860,38 @@ box_alpha <- c(0.9, 0.9, 0.8, 0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 0.8, 0.7,
 ```{r}
 # Set different names for classification methods
 methods_names1 <- c(
-      '$K$NN',
-      #'Linear Discriminant Analysis',
+      'KNN',
+      'LDA',
       'QDA',
-      'fLR',
+      'functional LR',
       'LR with fPCA',
       #'Decision Tree -- Discretization',
       #'Decision Tree -- fPCA',
       #'Decision Tree -- Basis Coefficients',
-      'RF -- Discretization',
+      'RF -- discretization',
       'RF -- fPCA',
-      'RF -- Basis Coefficients',
-      'SVM (linear) -- Functional',
-      'SVM (poly) -- Functional',
-      'SVM (radial) -- Functional',
-      'SVM (linear) -- Discretization',
-      'SVM (poly) -- Discretization',
-      'SVM (radial) -- Discretization',
+      'RF -- basis coefficients',
+      'SVM (linear) -- functional',
+      'SVM (poly) -- functional',
+      'SVM (radial) -- functional',
+      'SVM (linear) -- discretization',
+      'SVM (poly) -- discretization',
+      'SVM (radial) -- discretization',
       'SVM (linear) -- fPCA',
       'SVM (poly) -- fPCA',
       'SVM (radial) -- fPCA',
-      'SVM (linear) -- Basis Coefficients',
-      'SVM (poly) -- Basis Coefficients',
-      'SVM (radial) -- Basis Coefficients',
-      'SVM (linear) -- Projection',
-      'SVM (poly) -- Projection',
-      'SVM (radial) -- Projection',
-      'RKHS (Radial SVR) $+$ SVM (linear)',
-      'RKHS (Radial SVR) $+$ SVM (poly)',
-      'RKHS (Radial SVR) $+$ SVM (radial)'#,
-      # 'RKHS (Poly SVR) $+$ SVM (linear)',
-      # 'RKHS (Poly SVR) $+$ SVM (poly)',
-      # 'RKHS (Poly SVR) $+$ SVM (radial)'#,
+      'SVM (linear) -- basis coefficients',
+      'SVM (poly) -- basis coefficients',
+      'SVM (radial) -- basis coefficients',
+      'SVM (linear) -- projection',
+      'SVM (poly) -- projection',
+      'SVM (radial) -- projection',
+      'RKHS (radial SVR) $+$ SVM (linear)',
+      'RKHS (radial SVR) $+$ SVM (poly)',
+      'RKHS (radial SVR) $+$ SVM (radial)',
+      'RKHS (poly SVR) $+$ SVM (linear)',
+      'RKHS (poly SVR) $+$ SVM (poly)',
+      'RKHS (poly SVR) $+$ SVM (radial)'#,
       #'RKHS (Linear SVR) $+$ SVM (linear)',
       #'RKHS (Linear SVR) $+$ SVM (poly)',
       #'RKHS (Linear SVR) $+$ SVM (radial)'
@@ -6899,14 +6899,14 @@ methods_names1 <- c(
 
 
 # Colors for box plots 
-box_col1 <- c('#4dd2ff', '#00ace6', '#00bfff',  '#00bfff',
+box_col1 <- c('#4dd2ff', '#00ace6', '#00ace6', '#00bfff',  '#00bfff',
              rep('#0086b3', 3),
-             rep('#ff3814', 3), rep('#ff3814', 3), rep('#ff6347', 3), rep('#ff7961', 3),
+             rep('#ff3814', 3), rep('#ff3814', 3), rep('#ff3814', 3), rep('#ff6347', 3), rep('#ff7961', 3),
              rep('#ff4d2e', 3), rep('#fa2600', 3))
 
-# Alpha for box plots
-box_alpha1 <- c(0.9, 0.9, 0.9, 0.8, 0.9, 0.8, 0.7,
-               rep(c(0.9, 0.8, 0.7), 6)) #- 0.3
+# alpha for box plots
+box_alpha1 <- c(0.9, 0.9, 0.8, 0.9, 0.8, 0.9, 0.8, 0.7,
+               rep(c(0.9, 0.8, 0.7), 7)) #- 0.3
 ```
 
 ### Simulation for original Data
@@ -9152,7 +9152,7 @@ box_alpha <- c(0.9, 0.9, 0.8, 0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 0.8, 0.7,
 ```
 
 ```{r}
-sub_methods <- methods[c(1, 3:5, 9:29)]
+sub_methods <- methods[c(1:5, 9:32)]
 ```
 
 ```{r fig.cap='Box plots of training error rates for 100 simulations separately for each classification method. The black symbols $+$ denote the means.', warning=FALSE, eval=T}
@@ -9187,29 +9187,29 @@ SIMULACE$test |>
   pivot_longer(cols = methods, names_to = 'method', values_to = 'Err') |>
   mutate(method = factor(method, levels = methods, labels = methods, ordered = TRUE)) |> 
   as.data.frame() |>
-      # filter(method %in% sub_methods) |> 
+      filter(method %in% sub_methods) |>
   ggplot(aes(x = method, y = Err, fill = method, colour = method, alpha = method)) + 
     geom_jitter(position = position_jitter(height = 0, width = 0.15), alpha = 0.6, size = 0.9, pch = 21,
               colour = "black") +
   geom_boxplot(outlier.colour = "white", outlier.shape = 16, outlier.size = 0, 
                notch = FALSE, colour = 'black') + 
   theme_bw() + 
-  labs(x = '', #'Classification Method',
-       # y = "$\\widehat{\\textnormal{Err}}_{test}$"
-       y = expression(widehat(Err)[test])
+  labs(x = 'Classification Method',
+       y = "$\\widehat{\\textnormal{Err}}_{test}$"
+       # y = expression(widehat(Err)[test])
        ) + 
   theme(legend.position = 'none',
-        axis.text.x = element_text(angle = 35, hjust = 1)) +
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
   stat_summary(fun = "mean", geom = "point", shape = 4,
                size = 2, color = "black", alpha = 1) +
-  # scale_x_discrete(labels = methods_names1) +
-  # theme(plot.margin = unit(c(0.1, 0.1, 0.1, 0.5), "cm")) +
-  # scale_fill_manual(values = box_col1) +
-  # scale_alpha_manual(values = box_alpha1) +
+  scale_x_discrete(labels = methods_names1) +
+  theme(plot.margin = unit(c(0.1, 0.1, 0.7, 0.5), "cm")) +
+  scale_fill_manual(values = box_col1) +
+  scale_alpha_manual(values = box_alpha1) +
   geom_hline(yintercept = min(SIMULACE.df$Err.test), 
              linetype = 'dashed', colour = 'gray25', alpha = 0.8)
 
-# ggsave("figures/kap7_tecator_box_test_neder_new.tex", device = tikz, width = 7, height = 5)
+# ggsave("figures/results_tec_neder.tex", device = tikz, width = 7, height = 5)
 # ggsave("figures/kap7_tecator_box_test_neder_subset.tex", device = tikz, width = 6.5, height = 5)
 ```
 
@@ -11540,30 +11540,30 @@ SIMULACE$test |>
   pivot_longer(cols = methods, names_to = 'method', values_to = 'Err') |>
   mutate(method = factor(method, levels = methods, labels = methods, ordered = TRUE)) |> 
   as.data.frame() |>
-   # filter(method %in% sub_methods) |> 
+   filter(method %in% sub_methods) |>
   ggplot(aes(x = method, y = Err, fill = method, colour = method, alpha = method)) +
   geom_jitter(position = position_jitter(height = 0, width = 0.15), alpha = 0.6, size = 0.9, pch = 21,
               colour = "black") +
   geom_boxplot(outlier.colour = "white", outlier.shape = 16, outlier.size = 0, 
                notch = FALSE, colour = 'black') + 
   theme_bw() + 
-  labs(x = '', #'Classification Method',
-       # y = "$\\widehat{\\textnormal{Err}}_{test}$"
-       y = expression(widehat(Err)[train])
+  labs(x = 'Classification Method',
+       y = "$\\widehat{\\textnormal{Err}}_{test}$"
+       # y = expression(widehat(Err)[train])
        ) + 
   theme(legend.position = 'none',
-        axis.text.x = element_text(angle = 35, hjust = 1)) +
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
   stat_summary(fun = "mean", geom = "point", shape = 4,
                size = 2, color = "black", alpha = 1) +
-  # scale_x_discrete(labels = methods_names1) +
-  # theme(plot.margin = unit(c(0.1, 0.1, 0.1, 0.5), "cm")) +
-  # coord_cartesian(ylim = c(0, 0.15)) +
-  # scale_fill_manual(values = box_col1) +
-  # scale_alpha_manual(values = box_alpha1) +
+  scale_x_discrete(labels = methods_names1) +
+  theme(plot.margin = unit(c(0.1, 0.1, 0.7, 0.5), "cm")) +
+  coord_cartesian(ylim = c(0, 0.15)) +
+  scale_fill_manual(values = box_col1) +
+  scale_alpha_manual(values = box_alpha1) +
   geom_hline(yintercept = min(SIMULACE.df$Err.test), 
              linetype = 'dashed', colour = 'grey20', alpha = 0.8)
 
-# ggsave("figures/kap7_tecator_box_test_der_new.tex", device = tikz, width = 7, height = 5)
+# ggsave("figures/results_tec_der.tex", device = tikz, width = 7, height = 5)
 # ggsave("figures/kap7_tecator_box_test_der_subset.tex", device = tikz, width = 6.5, height = 5)
 ```
 

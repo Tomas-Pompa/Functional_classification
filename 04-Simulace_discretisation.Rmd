@@ -1247,4 +1247,4 @@ p2
 # ggsave("figures/kap6_sim_03diskr_curvesTime.tex", device = tikz, width = 4.5, height = 4.5)
 ```
 
-Detailed comments on the results of this simulation study can be found in the thesis.
+Detailed comments on the results of this simulation study can be found in the article.

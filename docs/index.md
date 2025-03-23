@@ -1,13 +1,18 @@
 --- 
-title: "Functional classification with vertical differences using SVM"
+title: "Support Vector Machine Classification of
+Functional Data with Random Vertical Shifts"
 author: "Tomáš Pompa"
-date: "2024-11-04"
+date: "2025-03-23"
 site: bookdown::bookdown_site
 ---
 
 
 
 # SVM for Functional Data {-}
+
+This document provides supplementary material for the article **Support Vector Machine Classification of Functional Data with Random Vertical Shifts**. It includes additional details, supporting analyses, and further explanations that complement the main findings presented in the paper.
+
+---------------
 
 The goal will be to apply knowledge of the Support Vector Machine (SVM) method for multivariate data to functional-type data, that is, infinite-dimensional objects. To do this, we will use both a transformation (reduction) of objects from infinite to finite dimension, followed by the use of established procedures, as well as a modification of SVM specifically for functional data, leveraging knowledge of Hilbert spaces and inner products.
 

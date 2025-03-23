@@ -3194,9 +3194,9 @@ SIMUL_params[, 1, ] |>
 Now we will do the same for the test error rates.
 
 ```{r}
-methods_subset <- c('KNN', 'LR_functional', 'SVM linear - diskr',
-                    'SVM linear - PCA', 
-                    'SVM linear - projection', 'SVM linear - RKHS - radial')
+# methods_subset <- c('KNN', 'LR_functional', 'SVM linear - diskr',
+#                     'SVM linear - PCA', 
+#                     'SVM linear - projection', 'SVM linear - RKHS - radial')
 
 Dat <- SIMUL_params[, 2, ] |> 
   as.data.frame() |> t()
@@ -3273,11 +3273,11 @@ SIMUL_params[, 2, ] |>
   geom_line(data = df_plot_smooth, aes(x = shift, y = value, col = method,
                                        linetype = method),
             linewidth = 1.5) + 
-  scale_colour_manual(values = rep(c('deepskyblue2', 'tomato'), c(3, 3)),
+  scale_colour_manual(values = rep(c('deepskyblue2', 'tomato'), c(4, 4)),
                       labels = methods_names) + 
-  scale_linetype_manual(values = rep(c('dashed', 'solid', 'dotted'), 2),
+  scale_linetype_manual(values = rep(c('dotdash', 'dashed', 'solid', 'dotted'), 2),
                         labels = methods_names) + 
-  scale_shape_manual(values = rep(c(16, 1, 17, 16, 1, 17)),
+  scale_shape_manual(values = rep(c(16, 1, 17, 4, 16, 1, 17, 4)),
                      labels = methods_names) +
   guides(colour = guide_legend(override.aes = list(size = 1.4, alpha = 0.6)),
          linetype = guide_legend(override.aes = list(linewidth = 0.7)))

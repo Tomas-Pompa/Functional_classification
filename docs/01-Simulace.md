@@ -6320,41 +6320,44 @@ box_alpha <- c(0.9, 0.9, 0.8, 0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 0.8, 0.7,
 ```
 
 
+
+
+
 ``` r
 # Set different names for classification methods
 methods_names1 <- c(
-      '$K$NN',
-      #'Linear Discriminant Analysis',
+      'KNN',
+      'LDA',
       'QDA',
-      'fLR',
+      'functional LR',
       'LR with fPCA',
       #'Decision Tree -- Discretization',
       #'Decision Tree -- fPCA',
       #'Decision Tree -- Basis Coefficients',
-      'RF -- Discretization',
+      'RF -- discretization',
       'RF -- fPCA',
-      'RF -- Basis Coefficients',
-      'SVM (linear) -- Functional',
-      'SVM (poly) -- Functional',
-      'SVM (radial) -- Functional',
-      'SVM (linear) -- Discretization',
-      'SVM (poly) -- Discretization',
-      'SVM (radial) -- Discretization',
+      'RF -- basis coefficients',
+      'SVM (linear) -- functional',
+      'SVM (poly) -- functional',
+      'SVM (radial) -- functional',
+      'SVM (linear) -- discretization',
+      'SVM (poly) -- discretization',
+      'SVM (radial) -- discretization',
       'SVM (linear) -- fPCA',
       'SVM (poly) -- fPCA',
       'SVM (radial) -- fPCA',
-      'SVM (linear) -- Basis Coefficients',
-      'SVM (poly) -- Basis Coefficients',
-      'SVM (radial) -- Basis Coefficients',
-      'SVM (linear) -- Projection',
-      'SVM (poly) -- Projection',
-      'SVM (radial) -- Projection',
-      'RKHS (Radial SVR) $+$ SVM (linear)',
-      'RKHS (Radial SVR) $+$ SVM (poly)',
-      'RKHS (Radial SVR) $+$ SVM (radial)'#,
-      # 'RKHS (Poly SVR) $+$ SVM (linear)',
-      # 'RKHS (Poly SVR) $+$ SVM (poly)',
-      # 'RKHS (Poly SVR) $+$ SVM (radial)'#,
+      'SVM (linear) -- basis coefficients',
+      'SVM (poly) -- basis coefficients',
+      'SVM (radial) -- basis coefficients',
+      'SVM (linear) -- projection',
+      'SVM (poly) -- projection',
+      'SVM (radial) -- projection',
+      'RKHS (radial SVR) $+$ SVM (linear)',
+      'RKHS (radial SVR) $+$ SVM (poly)',
+      'RKHS (radial SVR) $+$ SVM (radial)',
+      'RKHS (poly SVR) $+$ SVM (linear)',
+      'RKHS (poly SVR) $+$ SVM (poly)',
+      'RKHS (poly SVR) $+$ SVM (radial)'#,
       #'RKHS (Linear SVR) $+$ SVM (linear)',
       #'RKHS (Linear SVR) $+$ SVM (poly)',
       #'RKHS (Linear SVR) $+$ SVM (radial)'
@@ -6362,14 +6365,14 @@ methods_names1 <- c(
 
 
 # Colors for box plots 
-box_col1 <- c('#4dd2ff', '#00ace6', '#00bfff',  '#00bfff',
+box_col1 <- c('#4dd2ff', '#00ace6', '#00ace6', '#00bfff',  '#00bfff',
              rep('#0086b3', 3),
-             rep('#ff3814', 3), rep('#ff3814', 3), rep('#ff6347', 3), rep('#ff7961', 3),
+             rep('#ff3814', 3), rep('#ff3814', 3), rep('#ff3814', 3), rep('#ff6347', 3), rep('#ff7961', 3),
              rep('#ff4d2e', 3), rep('#fa2600', 3))
 
 # Alpha for box plots
-box_alpha1 <- c(0.9, 0.9, 0.9, 0.8, 0.9, 0.8, 0.7,
-               rep(c(0.9, 0.8, 0.7), 6)) #- 0.3
+box_alpha1 <- c(0.9, 0.9, 0.8, 0.9, 0.8, 0.9, 0.8, 0.7,
+               rep(c(0.9, 0.8, 0.7), 7)) #- 0.3
 ```
 
 
@@ -6397,8 +6400,8 @@ SIMULACE$train |>
 ```
 
 <div class="figure">
-<img src="01-Simulace_files/figure-html/unnamed-chunk-140-1.png" alt="Box plots of training errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-140)Box plots of training errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols.</p>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-141-1.png" alt="Box plots of training errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-141)Box plots of training errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols.</p>
 </div>
 
 ``` r
@@ -6410,13 +6413,13 @@ SIMULACE$train |>
 
 ``` r
 # For test data
-sub_methods <- methods[c(1, 3:5, 9:29)]
+sub_methods <- methods[c(1:5, 9:32)]
 
 SIMULACE$test |> 
   pivot_longer(cols = methods, names_to = 'method', values_to = 'Err') |>
   mutate(method = factor(method, levels = methods, labels = methods)) |> 
   as.data.frame() |>
-    # filter(method %in% sub_methods) |> 
+    filter(method %in% sub_methods) |>
   ggplot(aes(x = method, y = Err, fill = method, colour = method, alpha = method)) + 
     geom_jitter(position = position_jitter(height = 0, width = 0.15), alpha = 0.6, size = 0.9, pch = 21,
               colour = "black") +
@@ -6425,34 +6428,32 @@ SIMULACE$test |>
   theme_bw() + 
   labs(x = 'Classification Method',
        y = expression(widehat(Err)[test])
+       # y = '$\\widehat{\\textnormal{Err}}_{test}$'
        ) + 
   theme(legend.position = 'none',
-        axis.text.x = element_text(angle = 35, hjust = 1)) +
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
   stat_summary(fun = "mean", geom = "point", shape = 4,
                size = 2, color = "black", alpha = 1) +
-  # scale_x_discrete(labels = methods_names1) +
-  # theme(plot.margin = unit(c(0.1, 0.1, 0.1, 0.5), "cm")) +
-  # scale_fill_manual(values = box_col1) +
-  # scale_alpha_manual(values = box_alpha1) +
+  scale_x_discrete(labels = methods_names1) +
+  theme(plot.margin = unit(c(0.1, 0.1, 0.7, 0.5), "cm")) +
+  scale_fill_manual(values = box_col1) +
+  scale_alpha_manual(values = box_alpha1) +
   geom_hline(yintercept = min(SIMULACE.df$Err.test), 
              linetype = 'dashed', colour = 'gray20', alpha = 0.8)
 ```
 
 <div class="figure">
-<img src="01-Simulace_files/figure-html/unnamed-chunk-142-1.png" alt="Box plots of test errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-142)Box plots of test errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols.</p>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-143-1.png" alt="Box plots of test errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-143)Box plots of test errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols.</p>
 </div>
 
 ``` r
-# ggsave("figures/chapter6_sim_03_boxplot_test_new.tex", device = tikz, width = 7, height = 5)
+# ggsave("figures/sim_01_boxplot_test_final.tex", device = tikz, width = 7, height = 5)
 ```
 
 
-```
-## Warning: Using alpha for a discrete variable is not advised.
-```
 
-We would now like to formally test whether some classification methods are better than others based on the previous simulation on these data, or to show that we can consider them equally successful. Given the violation of the normality assumption, we cannot use the classic paired t-test. Instead, we will utilize its nonparametric alternative—the paired Wilcoxon test. However, we must be careful with interpretation in this case.
+We would now like to formally test whether some classification methods are better than others based on the previous simulation on these data, or to show that we can consider them equally successful. 
 
 
 ``` r
@@ -6473,6 +6474,8 @@ lillie.test(SIMULACE$test[, 'SVM linear - projection'])$p.value
 ## [1] 0.0004162642
 ```
 
+Given the violation of the normality assumption, we cannot use the classic paired t-test. Instead, we will utilize its nonparametric alternative - the paired Wilcoxon test. However, we must be careful with interpretation in this case.
+
 
 ``` r
 wilcox.test(SIMULACE$test[, 'SVM linear - Bbasis'], SIMULACE$test[, 'SVM linear - projection'], alternative = 'two.sided', paired = TRUE)$p.value
@@ -6482,12 +6485,62 @@ wilcox.test(SIMULACE$test[, 'SVM linear - Bbasis'], SIMULACE$test[, 'SVM linear 
 ## [1] 0.4297988
 ```
 
+
 ``` r
 wilcox.test(SIMULACE$test[, 'LR_functional'], SIMULACE$test[, 'SVM linear - diskr'], alternative = 'two.sided', paired = TRUE)$p.value
 ```
 
 ```
 ## [1] 0.1274886
+```
+
+
+``` r
+wilcox.test(SIMULACE$test[, 'SVM linear - projection'], SIMULACE$test[, 'SVM linear - diskr'], alternative = 'two.sided', paired = TRUE)$p.value
+```
+
+```
+## [1] 0.0001353731
+```
+
+
+``` r
+wilcox.test(SIMULACE$test[, 'LR_functional'], SIMULACE$test[, 'SVM linear - projection'], alternative = 'two.sided', paired = TRUE)$p.value
+```
+
+```
+## [1] 0.002208014
+```
+
+Comparing SVM with discretization with functional SVM.
+
+
+``` r
+wilcox.test(SIMULACE$test[, 'SVM linear - func'], SIMULACE$test[, 'SVM linear - diskr'], alternative = 'two.sided', paired = TRUE)$p.value
+```
+
+```
+## [1] 0.0003004829
+```
+
+
+
+``` r
+wilcox.test(SIMULACE$test[, 'SVM poly - func'], SIMULACE$test[, 'SVM poly - diskr'], alternative = 'two.sided', paired = TRUE)$p.value
+```
+
+```
+## [1] 0.1656051
+```
+
+
+
+``` r
+wilcox.test(SIMULACE$test[, 'SVM rbf - func'], SIMULACE$test[, 'SVM rbf - diskr'], alternative = 'two.sided', paired = TRUE)$p.value
+```
+
+```
+## [1] 0.4878897
 ```
 
 Now let's look at the comparison between functional logistic regression and projection onto the B-spline basis.
@@ -6578,7 +6631,7 @@ wilcox.test(SIMULACE$test[, 'SVM linear - projection'], SIMULACE$test[, 'SVM rbf
 Finally, let’s look at which hyperparameter values were the most frequently chosen.
 
 
-Table: (\#tab:unnamed-chunk-149)Medians of hyperparameter values for selected methods, for which some hyperparameter was determined using cross-validation.
+Table: (\#tab:unnamed-chunk-156)Medians of hyperparameter values for selected methods, for which some hyperparameter was determined using cross-validation.
 
                           Median hyperparameter value
 -----------------------  ----------------------------
@@ -6626,8 +6679,8 @@ CV_res |>
 ```
 
 <div class="figure">
-<img src="01-Simulace_files/figure-html/unnamed-chunk-150-1.png" alt="Histograms of hyperparameter values for KNN, functional logistic regression, and a histogram for the number of principal components." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-150)Histograms of hyperparameter values for KNN, functional logistic regression, and a histogram for the number of principal components.</p>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-157-1.png" alt="Histograms of hyperparameter values for KNN, functional logistic regression, and a histogram for the number of principal components." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-157)Histograms of hyperparameter values for KNN, functional logistic regression, and a histogram for the number of principal components.</p>
 </div>
 
 
@@ -6647,8 +6700,8 @@ CV_res |>
 ```
 
 <div class="figure">
-<img src="01-Simulace_files/figure-html/unnamed-chunk-152-1.png" alt="Histograms of hyperparameter values for the SVM method with projection onto the B-spline basis." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-152)Histograms of hyperparameter values for the SVM method with projection onto the B-spline basis.</p>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-159-1.png" alt="Histograms of hyperparameter values for the SVM method with projection onto the B-spline basis." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-159)Histograms of hyperparameter values for the SVM method with projection onto the B-spline basis.</p>
 </div>
 
 
@@ -6670,8 +6723,8 @@ CV_res |>
 ```
 
 <div class="figure">
-<img src="01-Simulace_files/figure-html/unnamed-chunk-154-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with radial kernel." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-154)Histograms of hyperparameter values for RKHS + SVM with radial kernel.</p>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-161-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with radial kernel." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-161)Histograms of hyperparameter values for RKHS + SVM with radial kernel.</p>
 </div>
 
 
@@ -6693,8 +6746,8 @@ CV_res |>
 ```
 
 <div class="figure">
-<img src="01-Simulace_files/figure-html/unnamed-chunk-156-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with polynomial kernel." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-156)Histograms of hyperparameter values for RKHS + SVM with polynomial kernel.</p>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-163-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with polynomial kernel." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-163)Histograms of hyperparameter values for RKHS + SVM with polynomial kernel.</p>
 </div>
 
 
@@ -6715,8 +6768,8 @@ CV_res |>
 ```
 
 <div class="figure">
-<img src="01-Simulace_files/figure-html/unnamed-chunk-158-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with linear kernel." width="672" />
-<p class="caption">(\#fig:unnamed-chunk-158)Histograms of hyperparameter values for RKHS + SVM with linear kernel.</p>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-165-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with linear kernel." width="672" />
+<p class="caption">(\#fig:unnamed-chunk-165)Histograms of hyperparameter values for RKHS + SVM with linear kernel.</p>
 </div>
 
 

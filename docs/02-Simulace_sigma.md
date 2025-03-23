@@ -3399,11 +3399,13 @@ To enhance clarity, we will plot the graphs only for a subset of methods.
 
 ``` r
 methods_names <- c(
-      '$K$ nearest neighbors',
-      'Functional LR',
-      'SVM (linear) - discretization',
+      'KNN',
+      'fLR',
+      'RF - coefs',
+      'SVM (linear) - discr',
       'SVM (linear) - fPCA',
-      'SVM (linear) - projection',
+      'SVM (linear) - coefs',
+      'SVM (linear) - projec',
       'RKHS (radial) + SVM (linear)'
 )
 ```
@@ -3455,12 +3457,12 @@ Now we will do the same for test error.
 
 
 ``` r
-# methods_subset <- c('KNN', 'LR_functional', 'RF_Bbasis', 'SVM linear - diskr',
-#                     'SVM linear - PCA', 'SVM linear - Bbasis',
-#                     'SVM linear - projection', 'SVM linear - RKHS - radial')
-methods_subset <- c('KNN', 'LR_functional', 'SVM linear - diskr',
-                    'SVM linear - PCA',
+methods_subset <- c('KNN', 'LR_functional', 'RF_Bbasis', 'SVM linear - diskr',
+                    'SVM linear - PCA', 'SVM linear - Bbasis',
                     'SVM linear - projection', 'SVM linear - RKHS - radial')
+# methods_subset <- c('KNN', 'LR_functional', 'SVM linear - diskr',
+#                     'SVM linear - PCA',
+#                     'SVM linear - projection', 'SVM linear - RKHS - radial')
 
 Dat <- SIMUL_params[, 2, ] |> 
   as.data.frame() |> t()
@@ -3539,30 +3541,31 @@ df_plot_smooth <- data.frame(
 
 ``` r
 # for test data
-SIMUL_params[, 2, ] |> 
-  as.data.frame() |> 
+SIMUL_params[, 2, ] |>
+  as.data.frame() |>
   mutate(method = methods) |>
-  pivot_longer(cols = as.character(sigma_vector), 
-               names_to = 'sigma', 
+  pivot_longer(cols = as.character(sigma_vector),
+               names_to = 'sigma',
                values_to = 'Err') |>
-  mutate(method = factor(method, levels = methods, labels = methods, ordered = TRUE), 
-         sigma = as.numeric(sigma)) |> 
-  # filter(method %in% c('KNN', 'QDA', 'LR_functional', 
-  #                      'RF_discr', #'RF_score', 'RF_Bbasis', 
-  #                      'SVM linear - diskr',# 'SVM poly - diskr', 'SVM rbf - diskr', 
-  #                      # 'SVM linear - PCA',# 'SVM poly - PCA', 'SVM rbf - PCA', 
+  mutate(method = factor(method, levels = methods, labels = methods, ordered = TRUE),
+         sigma = as.numeric(sigma)) |>
+  # filter(method %in% c('KNN', 'QDA', 'LR_functional',
+  #                      'RF_discr', #'RF_score', 'RF_Bbasis',
+  #                      'SVM linear - diskr',# 'SVM poly - diskr', 'SVM rbf - diskr',
+  #                      # 'SVM linear - PCA',# 'SVM poly - PCA', 'SVM rbf - PCA',
   #                      'SVM linear - Bbasis',# 'SVM poly - Bbasis', 'SVM rbf - Bbasis',
   #                      'SVM linear - projection',# 'SVM poly - projection',
-  #                      # 'SVM rbf - projection', 
-  #                      'SVM linear - RKHS - radial'#, 'SVM poly - RKHS - radial', 
+  #                      # 'SVM rbf - projection',
+  #                      'SVM linear - RKHS - radial'#, 'SVM poly - RKHS - radial',
   #                      # 'SVM rbf - RKHS - radial'
   #                      )) |>
   filter(method %in% methods_subset) |>
-  mutate(method = factor(method, levels = methods_subset, 
+  mutate(method = factor(method, levels = methods_subset,
                          labels = methods_subset, ordered = TRUE)) |>
   ggplot(aes(x = sigma, y = Err, colour = method, shape = method)) + 
   geom_point(alpha = 0.7, size = 0.6) + 
   theme_bw() + 
+  #  facet_wrap(~factor(param, c('sigma', 'shift'))) +
   labs(x = 'sigma',
        y = 'Test Error',
        colour = 'Classification Method',
@@ -3570,7 +3573,9 @@ SIMUL_params[, 2, ] |>
        shape = 'Classification Method') + 
   theme(legend.position = 'right',
         plot.margin = unit(c(0.1, 0.5, 0.3, 0.3), "cm"),
-        panel.grid.minor.x = element_blank()) +
+        panel.grid.minor.x = element_blank(),
+        strip.background = element_blank(),
+  strip.text.x = element_blank()) +
   # guides(colour=guide_legend(direction = 'vertical'),
   #        linetype=guide_legend(direction = 'vertical'),
   #        shape=guide_legend(direction = 'vertical')) + 
@@ -3578,11 +3583,11 @@ SIMUL_params[, 2, ] |>
   geom_line(data = df_plot_smooth, aes(x = sigma, y = value, col = method,
                                        linetype = method),
             linewidth = 1.5) + 
-  scale_colour_manual(values = rep(c('deepskyblue2', 'tomato'), c(3, 3)),
+  scale_colour_manual(values = rep(c('deepskyblue2', 'tomato'), c(4, 4)),
                       labels = methods_names) + 
-  scale_linetype_manual(values = rep(c('dashed', 'solid', 'dotted'), 2),
+  scale_linetype_manual(values = rep(c('dotdash', 'dashed', 'solid', 'dotted'), 2),
                         labels = methods_names) + 
-  scale_shape_manual(values = rep(c(16, 1, 17, 16, 1, 17)),
+  scale_shape_manual(values = rep(c(16, 1, 17, 4, 16, 1, 17, 4)),
                      labels = methods_names) +
   guides(colour = guide_legend(override.aes = list(size = 1.4, alpha = 0.6)),
          linetype = guide_legend(override.aes = list(linewidth = 0.7)))
@@ -3594,7 +3599,7 @@ SIMUL_params[, 2, ] |>
 </div>
 
 ``` r
-# ggsave("figures/kap6_sim_03sigma_curvesErr_subset.tex", device = tikz, width = 8, height = 5)
+# ggsave("figures/sigmashiftresults.tex", device = tikz, width = 8, height = 5)
 ```
 
 

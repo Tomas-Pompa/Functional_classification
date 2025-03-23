@@ -478,7 +478,7 @@ duration |> print()
 ```
 
 ```
-## Time difference of 1.783115 secs
+## Time difference of 0.718204 secs
 ```
 
 We can graphically visualize the decision tree using the `fancyRpartPlot()` function. We will set the colors of the nodes to reflect the previous color differentiation. This will be an unpruned tree.
@@ -562,7 +562,7 @@ duration |> print()
 ```
 
 ```
-## Time difference of 0.563031 secs
+## Time difference of 0.302609 secs
 ```
 
 
@@ -688,7 +688,7 @@ duration.l |> print()
 ```
 
 ```
-## Time difference of 0.09696507 secs
+## Time difference of 0.04756021 secs
 ```
 
 ``` r
@@ -704,7 +704,7 @@ duration.p |> print()
 ```
 
 ```
-## Time difference of 0.06928778 secs
+## Time difference of 0.03182602 secs
 ```
 
 ``` r
@@ -720,7 +720,7 @@ duration.r |> print()
 ```
 
 ```
-## Time difference of 0.09518504 secs
+## Time difference of 0.06402302 secs
 ```
 
 
@@ -743,11 +743,11 @@ Table: (\#tab:unnamed-chunk-34)Summary of results of the methods used on simulat
 
 Model                                $\widehat{Err}_{train}\quad\quad\quad\quad\quad$         $\widehat{Err}_{test}\quad\quad\quad\quad\quad$          Duration
 ----------------------------------  -------------------------------------------------------  -------------------------------------------------------  ---------
-Tree - discr.                                                                        0.3357                                                   0.4667     1.7831
-RForest - discr                                                                      0.0000                                                   0.4000     0.5630
-SVM linear - discr                                                                   0.0571                                                   0.1667     0.0970
-SVM poly - discr                                                                     0.0214                                                   0.1667     0.0693
-SVM rbf - discr                                                                      0.0357                                                   0.1333     0.0952
+Tree - discr.                                                                        0.3357                                                   0.4667     0.7182
+RForest - discr                                                                      0.0000                                                   0.4000     0.3026
+SVM linear - discr                                                                   0.0571                                                   0.1667     0.0476
+SVM poly - discr                                                                     0.0214                                                   0.1667     0.0318
+SVM rbf - discr                                                                      0.0357                                                   0.1333     0.0640
 
 ## Simulation Study {#simul3diskr}
 
@@ -1380,4 +1380,4 @@ p2
 # ggsave("figures/kap6_sim_03diskr_curvesTime.tex", device = tikz, width = 4.5, height = 4.5)
 ```
 
-Detailed comments on the results of this simulation study can be found in the thesis.
+Detailed comments on the results of this simulation study can be found in the article.

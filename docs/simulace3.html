@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Classification of simulated curves | Functional classification with vertical differences using SVM</title>
-  <meta name="description" content="Chapter 1 Classification of simulated curves | Functional classification with vertical differences using SVM" />
+  <title>Chapter 1 Classification of simulated curves | Support Vector Machine Classification of Functional Data with Random Vertical Shifts</title>
+  <meta name="description" content="Chapter 1 Classification of simulated curves | Support Vector Machine Classification of Functional Data with Random Vertical Shifts" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Classification of simulated curves | Functional classification with vertical differences using SVM" />
+  <meta property="og:title" content="Chapter 1 Classification of simulated curves | Support Vector Machine Classification of Functional Data with Random Vertical Shifts" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Classification of simulated curves | Functional classification with vertical differences using SVM" />
+  <meta name="twitter:title" content="Chapter 1 Classification of simulated curves | Support Vector Machine Classification of Functional Data with Random Vertical Shifts" />
   
   
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Tomáš Pompa" />
 
 
-<meta name="date" content="2024-11-04" />
+<meta name="date" content="2025-03-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -274,7 +274,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Functional classification with vertical differences using SVM</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Support Vector Machine Classification of Functional Data with Random Vertical Shifts</a>
           </h1>
         </div>
 
@@ -6654,38 +6654,38 @@ On the test data, the error rate is then 30 % for the linear kernel, 35 % for th
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="simulace3.html#cb138-1" tabindex="-1"></a><span class="co"># Set different names for classification methods</span></span>
 <span id="cb138-2"><a href="simulace3.html#cb138-2" tabindex="-1"></a>methods_names1 <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb138-3"><a href="simulace3.html#cb138-3" tabindex="-1"></a>      <span class="st">&#39;$K$NN&#39;</span>,</span>
-<span id="cb138-4"><a href="simulace3.html#cb138-4" tabindex="-1"></a>      <span class="co">#&#39;Linear Discriminant Analysis&#39;,</span></span>
+<span id="cb138-3"><a href="simulace3.html#cb138-3" tabindex="-1"></a>      <span class="st">&#39;KNN&#39;</span>,</span>
+<span id="cb138-4"><a href="simulace3.html#cb138-4" tabindex="-1"></a>      <span class="st">&#39;LDA&#39;</span>,</span>
 <span id="cb138-5"><a href="simulace3.html#cb138-5" tabindex="-1"></a>      <span class="st">&#39;QDA&#39;</span>,</span>
-<span id="cb138-6"><a href="simulace3.html#cb138-6" tabindex="-1"></a>      <span class="st">&#39;fLR&#39;</span>,</span>
+<span id="cb138-6"><a href="simulace3.html#cb138-6" tabindex="-1"></a>      <span class="st">&#39;functional LR&#39;</span>,</span>
 <span id="cb138-7"><a href="simulace3.html#cb138-7" tabindex="-1"></a>      <span class="st">&#39;LR with fPCA&#39;</span>,</span>
 <span id="cb138-8"><a href="simulace3.html#cb138-8" tabindex="-1"></a>      <span class="co">#&#39;Decision Tree -- Discretization&#39;,</span></span>
 <span id="cb138-9"><a href="simulace3.html#cb138-9" tabindex="-1"></a>      <span class="co">#&#39;Decision Tree -- fPCA&#39;,</span></span>
 <span id="cb138-10"><a href="simulace3.html#cb138-10" tabindex="-1"></a>      <span class="co">#&#39;Decision Tree -- Basis Coefficients&#39;,</span></span>
-<span id="cb138-11"><a href="simulace3.html#cb138-11" tabindex="-1"></a>      <span class="st">&#39;RF -- Discretization&#39;</span>,</span>
+<span id="cb138-11"><a href="simulace3.html#cb138-11" tabindex="-1"></a>      <span class="st">&#39;RF -- discretization&#39;</span>,</span>
 <span id="cb138-12"><a href="simulace3.html#cb138-12" tabindex="-1"></a>      <span class="st">&#39;RF -- fPCA&#39;</span>,</span>
-<span id="cb138-13"><a href="simulace3.html#cb138-13" tabindex="-1"></a>      <span class="st">&#39;RF -- Basis Coefficients&#39;</span>,</span>
-<span id="cb138-14"><a href="simulace3.html#cb138-14" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- Functional&#39;</span>,</span>
-<span id="cb138-15"><a href="simulace3.html#cb138-15" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- Functional&#39;</span>,</span>
-<span id="cb138-16"><a href="simulace3.html#cb138-16" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- Functional&#39;</span>,</span>
-<span id="cb138-17"><a href="simulace3.html#cb138-17" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- Discretization&#39;</span>,</span>
-<span id="cb138-18"><a href="simulace3.html#cb138-18" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- Discretization&#39;</span>,</span>
-<span id="cb138-19"><a href="simulace3.html#cb138-19" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- Discretization&#39;</span>,</span>
+<span id="cb138-13"><a href="simulace3.html#cb138-13" tabindex="-1"></a>      <span class="st">&#39;RF -- basis coefficients&#39;</span>,</span>
+<span id="cb138-14"><a href="simulace3.html#cb138-14" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- functional&#39;</span>,</span>
+<span id="cb138-15"><a href="simulace3.html#cb138-15" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- functional&#39;</span>,</span>
+<span id="cb138-16"><a href="simulace3.html#cb138-16" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- functional&#39;</span>,</span>
+<span id="cb138-17"><a href="simulace3.html#cb138-17" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- discretization&#39;</span>,</span>
+<span id="cb138-18"><a href="simulace3.html#cb138-18" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- discretization&#39;</span>,</span>
+<span id="cb138-19"><a href="simulace3.html#cb138-19" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- discretization&#39;</span>,</span>
 <span id="cb138-20"><a href="simulace3.html#cb138-20" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- fPCA&#39;</span>,</span>
 <span id="cb138-21"><a href="simulace3.html#cb138-21" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- fPCA&#39;</span>,</span>
 <span id="cb138-22"><a href="simulace3.html#cb138-22" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- fPCA&#39;</span>,</span>
-<span id="cb138-23"><a href="simulace3.html#cb138-23" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- Basis Coefficients&#39;</span>,</span>
-<span id="cb138-24"><a href="simulace3.html#cb138-24" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- Basis Coefficients&#39;</span>,</span>
-<span id="cb138-25"><a href="simulace3.html#cb138-25" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- Basis Coefficients&#39;</span>,</span>
-<span id="cb138-26"><a href="simulace3.html#cb138-26" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- Projection&#39;</span>,</span>
-<span id="cb138-27"><a href="simulace3.html#cb138-27" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- Projection&#39;</span>,</span>
-<span id="cb138-28"><a href="simulace3.html#cb138-28" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- Projection&#39;</span>,</span>
-<span id="cb138-29"><a href="simulace3.html#cb138-29" tabindex="-1"></a>      <span class="st">&#39;RKHS (Radial SVR) $+$ SVM (linear)&#39;</span>,</span>
-<span id="cb138-30"><a href="simulace3.html#cb138-30" tabindex="-1"></a>      <span class="st">&#39;RKHS (Radial SVR) $+$ SVM (poly)&#39;</span>,</span>
-<span id="cb138-31"><a href="simulace3.html#cb138-31" tabindex="-1"></a>      <span class="st">&#39;RKHS (Radial SVR) $+$ SVM (radial)&#39;</span><span class="co">#,</span></span>
-<span id="cb138-32"><a href="simulace3.html#cb138-32" tabindex="-1"></a>      <span class="co"># &#39;RKHS (Poly SVR) $+$ SVM (linear)&#39;,</span></span>
-<span id="cb138-33"><a href="simulace3.html#cb138-33" tabindex="-1"></a>      <span class="co"># &#39;RKHS (Poly SVR) $+$ SVM (poly)&#39;,</span></span>
-<span id="cb138-34"><a href="simulace3.html#cb138-34" tabindex="-1"></a>      <span class="co"># &#39;RKHS (Poly SVR) $+$ SVM (radial)&#39;#,</span></span>
+<span id="cb138-23"><a href="simulace3.html#cb138-23" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- basis coefficients&#39;</span>,</span>
+<span id="cb138-24"><a href="simulace3.html#cb138-24" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- basis coefficients&#39;</span>,</span>
+<span id="cb138-25"><a href="simulace3.html#cb138-25" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- basis coefficients&#39;</span>,</span>
+<span id="cb138-26"><a href="simulace3.html#cb138-26" tabindex="-1"></a>      <span class="st">&#39;SVM (linear) -- projection&#39;</span>,</span>
+<span id="cb138-27"><a href="simulace3.html#cb138-27" tabindex="-1"></a>      <span class="st">&#39;SVM (poly) -- projection&#39;</span>,</span>
+<span id="cb138-28"><a href="simulace3.html#cb138-28" tabindex="-1"></a>      <span class="st">&#39;SVM (radial) -- projection&#39;</span>,</span>
+<span id="cb138-29"><a href="simulace3.html#cb138-29" tabindex="-1"></a>      <span class="st">&#39;RKHS (radial SVR) $+$ SVM (linear)&#39;</span>,</span>
+<span id="cb138-30"><a href="simulace3.html#cb138-30" tabindex="-1"></a>      <span class="st">&#39;RKHS (radial SVR) $+$ SVM (poly)&#39;</span>,</span>
+<span id="cb138-31"><a href="simulace3.html#cb138-31" tabindex="-1"></a>      <span class="st">&#39;RKHS (radial SVR) $+$ SVM (radial)&#39;</span>,</span>
+<span id="cb138-32"><a href="simulace3.html#cb138-32" tabindex="-1"></a>      <span class="st">&#39;RKHS (poly SVR) $+$ SVM (linear)&#39;</span>,</span>
+<span id="cb138-33"><a href="simulace3.html#cb138-33" tabindex="-1"></a>      <span class="st">&#39;RKHS (poly SVR) $+$ SVM (poly)&#39;</span>,</span>
+<span id="cb138-34"><a href="simulace3.html#cb138-34" tabindex="-1"></a>      <span class="st">&#39;RKHS (poly SVR) $+$ SVM (radial)&#39;</span><span class="co">#,</span></span>
 <span id="cb138-35"><a href="simulace3.html#cb138-35" tabindex="-1"></a>      <span class="co">#&#39;RKHS (Linear SVR) $+$ SVM (linear)&#39;,</span></span>
 <span id="cb138-36"><a href="simulace3.html#cb138-36" tabindex="-1"></a>      <span class="co">#&#39;RKHS (Linear SVR) $+$ SVM (poly)&#39;,</span></span>
 <span id="cb138-37"><a href="simulace3.html#cb138-37" tabindex="-1"></a>      <span class="co">#&#39;RKHS (Linear SVR) $+$ SVM (radial)&#39;</span></span>
@@ -6693,14 +6693,14 @@ On the test data, the error rate is then 30 % for the linear kernel, 35 % for th
 <span id="cb138-39"><a href="simulace3.html#cb138-39" tabindex="-1"></a></span>
 <span id="cb138-40"><a href="simulace3.html#cb138-40" tabindex="-1"></a></span>
 <span id="cb138-41"><a href="simulace3.html#cb138-41" tabindex="-1"></a><span class="co"># Colors for box plots </span></span>
-<span id="cb138-42"><a href="simulace3.html#cb138-42" tabindex="-1"></a>box_col1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;#4dd2ff&#39;</span>, <span class="st">&#39;#00ace6&#39;</span>, <span class="st">&#39;#00bfff&#39;</span>,  <span class="st">&#39;#00bfff&#39;</span>,</span>
+<span id="cb138-42"><a href="simulace3.html#cb138-42" tabindex="-1"></a>box_col1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;#4dd2ff&#39;</span>, <span class="st">&#39;#00ace6&#39;</span>, <span class="st">&#39;#00ace6&#39;</span>, <span class="st">&#39;#00bfff&#39;</span>,  <span class="st">&#39;#00bfff&#39;</span>,</span>
 <span id="cb138-43"><a href="simulace3.html#cb138-43" tabindex="-1"></a>             <span class="fu">rep</span>(<span class="st">&#39;#0086b3&#39;</span>, <span class="dv">3</span>),</span>
-<span id="cb138-44"><a href="simulace3.html#cb138-44" tabindex="-1"></a>             <span class="fu">rep</span>(<span class="st">&#39;#ff3814&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#ff3814&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#ff6347&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#ff7961&#39;</span>, <span class="dv">3</span>),</span>
+<span id="cb138-44"><a href="simulace3.html#cb138-44" tabindex="-1"></a>             <span class="fu">rep</span>(<span class="st">&#39;#ff3814&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#ff3814&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#ff3814&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#ff6347&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#ff7961&#39;</span>, <span class="dv">3</span>),</span>
 <span id="cb138-45"><a href="simulace3.html#cb138-45" tabindex="-1"></a>             <span class="fu">rep</span>(<span class="st">&#39;#ff4d2e&#39;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&#39;#fa2600&#39;</span>, <span class="dv">3</span>))</span>
 <span id="cb138-46"><a href="simulace3.html#cb138-46" tabindex="-1"></a></span>
 <span id="cb138-47"><a href="simulace3.html#cb138-47" tabindex="-1"></a><span class="co"># Alpha for box plots</span></span>
-<span id="cb138-48"><a href="simulace3.html#cb138-48" tabindex="-1"></a>box_alpha1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.9</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>,</span>
-<span id="cb138-49"><a href="simulace3.html#cb138-49" tabindex="-1"></a>               <span class="fu">rep</span>(<span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>), <span class="dv">6</span>)) <span class="co">#- 0.3</span></span></code></pre></div>
+<span id="cb138-48"><a href="simulace3.html#cb138-48" tabindex="-1"></a>box_alpha1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>,</span>
+<span id="cb138-49"><a href="simulace3.html#cb138-49" tabindex="-1"></a>               <span class="fu">rep</span>(<span class="fu">c</span>(<span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>), <span class="dv">7</span>)) <span class="co">#- 0.3</span></span></code></pre></div>
 </details>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="simulace3.html#cb139-1" tabindex="-1"></a><span class="co"># For training data</span></span>
@@ -6724,8 +6724,8 @@ On the test data, the error rate is then 30 % for the linear kernel, 35 % for th
 <span id="cb139-19"><a href="simulace3.html#cb139-19" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">min</span>(SIMULACE.df<span class="sc">$</span>Err.train), </span>
 <span id="cb139-20"><a href="simulace3.html#cb139-20" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&#39;dashed&#39;</span>, <span class="at">colour =</span> <span class="st">&#39;grey&#39;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-140"></span>
-<img src="01-Simulace_files/figure-html/unnamed-chunk-140-1.png" alt="Box plots of training errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-141"></span>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-141-1.png" alt="Box plots of training errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
 <p class="caption">
 Figure 1.26: Box plots of training errors for 100 simulations for individual classification methods. Mean values are marked with black <span class="math inline">\(+\)</span> symbols.
 </p>
@@ -6735,13 +6735,13 @@ Figure 1.26: Box plots of training errors for 100 simulations for individual cla
 </details>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="simulace3.html#cb141-1" tabindex="-1"></a><span class="co"># For test data</span></span>
-<span id="cb141-2"><a href="simulace3.html#cb141-2" tabindex="-1"></a>sub_methods <span class="ot">&lt;-</span> methods[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">29</span>)]</span>
+<span id="cb141-2"><a href="simulace3.html#cb141-2" tabindex="-1"></a>sub_methods <span class="ot">&lt;-</span> methods[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">9</span><span class="sc">:</span><span class="dv">32</span>)]</span>
 <span id="cb141-3"><a href="simulace3.html#cb141-3" tabindex="-1"></a></span>
 <span id="cb141-4"><a href="simulace3.html#cb141-4" tabindex="-1"></a>SIMULACE<span class="sc">$</span>test <span class="sc">|&gt;</span> </span>
 <span id="cb141-5"><a href="simulace3.html#cb141-5" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> methods, <span class="at">names_to =</span> <span class="st">&#39;method&#39;</span>, <span class="at">values_to =</span> <span class="st">&#39;Err&#39;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb141-6"><a href="simulace3.html#cb141-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">method =</span> <span class="fu">factor</span>(method, <span class="at">levels =</span> methods, <span class="at">labels =</span> methods)) <span class="sc">|&gt;</span> </span>
 <span id="cb141-7"><a href="simulace3.html#cb141-7" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb141-8"><a href="simulace3.html#cb141-8" tabindex="-1"></a>    <span class="co"># filter(method %in% sub_methods) |&gt; </span></span>
+<span id="cb141-8"><a href="simulace3.html#cb141-8" tabindex="-1"></a>    <span class="fu">filter</span>(method <span class="sc">%in%</span> sub_methods) <span class="sc">|&gt;</span></span>
 <span id="cb141-9"><a href="simulace3.html#cb141-9" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> method, <span class="at">y =</span> Err, <span class="at">fill =</span> method, <span class="at">colour =</span> method, <span class="at">alpha =</span> method)) <span class="sc">+</span> </span>
 <span id="cb141-10"><a href="simulace3.html#cb141-10" tabindex="-1"></a>    <span class="fu">geom_jitter</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="dv">0</span>, <span class="at">width =</span> <span class="fl">0.15</span>), <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="fl">0.9</span>, <span class="at">pch =</span> <span class="dv">21</span>,</span>
 <span id="cb141-11"><a href="simulace3.html#cb141-11" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
@@ -6750,95 +6750,117 @@ Figure 1.26: Box plots of training errors for 100 simulations for individual cla
 <span id="cb141-14"><a href="simulace3.html#cb141-14" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
 <span id="cb141-15"><a href="simulace3.html#cb141-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Classification Method&#39;</span>,</span>
 <span id="cb141-16"><a href="simulace3.html#cb141-16" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">widehat</span>(Err)[test])</span>
-<span id="cb141-17"><a href="simulace3.html#cb141-17" tabindex="-1"></a>       ) <span class="sc">+</span> </span>
-<span id="cb141-18"><a href="simulace3.html#cb141-18" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>,</span>
-<span id="cb141-19"><a href="simulace3.html#cb141-19" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">35</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb141-20"><a href="simulace3.html#cb141-20" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">4</span>,</span>
-<span id="cb141-21"><a href="simulace3.html#cb141-21" tabindex="-1"></a>               <span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb141-22"><a href="simulace3.html#cb141-22" tabindex="-1"></a>  <span class="co"># scale_x_discrete(labels = methods_names1) +</span></span>
-<span id="cb141-23"><a href="simulace3.html#cb141-23" tabindex="-1"></a>  <span class="co"># theme(plot.margin = unit(c(0.1, 0.1, 0.1, 0.5), &quot;cm&quot;)) +</span></span>
-<span id="cb141-24"><a href="simulace3.html#cb141-24" tabindex="-1"></a>  <span class="co"># scale_fill_manual(values = box_col1) +</span></span>
-<span id="cb141-25"><a href="simulace3.html#cb141-25" tabindex="-1"></a>  <span class="co"># scale_alpha_manual(values = box_alpha1) +</span></span>
-<span id="cb141-26"><a href="simulace3.html#cb141-26" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">min</span>(SIMULACE.df<span class="sc">$</span>Err.test), </span>
-<span id="cb141-27"><a href="simulace3.html#cb141-27" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&#39;dashed&#39;</span>, <span class="at">colour =</span> <span class="st">&#39;gray20&#39;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)</span></code></pre></div>
+<span id="cb141-17"><a href="simulace3.html#cb141-17" tabindex="-1"></a>       <span class="co"># y = &#39;$\\widehat{\\textnormal{Err}}_{test}$&#39;</span></span>
+<span id="cb141-18"><a href="simulace3.html#cb141-18" tabindex="-1"></a>       ) <span class="sc">+</span> </span>
+<span id="cb141-19"><a href="simulace3.html#cb141-19" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>,</span>
+<span id="cb141-20"><a href="simulace3.html#cb141-20" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb141-21"><a href="simulace3.html#cb141-21" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">4</span>,</span>
+<span id="cb141-22"><a href="simulace3.html#cb141-22" tabindex="-1"></a>               <span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb141-23"><a href="simulace3.html#cb141-23" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> methods_names1) <span class="sc">+</span></span>
+<span id="cb141-24"><a href="simulace3.html#cb141-24" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.7</span>, <span class="fl">0.5</span>), <span class="st">&quot;cm&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb141-25"><a href="simulace3.html#cb141-25" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> box_col1) <span class="sc">+</span></span>
+<span id="cb141-26"><a href="simulace3.html#cb141-26" tabindex="-1"></a>  <span class="fu">scale_alpha_manual</span>(<span class="at">values =</span> box_alpha1) <span class="sc">+</span></span>
+<span id="cb141-27"><a href="simulace3.html#cb141-27" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">min</span>(SIMULACE.df<span class="sc">$</span>Err.test), </span>
+<span id="cb141-28"><a href="simulace3.html#cb141-28" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">&#39;dashed&#39;</span>, <span class="at">colour =</span> <span class="st">&#39;gray20&#39;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-142"></span>
-<img src="01-Simulace_files/figure-html/unnamed-chunk-142-1.png" alt="Box plots of test errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-143"></span>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-143-1.png" alt="Box plots of test errors for 100 simulations for individual classification methods. Mean values are marked with black $+$ symbols." width="672" />
 <p class="caption">
 Figure 1.27: Box plots of test errors for 100 simulations for individual classification methods. Mean values are marked with black <span class="math inline">\(+\)</span> symbols.
 </p>
 </div>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="simulace3.html#cb142-1" tabindex="-1"></a><span class="co"># ggsave(&quot;figures/chapter6_sim_03_boxplot_test_new.tex&quot;, device = tikz, width = 7, height = 5)</span></span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="simulace3.html#cb142-1" tabindex="-1"></a><span class="co"># ggsave(&quot;figures/sim_01_boxplot_test_final.tex&quot;, device = tikz, width = 7, height = 5)</span></span></code></pre></div>
 </details>
-<pre><code>## Warning: Using alpha for a discrete variable is not advised.</code></pre>
-<p>We would now like to formally test whether some classification methods are better than others based on the previous simulation on these data, or to show that we can consider them equally successful. Given the violation of the normality assumption, we cannot use the classic paired t-test. Instead, we will utilize its nonparametric alternative—the paired Wilcoxon test. However, we must be careful with interpretation in this case.</p>
+<p>We would now like to formally test whether some classification methods are better than others based on the previous simulation on these data, or to show that we can consider them equally successful.</p>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="simulace3.html#cb144-1" tabindex="-1"></a><span class="co"># Check normality</span></span>
-<span id="cb144-2"><a href="simulace3.html#cb144-2" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
-<span id="cb144-3"><a href="simulace3.html#cb144-3" tabindex="-1"></a><span class="fu">lillie.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>])<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="simulace3.html#cb143-1" tabindex="-1"></a><span class="co"># Check normality</span></span>
+<span id="cb143-2"><a href="simulace3.html#cb143-2" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
+<span id="cb143-3"><a href="simulace3.html#cb143-3" tabindex="-1"></a><span class="fu">lillie.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>])<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.008072969</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="simulace3.html#cb146-1" tabindex="-1"></a><span class="fu">lillie.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>])<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="simulace3.html#cb145-1" tabindex="-1"></a><span class="fu">lillie.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>])<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.0004162642</code></pre>
+<p>Given the violation of the normality assumption, we cannot use the classic paired t-test. Instead, we will utilize its nonparametric alternative - the paired Wilcoxon test. However, we must be careful with interpretation in this case.</p>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="simulace3.html#cb148-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - Bbasis&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="simulace3.html#cb147-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - Bbasis&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.4297988</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="simulace3.html#cb150-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - diskr&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="simulace3.html#cb149-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - diskr&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.1274886</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="simulace3.html#cb151-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - diskr&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+</details>
+<pre><code>## [1] 0.0001353731</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="simulace3.html#cb153-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+</details>
+<pre><code>## [1] 0.002208014</code></pre>
+<p>Comparing SVM with discretization with functional SVM.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="simulace3.html#cb155-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - func&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - diskr&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+</details>
+<pre><code>## [1] 0.0003004829</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="simulace3.html#cb157-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - func&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - diskr&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+</details>
+<pre><code>## [1] 0.1656051</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="simulace3.html#cb159-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - func&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - diskr&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;two.sided&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+</details>
+<pre><code>## [1] 0.4878897</code></pre>
 <p>Now let’s look at the comparison between functional logistic regression and projection onto the B-spline basis.</p>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="simulace3.html#cb152-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="simulace3.html#cb161-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.001104007</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="simulace3.html#cb154-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="simulace3.html#cb163-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.0471872</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="simulace3.html#cb156-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="simulace3.html#cb165-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.1611741</code></pre>
 <p>We see that the linear kernel has a statistically significantly lower error rate compared to functional logistic regression (<span class="math inline">\(p\)</span>-value 0.001104). On the other hand, for the remaining SVM kernels, we could not demonstrate that the median of their test errors is smaller than the median of fLR.</p>
 <p>We might be interested in further comparisons.</p>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="simulace3.html#cb158-1" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;SVM rbf - RKHS - radial&#39;], SIMULACE$test[, &#39;SVM linear - diskr&#39;], alternative = &#39;less&#39;, paired = TRUE)$p.value</span></span>
-<span id="cb158-2"><a href="simulace3.html#cb158-2" tabindex="-1"></a></span>
-<span id="cb158-3"><a href="simulace3.html#cb158-3" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;SVM linear - RKHS - radial&#39;], SIMULACE$test[, &#39;SVM linear - diskr&#39;], alternative = &#39;less&#39;, paired = TRUE)$p.value</span></span>
-<span id="cb158-4"><a href="simulace3.html#cb158-4" tabindex="-1"></a></span>
-<span id="cb158-5"><a href="simulace3.html#cb158-5" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - RKHS - radial&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="simulace3.html#cb167-1" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;SVM rbf - RKHS - radial&#39;], SIMULACE$test[, &#39;SVM linear - diskr&#39;], alternative = &#39;less&#39;, paired = TRUE)$p.value</span></span>
+<span id="cb167-2"><a href="simulace3.html#cb167-2" tabindex="-1"></a></span>
+<span id="cb167-3"><a href="simulace3.html#cb167-3" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;SVM linear - RKHS - radial&#39;], SIMULACE$test[, &#39;SVM linear - diskr&#39;], alternative = &#39;less&#39;, paired = TRUE)$p.value</span></span>
+<span id="cb167-4"><a href="simulace3.html#cb167-4" tabindex="-1"></a></span>
+<span id="cb167-5"><a href="simulace3.html#cb167-5" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - RKHS - radial&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 1.797302e-05</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="simulace3.html#cb160-1" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;LR_functional&#39;], SIMULACE$test[, &#39;SVM rbf - RKHS - poly&#39;], alternative = &#39;less&#39;, paired = TRUE)$p.value</span></span>
-<span id="cb160-2"><a href="simulace3.html#cb160-2" tabindex="-1"></a></span>
-<span id="cb160-3"><a href="simulace3.html#cb160-3" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - RKHS - radial&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="simulace3.html#cb169-1" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;LR_functional&#39;], SIMULACE$test[, &#39;SVM rbf - RKHS - poly&#39;], alternative = &#39;less&#39;, paired = TRUE)$p.value</span></span>
+<span id="cb169-2"><a href="simulace3.html#cb169-2" tabindex="-1"></a></span>
+<span id="cb169-3"><a href="simulace3.html#cb169-3" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;LR_functional&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - RKHS - radial&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 9.443463e-08</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="simulace3.html#cb162-1" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;SVM poly - diskr&#39;], SIMULACE$test[, &#39;SVM poly - Bbasis&#39;], alternative = &#39;greater&#39;, paired = TRUE)$p.value</span></span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="simulace3.html#cb171-1" tabindex="-1"></a><span class="co"># wilcox.test(SIMULACE$test[, &#39;SVM poly - diskr&#39;], SIMULACE$test[, &#39;SVM poly - Bbasis&#39;], alternative = &#39;greater&#39;, paired = TRUE)$p.value</span></span></code></pre></div>
 </details>
 <p>Now let’s compare the kernels for projection.</p>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="simulace3.html#cb163-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="simulace3.html#cb172-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.03742462</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="simulace3.html#cb165-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - projection&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="simulace3.html#cb174-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - projection&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM poly - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;greater&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.2798017</code></pre>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="simulace3.html#cb167-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="simulace3.html#cb176-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM linear - projection&#39;</span>], SIMULACE<span class="sc">$</span>test[, <span class="st">&#39;SVM rbf - projection&#39;</span>], <span class="at">alternative =</span> <span class="st">&#39;less&#39;</span>, <span class="at">paired =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div>
 </details>
 <pre><code>## [1] 0.02379553</code></pre>
 <p>Finally, let’s look at which hyperparameter values were the most frequently chosen.</p>
 <table>
-<caption><span id="tab:unnamed-chunk-149">Table 1.10: </span>Medians of hyperparameter values for selected methods, for which some hyperparameter was determined using cross-validation.</caption>
+<caption><span id="tab:unnamed-chunk-156">Table 1.10: </span>Medians of hyperparameter values for selected methods, for which some hyperparameter was determined using cross-validation.</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -6933,103 +6955,103 @@ Figure 1.27: Box plots of test errors for 100 simulations for individual classif
 </tbody>
 </table>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="simulace3.html#cb169-1" tabindex="-1"></a>CV_res <span class="ot">&lt;-</span> CV_RESULTS <span class="sc">|&gt;</span> </span>
-<span id="cb169-2"><a href="simulace3.html#cb169-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> CV_RESULTS <span class="sc">|&gt;</span> <span class="fu">colnames</span>(), <span class="at">names_to =</span> <span class="st">&#39;method&#39;</span>, <span class="at">values_to =</span> <span class="st">&#39;hyperparameter&#39;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb169-3"><a href="simulace3.html#cb169-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">method =</span> <span class="fu">factor</span>(method, </span>
-<span id="cb169-4"><a href="simulace3.html#cb169-4" tabindex="-1"></a>                         <span class="at">levels =</span> CV_RESULTS <span class="sc">|&gt;</span> <span class="fu">colnames</span>(), </span>
-<span id="cb169-5"><a href="simulace3.html#cb169-5" tabindex="-1"></a>                         <span class="at">labels =</span> CV_RESULTS <span class="sc">|&gt;</span> <span class="fu">colnames</span>(), <span class="at">ordered =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb169-6"><a href="simulace3.html#cb169-6" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() </span>
-<span id="cb169-7"><a href="simulace3.html#cb169-7" tabindex="-1"></a></span>
-<span id="cb169-8"><a href="simulace3.html#cb169-8" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
-<span id="cb169-9"><a href="simulace3.html#cb169-9" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;KNN_K&#39;</span>, <span class="st">&#39;nharm&#39;</span>, <span class="st">&#39;LR_func_n_basis&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb169-10"><a href="simulace3.html#cb169-10" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
-<span id="cb169-11"><a href="simulace3.html#cb169-11" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
-<span id="cb169-12"><a href="simulace3.html#cb169-12" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
-<span id="cb169-13"><a href="simulace3.html#cb169-13" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb169-14"><a href="simulace3.html#cb169-14" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>) <span class="sc">+</span></span>
-<span id="cb169-15"><a href="simulace3.html#cb169-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
-<span id="cb169-16"><a href="simulace3.html#cb169-16" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb169-17"><a href="simulace3.html#cb169-17" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="simulace3.html#cb178-1" tabindex="-1"></a>CV_res <span class="ot">&lt;-</span> CV_RESULTS <span class="sc">|&gt;</span> </span>
+<span id="cb178-2"><a href="simulace3.html#cb178-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> CV_RESULTS <span class="sc">|&gt;</span> <span class="fu">colnames</span>(), <span class="at">names_to =</span> <span class="st">&#39;method&#39;</span>, <span class="at">values_to =</span> <span class="st">&#39;hyperparameter&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb178-3"><a href="simulace3.html#cb178-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">method =</span> <span class="fu">factor</span>(method, </span>
+<span id="cb178-4"><a href="simulace3.html#cb178-4" tabindex="-1"></a>                         <span class="at">levels =</span> CV_RESULTS <span class="sc">|&gt;</span> <span class="fu">colnames</span>(), </span>
+<span id="cb178-5"><a href="simulace3.html#cb178-5" tabindex="-1"></a>                         <span class="at">labels =</span> CV_RESULTS <span class="sc">|&gt;</span> <span class="fu">colnames</span>(), <span class="at">ordered =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb178-6"><a href="simulace3.html#cb178-6" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() </span>
+<span id="cb178-7"><a href="simulace3.html#cb178-7" tabindex="-1"></a></span>
+<span id="cb178-8"><a href="simulace3.html#cb178-8" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
+<span id="cb178-9"><a href="simulace3.html#cb178-9" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;KNN_K&#39;</span>, <span class="st">&#39;nharm&#39;</span>, <span class="st">&#39;LR_func_n_basis&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb178-10"><a href="simulace3.html#cb178-10" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
+<span id="cb178-11"><a href="simulace3.html#cb178-11" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
+<span id="cb178-12"><a href="simulace3.html#cb178-12" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb178-13"><a href="simulace3.html#cb178-13" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb178-14"><a href="simulace3.html#cb178-14" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>) <span class="sc">+</span></span>
+<span id="cb178-15"><a href="simulace3.html#cb178-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
+<span id="cb178-16"><a href="simulace3.html#cb178-16" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb178-17"><a href="simulace3.html#cb178-17" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-150"></span>
-<img src="01-Simulace_files/figure-html/unnamed-chunk-150-1.png" alt="Histograms of hyperparameter values for KNN, functional logistic regression, and a histogram for the number of principal components." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-157"></span>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-157-1.png" alt="Histograms of hyperparameter values for KNN, functional logistic regression, and a histogram for the number of principal components." width="672" />
 <p class="caption">
 Figure 1.28: Histograms of hyperparameter values for KNN, functional logistic regression, and a histogram for the number of principal components.
 </p>
 </div>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="simulace3.html#cb170-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
-<span id="cb170-2"><a href="simulace3.html#cb170-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_d_Linear&#39;</span>, <span class="st">&#39;SVM_d_Poly&#39;</span>, <span class="st">&#39;SVM_d_Radial&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb170-3"><a href="simulace3.html#cb170-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
-<span id="cb170-4"><a href="simulace3.html#cb170-4" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
-<span id="cb170-5"><a href="simulace3.html#cb170-5" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
-<span id="cb170-6"><a href="simulace3.html#cb170-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb170-7"><a href="simulace3.html#cb170-7" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>) <span class="sc">+</span></span>
-<span id="cb170-8"><a href="simulace3.html#cb170-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
-<span id="cb170-9"><a href="simulace3.html#cb170-9" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb170-10"><a href="simulace3.html#cb170-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="simulace3.html#cb179-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
+<span id="cb179-2"><a href="simulace3.html#cb179-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_d_Linear&#39;</span>, <span class="st">&#39;SVM_d_Poly&#39;</span>, <span class="st">&#39;SVM_d_Radial&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb179-3"><a href="simulace3.html#cb179-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
+<span id="cb179-4"><a href="simulace3.html#cb179-4" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
+<span id="cb179-5"><a href="simulace3.html#cb179-5" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb179-6"><a href="simulace3.html#cb179-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb179-7"><a href="simulace3.html#cb179-7" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>) <span class="sc">+</span></span>
+<span id="cb179-8"><a href="simulace3.html#cb179-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
+<span id="cb179-9"><a href="simulace3.html#cb179-9" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb179-10"><a href="simulace3.html#cb179-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-152"></span>
-<img src="01-Simulace_files/figure-html/unnamed-chunk-152-1.png" alt="Histograms of hyperparameter values for the SVM method with projection onto the B-spline basis." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-159"></span>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-159-1.png" alt="Histograms of hyperparameter values for the SVM method with projection onto the B-spline basis." width="672" />
 <p class="caption">
 Figure 1.29: Histograms of hyperparameter values for the SVM method with projection onto the B-spline basis.
 </p>
 </div>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="simulace3.html#cb171-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
-<span id="cb171-2"><a href="simulace3.html#cb171-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_RKHS_radial_gamma1&#39;</span>, <span class="st">&#39;SVM_RKHS_radial_gamma2&#39;</span>,</span>
-<span id="cb171-3"><a href="simulace3.html#cb171-3" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_radial_gamma3&#39;</span>, <span class="st">&#39;SVM_RKHS_radial_d1&#39;</span>, </span>
-<span id="cb171-4"><a href="simulace3.html#cb171-4" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_radial_d2&#39;</span>, <span class="st">&#39;SVM_RKHS_radial_d3&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb171-5"><a href="simulace3.html#cb171-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
-<span id="cb171-6"><a href="simulace3.html#cb171-6" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
-<span id="cb171-7"><a href="simulace3.html#cb171-7" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
-<span id="cb171-8"><a href="simulace3.html#cb171-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb171-9"><a href="simulace3.html#cb171-9" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb171-10"><a href="simulace3.html#cb171-10" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
-<span id="cb171-11"><a href="simulace3.html#cb171-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb171-12"><a href="simulace3.html#cb171-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="simulace3.html#cb180-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
+<span id="cb180-2"><a href="simulace3.html#cb180-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_RKHS_radial_gamma1&#39;</span>, <span class="st">&#39;SVM_RKHS_radial_gamma2&#39;</span>,</span>
+<span id="cb180-3"><a href="simulace3.html#cb180-3" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_radial_gamma3&#39;</span>, <span class="st">&#39;SVM_RKHS_radial_d1&#39;</span>, </span>
+<span id="cb180-4"><a href="simulace3.html#cb180-4" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_radial_d2&#39;</span>, <span class="st">&#39;SVM_RKHS_radial_d3&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb180-5"><a href="simulace3.html#cb180-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
+<span id="cb180-6"><a href="simulace3.html#cb180-6" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
+<span id="cb180-7"><a href="simulace3.html#cb180-7" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb180-8"><a href="simulace3.html#cb180-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb180-9"><a href="simulace3.html#cb180-9" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb180-10"><a href="simulace3.html#cb180-10" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
+<span id="cb180-11"><a href="simulace3.html#cb180-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb180-12"><a href="simulace3.html#cb180-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-154"></span>
-<img src="01-Simulace_files/figure-html/unnamed-chunk-154-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with radial kernel." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-161"></span>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-161-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with radial kernel." width="672" />
 <p class="caption">
 Figure 1.30: Histograms of hyperparameter values for RKHS + SVM with radial kernel.
 </p>
 </div>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="simulace3.html#cb172-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
-<span id="cb172-2"><a href="simulace3.html#cb172-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_RKHS_poly_p1&#39;</span>, <span class="st">&#39;SVM_RKHS_poly_p2&#39;</span>,</span>
-<span id="cb172-3"><a href="simulace3.html#cb172-3" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_poly_p3&#39;</span>, <span class="st">&#39;SVM_RKHS_poly_d1&#39;</span>,</span>
-<span id="cb172-4"><a href="simulace3.html#cb172-4" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_poly_d2&#39;</span>, <span class="st">&#39;SVM_RKHS_poly_d3&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb172-5"><a href="simulace3.html#cb172-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
-<span id="cb172-6"><a href="simulace3.html#cb172-6" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
-<span id="cb172-7"><a href="simulace3.html#cb172-7" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
-<span id="cb172-8"><a href="simulace3.html#cb172-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb172-9"><a href="simulace3.html#cb172-9" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb172-10"><a href="simulace3.html#cb172-10" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
-<span id="cb172-11"><a href="simulace3.html#cb172-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb172-12"><a href="simulace3.html#cb172-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="simulace3.html#cb181-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
+<span id="cb181-2"><a href="simulace3.html#cb181-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_RKHS_poly_p1&#39;</span>, <span class="st">&#39;SVM_RKHS_poly_p2&#39;</span>,</span>
+<span id="cb181-3"><a href="simulace3.html#cb181-3" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_poly_p3&#39;</span>, <span class="st">&#39;SVM_RKHS_poly_d1&#39;</span>,</span>
+<span id="cb181-4"><a href="simulace3.html#cb181-4" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_poly_d2&#39;</span>, <span class="st">&#39;SVM_RKHS_poly_d3&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb181-5"><a href="simulace3.html#cb181-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
+<span id="cb181-6"><a href="simulace3.html#cb181-6" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
+<span id="cb181-7"><a href="simulace3.html#cb181-7" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb181-8"><a href="simulace3.html#cb181-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb181-9"><a href="simulace3.html#cb181-9" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb181-10"><a href="simulace3.html#cb181-10" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
+<span id="cb181-11"><a href="simulace3.html#cb181-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb181-12"><a href="simulace3.html#cb181-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-156"></span>
-<img src="01-Simulace_files/figure-html/unnamed-chunk-156-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with polynomial kernel." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-163"></span>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-163-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with polynomial kernel." width="672" />
 <p class="caption">
 Figure 1.31: Histograms of hyperparameter values for RKHS + SVM with polynomial kernel.
 </p>
 </div>
 <details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="simulace3.html#cb173-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
-<span id="cb173-2"><a href="simulace3.html#cb173-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_RKHS_linear_d1&#39;</span>,</span>
-<span id="cb173-3"><a href="simulace3.html#cb173-3" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_linear_d2&#39;</span>, <span class="st">&#39;SVM_RKHS_linear_d3&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb173-4"><a href="simulace3.html#cb173-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
-<span id="cb173-5"><a href="simulace3.html#cb173-5" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
-<span id="cb173-6"><a href="simulace3.html#cb173-6" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
-<span id="cb173-7"><a href="simulace3.html#cb173-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb173-8"><a href="simulace3.html#cb173-8" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb173-9"><a href="simulace3.html#cb173-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
-<span id="cb173-10"><a href="simulace3.html#cb173-10" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb173-11"><a href="simulace3.html#cb173-11" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="simulace3.html#cb182-1" tabindex="-1"></a>CV_res <span class="sc">|&gt;</span> </span>
+<span id="cb182-2"><a href="simulace3.html#cb182-2" tabindex="-1"></a>  <span class="fu">filter</span>(method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;SVM_RKHS_linear_d1&#39;</span>,</span>
+<span id="cb182-3"><a href="simulace3.html#cb182-3" tabindex="-1"></a>                       <span class="st">&#39;SVM_RKHS_linear_d2&#39;</span>, <span class="st">&#39;SVM_RKHS_linear_d3&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb182-4"><a href="simulace3.html#cb182-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hyperparameter, <span class="co">#y = after_stat(density),</span></span>
+<span id="cb182-5"><a href="simulace3.html#cb182-5" tabindex="-1"></a>             <span class="at">fill =</span> method, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
+<span id="cb182-6"><a href="simulace3.html#cb182-6" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb182-7"><a href="simulace3.html#cb182-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb182-8"><a href="simulace3.html#cb182-8" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>method, <span class="at">scales =</span> <span class="st">&#39;free&#39;</span>, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb182-9"><a href="simulace3.html#cb182-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Hyperparameter Values&#39;</span>,</span>
+<span id="cb182-10"><a href="simulace3.html#cb182-10" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&#39;Absolute Count&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb182-11"><a href="simulace3.html#cb182-11" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;none&#39;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-158"></span>
-<img src="01-Simulace_files/figure-html/unnamed-chunk-158-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with linear kernel." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-165"></span>
+<img src="01-Simulace_files/figure-html/unnamed-chunk-165-1.png" alt="Histograms of hyperparameter values for RKHS + SVM with linear kernel." width="672" />
 <p class="caption">
 Figure 1.32: Histograms of hyperparameter values for RKHS + SVM with linear kernel.
 </p>
@@ -7064,27 +7086,27 @@ Figure 1.32: Histograms of hyperparameter values for RKHS + SVM with linear kern
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": null,
-"fontsettings": null,
-"edit": null,
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": "https://github.com/Tomas-Pompa/Functional_classification/blob/main/01-Simulace.Rmd",
-"text": null
-},
-"download": null,
-"search": false,
-"toc": {
-"collapse": "section",
-"scroll_highlight": true
-},
-"toolbar": {
-"position": "fixed"
-},
-"info": true
+  "sharing": null,
+  "fontsettings": null,
+  "edit": null,
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": "https://github.com/Tomas-Pompa/Functional_classification/blob/main/01-Simulace.Rmd",
+    "text": null
+  },
+  "download": null,
+  "search": false,
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed"
+  },
+  "info": true
 });
 });
 </script>
